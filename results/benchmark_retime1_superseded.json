@@ -1,0 +1,34 @@
+{
+  "reason": "Code change: BERT context bounded to 48 WordPieces per side of the blank (memory fix; no benchmark sentence reaches the window). Re-timed under the same conditions; every per-item output verified identical; latency differences are run-to-run timing.",
+  "power_state": {
+    "on_ac": true,
+    "power_scheme": "Turbo",
+    "power_mode": "Best performance"
+  },
+  "ladder_latency_mean_ms": {
+    "raw_fp32": 4.888877667011305,
+    "raw_int8": 3.7516506659934143,
+    "classical": 10.788451333307117,
+    "bert_fp32": 166.66368466666123,
+    "quantized_app": 51.32258933260649,
+    "ablation_fp32cnn_int8bert": 55.7672433325691
+  },
+  "vision_latency_ms": {
+    "dense_mlp_fp32": {
+      "b1": 0.0510559999383986,
+      "b8": 0.06555100029800087
+    },
+    "char_cnn_fp32": {
+      "b1": 0.3048000001581386,
+      "b8": 0.9021529996243771
+    },
+    "char_cnn_int8": {
+      "b1": 0.29561300078057684,
+      "b8": 0.4515770002035424
+    }
+  },
+  "bert_latency_ms": {
+    "fp32": 26.012960999651114,
+    "int8": 8.404046999057755
+  }
+}
