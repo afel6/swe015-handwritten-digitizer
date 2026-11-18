@@ -10,8 +10,7 @@ import argparse
 import json
 import os
 import sys
-import time
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -20,7 +19,6 @@ os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
 if str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-import numpy as np
 import torch
 
 from data._io_errors import describe_os_error
@@ -42,10 +40,10 @@ from data.word_pipeline import item_to_strip, strip_to_probs
 from models.bert_reranker import BertMLMReranker
 from models.char_models import load_char_cnn_fp32, load_dense_mlp
 from models.classical_nlp import (
-    CANDIDATE_POOL_SIZE,
     ClassicalNLPCorrector,
     normalize_word,
 )
+from models.ladder import run_ladder, timed
 from models.quantization import (
     benchmark_cpu_latency,
     get_model_disk_size_mb,
@@ -89,37 +87,17 @@ def vision_table(models: Mapping[str, Any], emnist_root: Path) -> tuple[dict[str
     return table, int(labels.numel())
 
 
-def _timed(fn: Callable[[], Any]) -> tuple[Any, float]:
-    start = time.perf_counter()
-    out = fn()
-    return out, (time.perf_counter() - start) * 1000.0
-
-
-def _raw_word(probs: np.ndarray) -> str:
-    return "".join(CANONICAL_36_CHARS[int(i)] for i in probs.argmax(axis=1))
-
-
 def run_item(item: Mapping[str, Any], strip: Any, models: Mapping[str, Any]) -> dict[str, Any]:
-    """Run every ladder row on one strip; returns outputs plus per-row end-to-end latency (ms)."""
+    """Run every ladder row on one strip (models.ladder.run_ladder); returns outputs plus per-row end-to-end latency (ms)."""
     sentence, n = str(item["sentence"]), len(str(item["target_word"]))
-    lm, params = models["ngram"], models["params"]
-    p32, t32 = _timed(lambda: strip_to_probs(strip, models["cnn_fp32"], num_boxes=n))
-    p8, t8 = _timed(lambda: strip_to_probs(strip, models["cnn_int8"], num_boxes=n))
-    (pool32, meta32), tp32 = _timed(lambda: lm.generate_candidates(p32, max_candidates=CANDIDATE_POOL_SIZE))
-    (pool8, meta8), tp8 = _timed(lambda: lm.generate_candidates(p8, max_candidates=CANDIDATE_POOL_SIZE))
-    classical, tc = _timed(lambda: lm.rank_pool(sentence, pool32, meta32))
-    kw32 = {"params": params, "raw_word": meta32["raw_word"], "numeric_preserved": meta32["numeric_preserved"]}
-    kw8 = {"params": params, "raw_word": meta8["raw_word"], "numeric_preserved": meta8["numeric_preserved"]}
-    bert32, tb32 = _timed(lambda: models["bert_fp32"].rerank_candidates(sentence, pool32, **kw32))
-    abl, tab = _timed(lambda: models["bert_int8"].rerank_candidates(sentence, pool32, **kw32))
-    app, tapp = _timed(lambda: models["bert_int8"].rerank_candidates(sentence, pool8, **kw8))
-    outputs = {"raw_fp32": _raw_word(p32), "raw_int8": _raw_word(p8), "classical": classical["predicted_word"], "bert_fp32": bert32["predicted_word"],
-               "quantized_app": app["predicted_word"], "ablation_fp32cnn_int8bert": abl["predicted_word"]}
-    latency = {"raw_fp32": t32, "raw_int8": t8, "classical": t32 + tp32 + tc, "bert_fp32": t32 + tp32 + tb32, "quantized_app": t8 + tp8 + tapp, "ablation_fp32cnn_int8bert": t32 + tp32 + tab}
-    words32, words8 = {c["word"] for c in pool32}, {c["word"] for c in pool8}
+    p32, t32 = timed(lambda: strip_to_probs(strip, models["cnn_fp32"], num_boxes=n))
+    p8, t8 = timed(lambda: strip_to_probs(strip, models["cnn_int8"], num_boxes=n))
+    ladder = run_ladder(sentence, p32, p8, models, {"fp32": t32, "int8": t8})
+    outputs = {k: row["predicted_word"] for k, row in ladder["rows"].items()}
     target = normalize_word(str(item["target_word"]))
-    return {"id": item["id"], "sentence": sentence, "target": target, "outputs": outputs, "latency_ms": latency, "raw_int8": outputs["raw_int8"],
-            "target_in_pool_fp32": target in words32, "target_in_pool_int8": target in words8, "numeric_preserved_int8": bool(meta8["numeric_preserved"])}
+    return {"id": item["id"], "sentence": sentence, "target": target, "outputs": outputs, "latency_ms": {k: row["latency_ms"] for k, row in ladder["rows"].items()},
+            "raw_int8": outputs["raw_int8"], "target_in_pool_fp32": target in ladder["pools"]["fp32"], "target_in_pool_int8": target in ladder["pools"]["int8"],
+            "numeric_preserved_int8": ladder["numeric_preserved_int8"]}
 
 
 def row_sizes(models: Mapping[str, Any]) -> dict[str, float]:

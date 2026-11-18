@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Handwritten Answer Digitizer</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <h1>Handwritten Answer Digitizer</h1>
+    <p class="lede">Write the missing word in the boxes. Three character models read each box, then an n-gram model and BERT use the sentence to correct the word. Everything runs on this computer's CPU.</p>
+  </header>
+
+  <main>
+    <div id="error-banner" class="banner" role="alert" hidden></div>
+
+    <section class="card" aria-labelledby="input-heading">
+      <h2 id="input-heading">1. Question</h2>
+      <div class="row">
+        <label for="sample-select">Load a sample worksheet</label>
+        <select id="sample-select"><option value="">Choose a sample…</option></select>
+      </div>
+      <div class="row">
+        <label for="sentence">Sentence with a blank (<code>[MASK]</code> or <code>___</code>)</label>
+        <input id="sentence" type="text" maxlength="500" autocomplete="off" spellcheck="false" value="Plants use sunlight to make food through [MASK].">
+      </div>
+
+      <h2>2. Answer</h2>
+      <div class="tabs" role="tablist" aria-label="Answer input">
+        <button id="tab-draw" role="tab" aria-selected="true" aria-controls="panel-draw" type="button">Draw</button>
+        <button id="tab-strip" role="tab" aria-selected="false" aria-controls="panel-strip" type="button">Strip image</button>
+      </div>
+
+      <div id="panel-draw" role="tabpanel" aria-labelledby="tab-draw">
+        <div class="row inline">
+          <label for="box-count">Boxes</label>
+          <input id="box-count" type="number" min="1" max="16" value="6">
+          <button id="undo" type="button">Undo</button>
+          <button id="clear" type="button">Clear</button>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="pad" aria-label="Drawing area: one character per box" tabindex="0"></canvas>
+        </div>
+        <p class="hint">One letter or digit per box, written large. Leave unused boxes empty.</p>
+      </div>
+
+      <div id="panel-strip" role="tabpanel" aria-labelledby="tab-strip" hidden>
+        <div class="row inline">
+          <label for="strip-file">PNG or JPEG strip</label>
+          <input id="strip-file" type="file" accept="image/png,image/jpeg">
+          <label for="strip-boxes">Boxes</label>
+          <input id="strip-boxes" type="number" min="1" max="16" value="5">
+        </div>
+        <img id="strip-preview" class="strip-preview" alt="Selected strip image" hidden>
+      </div>
+
+      <button id="recognize" class="primary" type="button">Recognize</button>
+      <span id="busy" class="busy" aria-live="polite"></span>
+    </section>
+
+    <section id="results" class="card" aria-labelledby="results-heading" hidden>
+      <h2 id="results-heading">3. Result</h2>
+      <div class="verdict">
+        <div><span class="k">CNN read</span><span id="raw-word" class="word raw"></span></div>
+        <div aria-hidden="true" class="arrow">→</div>
+        <div><span class="k">Corrected (app model)</span><span id="final-word" class="word final"></span></div>
+      </div>
+
+      <h3>Per box</h3>
+      <div id="boxes" class="boxes"></div>
+
+      <h3>Four models side by side</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Model</th><th scope="col">Precision</th><th scope="col">Word</th><th scope="col">Top candidates</th><th scope="col">Latency (ms)</th></tr></thead>
+          <tbody id="model-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>Localhost only · EMNIST CNNs · n-gram + BERT correction · INT8 app model</footer>
+</body>
+</html>
