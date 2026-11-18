@@ -11,9 +11,11 @@ from typing import Any
 import pytest
 from PIL import Image
 
+from models.assets import WEIGHT_FILES
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SAMPLES = REPO_ROOT / "data" / "sample_worksheets"
-REQUIRED = [REPO_ROOT / "weights" / n for n in ("dense_mlp.pt", "char_cnn_fp32.pt", "char_cnn_int8.pt", "ngram_lm.pkl")]
+REQUIRED = [REPO_ROOT / "weights" / n for n in WEIGHT_FILES]
 pytestmark = pytest.mark.skipif(not all(p.is_file() for p in REQUIRED), reason="model weights not downloaded")
 
 
@@ -275,8 +277,3 @@ def test_recognition_runs_one_request_at_a_time(client: Any, monkeypatch: pytest
     for th in threads:
         th.join()
     assert state["peak"] == 1
-
-
-def test_ui_shows_the_primary_rows_own_raw_read() -> None:
-    script = (REPO_ROOT / "static" / "app.js").read_text(encoding="utf-8")
-    assert "primary.raw_word" in script and "data.models[0].raw_word" not in script

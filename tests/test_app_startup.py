@@ -10,9 +10,11 @@ from pathlib import Path
 
 import pytest
 
+from models.assets import WEIGHT_FILES
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 WEIGHTS = REPO_ROOT / "weights"
-REQUIRED = ("dense_mlp.pt", "char_cnn_fp32.pt", "char_cnn_int8.pt", "ngram_lm.pkl")
+REQUIRED = WEIGHT_FILES
 needs_weights = pytest.mark.skipif(not all((WEIGHTS / n).is_file() for n in REQUIRED), reason="model weights not downloaded")
 HF_CACHE = Path(os.environ.get("HF_HOME", Path.home() / ".cache" / "huggingface")) / "hub" / "models--bert-base-uncased"
 needs_hf_cache = pytest.mark.skipif(not HF_CACHE.is_dir(), reason="bert-base-uncased not in the local Hugging Face cache")
@@ -47,7 +49,7 @@ def test_missing_weights_exit_with_one_line_and_fix_command(tmp_path: Path) -> N
 def test_a_directory_where_a_weight_file_belongs_is_reported(tmp_path: Path) -> None:
     (tmp_path / "dense_mlp.pt").mkdir()
     line = _one_line(_start(tmp_path))
-    assert "dense_mlp.pt" in line and "python scripts/download_assets.py" in line
+    assert "dense_mlp.pt is a directory, not a file; remove it, then run python scripts/download_assets.py" in line
 
 
 @needs_weights
@@ -72,3 +74,25 @@ def test_an_unwritable_int8_cache_is_reported(tmp_path: Path) -> None:
     (weights / "bert_int8_dynamic.pt").mkdir()
     line = _one_line(_start(weights, HF_HUB_OFFLINE="1"))
     assert "bert_int8_dynamic.pt" in line
+
+
+def test_ui_shows_the_primary_rows_own_raw_read() -> None:
+    script = (REPO_ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "primary.raw_word" in script and "data.models[0].raw_word" not in script
+
+
+def test_a_damaged_results_file_points_to_git_not_the_download(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    import app
+
+    weights, results = tmp_path / "weights", tmp_path / "results"
+    weights.mkdir()
+    results.mkdir()
+    for name in WEIGHT_FILES:
+        (weights / name).write_bytes(b"placeholder")
+    (results / "bert_fusion_params.json").write_text("[1, 2]", encoding="utf-8")
+    monkeypatch.setattr(app, "WEIGHTS_DIR", weights)
+    monkeypatch.setattr(app, "RESULTS_DIR", results)
+    with pytest.raises(app.StartupError) as info:
+        app.build_service()
+    message = str(info.value)
+    assert "git checkout -- results/bert_fusion_params.json" in message and "download_assets" not in message and "\n" not in message

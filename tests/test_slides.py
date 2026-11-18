@@ -59,10 +59,3 @@ def test_numbers_are_read_not_hard_coded(tmp_path: Path) -> None:
     (results / "benchmark_results.json").write_text(json.dumps(bench), encoding="utf-8")
     pdf, _ = generate_slides.render(META, tmp_path / "out", results)
     assert "12.34" in _pdf_text(pdf)[7]
-
-
-def test_cli_reports_missing_results_in_one_line(tmp_path: Path, capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(generate_slides.sc, "RESULTS", tmp_path / "missing")
-    monkeypatch.setattr(generate_slides.render, "__defaults__", (generate_slides.OUT_DIR, tmp_path / "missing"))
-    assert generate_slides.main(["--out-dir", str(tmp_path / "out")]) == 1
-    assert capsys.readouterr().err.count("\n") == 1

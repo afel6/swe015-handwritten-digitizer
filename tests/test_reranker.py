@@ -413,7 +413,18 @@ def test_long_context_is_truncated_and_the_length_guard_remains(tiny_reranker: B
         tiny_reranker.span_log_probs(sentence, ["sun"])
 
 
-def test_masked_position_head_matches_full_logits_on_seventy_sequences(tiny_reranker: BertMLMReranker) -> None:
+@pytest.mark.parametrize("module", [evaluate_all, tune_bert])
+def test_cli_errors_print_one_line(module: Any, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path) -> None:
+    def boom(*_a: Any, **_k: Any) -> Any:
+        raise IsADirectoryError(21, f"Expected a file, got a directory while reading: {tmp_path}", str(tmp_path))
+
+    monkeypatch.setattr(module, "evaluate" if module is evaluate_all else "run", boom)
+    assert module.main([]) == 1
+    err = capsys.readouterr().err.strip().splitlines()
+    assert len(err) == 1 and str(tmp_path) in err[0]
+
+
+def test_batched_masked_positions_match_full_logits_on_seventy_sequences(tiny_reranker: BertMLMReranker) -> None:
     gen = torch.Generator().manual_seed(3)
     seqs = [[2, *torch.randint(5, len(VOCAB), (int(n),), generator=gen).tolist(), 3] for n in torch.randint(3, 20, (70,), generator=gen)]
     positions = [int(torch.randint(1, len(s) - 1, (1,), generator=gen)) for s in seqs]

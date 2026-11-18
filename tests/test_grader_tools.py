@@ -175,3 +175,32 @@ def test_interrupted_download_is_one_line(tmp_path: Path, monkeypatch: pytest.Mo
     monkeypatch.setattr(download_assets.urllib.request, "urlopen", broken)
     assert download_assets.main(["--root", str(tmp_path)]) == 1
     assert capsys.readouterr().err.count("\n") == 1
+
+
+def test_slides_cli_reports_missing_results_in_one_line(tmp_path: Path, capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch) -> None:
+    from scripts import generate_slides
+
+    monkeypatch.setattr(generate_slides.sc, "RESULTS", tmp_path / "missing")
+    monkeypatch.setattr(generate_slides.render, "__defaults__", (generate_slides.OUT_DIR, tmp_path / "missing"))
+    assert generate_slides.main(["--out-dir", str(tmp_path / "out")]) == 1
+    assert capsys.readouterr().err.count("\n") == 1
+
+
+def test_slides_cli_names_a_corrupt_cnn_checkpoint(tmp_path: Path, capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch) -> None:
+    from scripts import generate_slides
+
+    bad = tmp_path / "char_cnn_fp32.pt"
+    bad.write_bytes(b"not a checkpoint")
+    monkeypatch.setattr(generate_slides, "GRADCAM_WEIGHTS", bad)
+    assert generate_slides.main(["--out-dir", str(tmp_path / "out")]) == 1
+    err = capsys.readouterr().err
+    assert err.count("\n") == 1 and "char_cnn_fp32.pt" in err and "python scripts/download_assets.py" in err and "results are incomplete" not in err
+
+
+def test_architecture_edges_follow_the_recognizer() -> None:
+    from scripts import architecture
+
+    edges = {(e.src, e.dst): e.label for e in architecture.EDGES}
+    assert ("CNN32", "OUT") in edges and ("CNN8", "OUT") in edges and ("MLP", "OUT") in edges
+    assert "empty" not in next(n.label for n in architecture.NODES if n.key == "PRE")
+    assert "non-empty" in edges[("FOLD32", "POOL32")] and "non-empty" in edges[("FOLD8", "POOL8")]

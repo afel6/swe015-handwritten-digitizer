@@ -34,6 +34,11 @@ from scripts import architecture
 from scripts import slide_content as sc
 
 DEFAULT_REPO = "https://github.com/afel6/swe015-handwritten-digitizer"
+GRADCAM_WEIGHTS = Path("weights/char_cnn_fp32.pt")
+
+
+class ModelFileError(RuntimeError):
+    """The CNN checkpoint needed for the Grad-CAM slide is missing, corrupt or incompatible."""
 OUT_DIR = Path("deliverables")
 W_IN, H_IN, DPI = 13.333, 7.5, 150
 INK, ACCENT, MUTED, PAPER = "#1d2433", "#1f4fa3", "#4a5466", "#fbf8f1"
@@ -139,7 +144,10 @@ def _gradcam_examples(count: int = 3) -> list[Any]:
     from models.char_models import load_char_cnn_fp32
     from models.gradcam import generate_gradcam_b64
 
-    cnn = load_char_cnn_fp32("weights/char_cnn_fp32.pt")
+    try:
+        cnn = load_char_cnn_fp32(GRADCAM_WEIGHTS)
+    except (OSError, ValueError) as exc:
+        raise ModelFileError(f"Cannot use {GRADCAM_WEIGHTS.as_posix()} for the Grad-CAM slide ({' '.join(str(exc).split())[:200]}). Run: python scripts/download_assets.py") from exc
     with Image.open("data/sample_worksheets/sample_05.png") as strip:
         boxes = slice_strip_image(strip.copy(), num_boxes=3)
     maps = [generate_gradcam_b64(cnn, preprocess_box(b)[0].unsqueeze(0)) for b in boxes[:count]]
@@ -220,6 +228,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     meta = {"name": args.name, "student_id": args.student_id, "repo_url": args.repo_url, "video_url": args.video_url}
     try:
         pdf, pptx = render(meta, args.out_dir)
+    except ModelFileError as exc:
+        sys.stderr.write(f"{exc}\n")
+        return 1
     except OSError as exc:
         sys.stderr.write(describe_cli_os_error(exc) + "\n")
         return 1

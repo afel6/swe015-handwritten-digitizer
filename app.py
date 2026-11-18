@@ -99,16 +99,31 @@ def _load_error(exc: Exception) -> str:
     return f"A model file is corrupt or incompatible ({' '.join(str(exc).split())[:300]}). Run: {FIX_COMMAND}"
 
 
+PARAMS_FILE = "results/bert_fusion_params.json"
+
+
+def _check_params_file() -> None:
+    """The tracked fusion-params file must hold an object with 'params'; if not, restore it from git."""
+    try:
+        doc = read_data(RESULTS_DIR / "bert_fusion_params.json", as_json=True)
+        ok = isinstance(doc, dict) and isinstance(doc.get("params"), dict)
+    except (OSError, ValueError, TypeError):
+        ok = False
+    if not ok:
+        raise StartupError(f"{PARAMS_FILE} is damaged or incomplete; restore it with: git checkout -- {PARAMS_FILE}")
+
+
 def build_service() -> Any:
     """The single startup check: required files, then every model; any failure becomes one StartupError line."""
     missing = missing_assets(WEIGHTS_DIR, RESULTS_DIR)
     if missing:
         raise StartupError(missing_assets_message(missing))
+    _check_params_file()
     try:
         from models.recognizer import RecognitionService
 
         return RecognitionService(WEIGHTS_DIR, RESULTS_DIR)
-    except (OSError, ValueError, RuntimeError, KeyError, pickle.UnpicklingError) as exc:
+    except (OSError, ValueError, TypeError, RuntimeError, KeyError, pickle.UnpicklingError) as exc:
         raise StartupError(_load_error(exc)) from exc
 
 

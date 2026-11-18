@@ -122,12 +122,13 @@ def methodology_note(res: Mapping[str, Any]) -> str:
     """Tuning/test protocol sentence with every count read from the results."""
     runs = 1 + sum(1 for key in ("benchmark_run1_superseded", "benchmark_run2_superseded") if key in res)
     passes = len(res["benchmark_results"].get("retime", {}).get("passes", []))
-    retime = f"; latencies re-timed on AC power, median of {passes} passes, outputs verified identical" if passes else ""
+    retimes = sum(1 for name in ("benchmark_run3_timing_superseded.json", "benchmark_retime1_superseded.json") if (RESULTS / name).is_file())
+    retime = f"; latencies re-timed {retimes} times on AC power (last: median of {passes} passes), outputs verified identical each time" if passes else ""
     return f"Tuned on dev only; the test set was evaluated {runs} times and run {runs} is reported (earlier runs superseded; reasons in results/){retime}."
 
 
 def ai_usage_lines(name: str) -> list[str]:
-    """R8 statement (wording approved by the student)."""
+    """R8 statement."""
     return [
         f"Built by {name} with Claude (Anthropic) as the AI coding assistant.",
         "Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.",

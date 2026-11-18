@@ -20,4 +20,6 @@ def missing_assets(weights_dir: Path, results_dir: Path) -> list[Path]:
 
 def missing_assets_message(missing: list[Path]) -> str:
     """One friendly line naming the first missing file and the exact command that fetches it."""
+    if missing[0].is_dir():
+        return f"{missing[0]} is a directory, not a file; remove it, then run {FIX_COMMAND}"
     return f"Missing model file: {missing[0]}. Run: {FIX_COMMAND}"

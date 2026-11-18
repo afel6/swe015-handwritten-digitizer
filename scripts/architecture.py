@@ -23,13 +23,14 @@ class Edge(NamedTuple):
     src: str
     dst: str
     label: str = ""
+    display: bool = False  # per-box display data (drawn on slide 4 as one dashed line along the top)
 
 
 NODES: tuple[Node, ...] = (
     Node("UI", "Browser UI\ncanvas boxes or\nstrip upload", 0.065, 0.495, w=0.09),
     Node("API", "FastAPI on 127.0.0.1\nHost allow-list, JSON only,\nsize / base64 / image checks", 0.185, 0.495, w=0.125),
     Node("SLICE", "slice_strip_image\n(strip uploads)", 0.315, 0.735),
-    Node("PRE", "preprocess_box\n28x28 per box;\nempty boxes left out", 0.315, 0.495),
+    Node("PRE", "preprocess_box\n28x28 per box", 0.315, 0.495),
     Node("MLP", "Dense MLP · FP32\n(display only)", 0.44, 0.735),
     Node("CNN32", "CharCNN · FP32\n+ Grad-CAM", 0.44, 0.495),
     Node("CNN8", "CharCNN · INT8\nstatic PTQ", 0.44, 0.235),
@@ -48,9 +49,9 @@ EDGES: tuple[Edge, ...] = (
     Edge("UI", "API"), Edge("API", "SLICE", "strip"), Edge("API", "PRE", "boxes"), Edge("SLICE", "PRE"),
     Edge("PRE", "MLP"), Edge("PRE", "CNN32"), Edge("PRE", "CNN8"),
     Edge("CNN32", "FOLD32"), Edge("CNN8", "FOLD8"),
-    Edge("FOLD32", "R1"), Edge("FOLD32", "POOL32"), Edge("FOLD8", "POOL8"),
+    Edge("FOLD32", "R1", "non-empty boxes"), Edge("FOLD32", "POOL32", "non-empty boxes"), Edge("FOLD8", "POOL8", "non-empty boxes"),
     Edge("POOL32", "NG"), Edge("POOL32", "B32"), Edge("POOL8", "B8"),
-    Edge("MLP", "OUT", "top-2 badges"), Edge("R1", "OUT"), Edge("NG", "OUT"), Edge("B32", "OUT"), Edge("B8", "OUT"),
+    Edge("MLP", "OUT", "top-2", display=True), Edge("CNN32", "OUT", "Grad-CAM, top-2", display=True), Edge("CNN8", "OUT", "top-2", display=True), Edge("R1", "OUT"), Edge("NG", "OUT"), Edge("B32", "OUT"), Edge("B8", "OUT"),
 )
 
 FOOTNOTE = ("Everything runs on the CPU on 127.0.0.1. Models load once at startup from weights/*.pt, weights/ngram_lm.pkl, "
@@ -75,18 +76,39 @@ def _border(node: Node, toward: Node, box_h: float) -> tuple[float, float]:
     return node.x + dx * scale, node.y + dy * scale
 
 
+BUS_Y = 0.835  # height of the dashed display line on slide 4 (between the top row and the title rule)
+
+
+def _draw_display_bus(ax: Any, pos: dict[str, Node], box_h: float) -> None:
+    """Per-box display edges: right of each CNN/MLP box -> shared vertical -> line along the top -> output box."""
+    from matplotlib.patches import FancyArrowPatch
+
+    style = {"color": "#4a5466", "lw": 1.0, "ls": (0, (4, 3)), "zorder": 1}
+    display = [e for e in EDGES if e.display]
+    bus_x = max(pos[e.src].x + pos[e.src].w / 2 for e in display) + 0.007
+    dst = pos[display[0].dst]
+    for edge in display:
+        src = pos[edge.src]
+        ax.plot([src.x + src.w / 2, bus_x], [src.y, src.y], **style)
+    ax.plot([bus_x, bus_x], [min(pos[e.src].y for e in display), BUS_Y], **style)
+    ax.plot([bus_x, dst.x], [BUS_Y, BUS_Y], **style)
+    ax.add_patch(FancyArrowPatch((dst.x, BUS_Y), (dst.x, dst.y + box_h / 2), arrowstyle="-|>", mutation_scale=11, color="#4a5466", lw=1.0, ls="--", zorder=3))
+    ax.text(0.81, BUS_Y - 0.03, "per-box display:\nDense top-2, FP32 top-2 + Grad-CAM,\nINT8 top-2", fontsize=7, color="#4a5466", ha="center", va="top", zorder=4)
+
+
 def draw(ax: Any, box_h: float = 0.15) -> None:
     """Draw the same graph on a matplotlib axes in [0, 1] x [0, 1]; arrows start and end at the box borders."""
     from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
     pos = {n.key: n for n in NODES}
-    for edge in EDGES:
+    for edge in (e for e in EDGES if not e.display):
         a, b = pos[edge.src], pos[edge.dst]
         start, end = _border(a, b, box_h), _border(b, a, box_h)
         ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=12, color="#1f4fa3", lw=1.2, shrinkA=1, shrinkB=1, zorder=3))
         if edge.label:
-            ax.text((start[0] + end[0]) / 2, (start[1] + end[1]) / 2 + 0.018, edge.label, fontsize=7.5, color="#4a5466", ha="center", zorder=4,
+            ax.text((start[0] + end[0]) / 2, (start[1] + end[1]) / 2 + 0.018, edge.label, fontsize=7, color="#4a5466", ha="center", zorder=4,
                     bbox={"fc": "#fbf8f1", "ec": "none", "pad": 0.5})
+    _draw_display_bus(ax, pos, box_h)
     for node in NODES:
         ax.add_patch(FancyBboxPatch((node.x - node.w / 2, node.y - box_h / 2), node.w, box_h, boxstyle="round,pad=0.004",
                                     fc="#fff4cc" if node.primary else "#ffffff", ec="#1f4fa3", lw=2.2 if node.primary else 1.2, zorder=2))

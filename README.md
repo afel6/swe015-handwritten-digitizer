@@ -67,7 +67,7 @@ flowchart LR
   UI["Browser UI<br/>canvas boxes or<br/>strip upload"]
   API["FastAPI on 127.0.0.1<br/>Host allow-list, JSON only,<br/>size / base64 / image checks"]
   SLICE["slice_strip_image<br/>(strip uploads)"]
-  PRE["preprocess_box<br/>28x28 per box;<br/>empty boxes left out"]
+  PRE["preprocess_box<br/>28x28 per box"]
   MLP["Dense MLP · FP32<br/>(display only)"]
   CNN32["CharCNN · FP32<br/>+ Grad-CAM"]
   CNN8["CharCNN · INT8<br/>static PTQ"]
@@ -89,13 +89,15 @@ flowchart LR
   PRE --> CNN8
   CNN32 --> FOLD32
   CNN8 --> FOLD8
-  FOLD32 --> R1
-  FOLD32 --> POOL32
-  FOLD8 --> POOL8
+  FOLD32 -->|non-empty boxes| R1
+  FOLD32 -->|non-empty boxes| POOL32
+  FOLD8 -->|non-empty boxes| POOL8
   POOL32 --> NG
   POOL32 --> B32
   POOL8 --> B8
-  MLP -->|top-2 badges| OUT
+  MLP -->|top-2| OUT
+  CNN32 -->|Grad-CAM, top-2| OUT
+  CNN8 -->|top-2| OUT
   R1 --> OUT
   NG --> OUT
   B32 --> OUT
@@ -104,7 +106,8 @@ flowchart LR
 ```
 
 Everything runs on the CPU on 127.0.0.1. Models load once at startup from weights/*.pt, weights/ngram_lm.pkl, weights/bert_int8_dynamic.pt and the Hugging Face cache (bert-base-uncased).
-The app and the benchmark call the same functions (`data/word_pipeline.py` for strip -> probabilities,
+The app and the benchmark call the same functions (`data/word_pipeline.py` for strip -> box images -> probabilities in the
+benchmark and box images -> probabilities in the app,
 `models/ladder.py` for the correction rows); the diagram and slide 4 are generated from `scripts/architecture.py`.
 
 ## Results (R4)
@@ -136,9 +139,11 @@ rows 2–4. Strip-path character accuracy 90.14 % vs raw EMNIST 91.32 % (gap +1.
 (`results/benchmark_results.md`). Test OOV rate (target not in the lexicon): 12.7 %
 (`results/corpus_sources.json`).
 
-Latencies above were re-timed on AC power in Windows "Best performance" mode (three timing passes, median
-reported; every prediction verified identical to the accuracy run). The first timing of run 3 was taken in a
-throttled power state; it is kept in `results/benchmark_run3_timing_superseded.json`.
+Latencies above were re-timed twice on AC power in Windows "Best performance" mode (three timing passes each,
+median reported; every prediction verified identical to the accuracy run). The first re-timing replaced run 3's
+throttled timings (kept in `results/benchmark_run3_timing_superseded.json`); the second followed the
+48-WordPiece BERT context-window change, with outputs again verified identical (replaced timings in
+`results/benchmark_retime1_superseded.json`).
 
 ### Methodology
 
