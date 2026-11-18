@@ -1,0 +1,1186 @@
+[
+  {
+    "id": "dev_001",
+    "sentence": "About [MASK] years ago, they discovered iron.",
+    "target_word": "3000",
+    "difficulty": "numeric",
+    "emnist_split": "val",
+    "emnist_indices": [
+      109175,
+      40644,
+      47588,
+      98290
+    ],
+    "char_labels": [
+      "3",
+      "0",
+      "0",
+      "0"
+    ],
+    "source_title": "Metal",
+    "source_url": "https://simple.wikipedia.org/wiki/Metal",
+    "in_lexicon": false
+  },
+  {
+    "id": "dev_002",
+    "sentence": "Every second, the Sun turns about [MASK] billion kilograms of hydrogen into helium and converts 4 billion kilograms of matter into energy.",
+    "target_word": "600",
+    "difficulty": "numeric",
+    "emnist_split": "val",
+    "emnist_indices": [
+      76101,
+      32249,
+      74313
+    ],
+    "char_labels": [
+      "6",
+      "0",
+      "0"
+    ],
+    "source_title": "Sun",
+    "source_url": "https://simple.wikipedia.org/wiki/Sun",
+    "in_lexicon": false
+  },
+  {
+    "id": "dev_003",
+    "sentence": "The oldest living tree found is about 5,[MASK] years old.",
+    "target_word": "000",
+    "difficulty": "numeric",
+    "emnist_split": "val",
+    "emnist_indices": [
+      18133,
+      51360,
+      36102
+    ],
+    "char_labels": [
+      "0",
+      "0",
+      "0"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": false
+  },
+  {
+    "id": "dev_004",
+    "sentence": "At that speed, it still takes [MASK] million years for a full orbit.",
+    "target_word": "230",
+    "difficulty": "numeric",
+    "emnist_split": "val",
+    "emnist_indices": [
+      111079,
+      2570,
+      97190
+    ],
+    "char_labels": [
+      "2",
+      "3",
+      "0"
+    ],
+    "source_title": "Sun",
+    "source_url": "https://simple.wikipedia.org/wiki/Sun",
+    "in_lexicon": false
+  },
+  {
+    "id": "dev_005",
+    "sentence": "The [MASK] protects the reproductive organs, and vertebrae protect the spinal cord.",
+    "target_word": "PELVIS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      34363,
+      3363,
+      67861,
+      77795,
+      15622,
+      3350
+    ],
+    "char_labels": [
+      "P",
+      "E",
+      "L",
+      "V",
+      "I",
+      "S"
+    ],
+    "source_title": "Bone",
+    "source_url": "https://simple.wikipedia.org/wiki/Bone",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_006",
+    "sentence": "Flat bodies can slip in and out among the corals, sponges, and rocks, [MASK] predators.",
+    "target_word": "AVOIDING",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      12687,
+      44029,
+      16745,
+      77220,
+      7651,
+      86407,
+      100633,
+      82739
+    ],
+    "char_labels": [
+      "A",
+      "V",
+      "O",
+      "I",
+      "D",
+      "I",
+      "N",
+      "G"
+    ],
+    "source_title": "Fish",
+    "source_url": "https://simple.wikipedia.org/wiki/Fish",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_007",
+    "sentence": "Meteorites crash into it and create wide, shallow [MASK] called craters.",
+    "target_word": "HOLES",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      107114,
+      107220,
+      4676,
+      35916,
+      82271
+    ],
+    "char_labels": [
+      "H",
+      "O",
+      "L",
+      "E",
+      "S"
+    ],
+    "source_title": "Moon",
+    "source_url": "https://simple.wikipedia.org/wiki/Moon",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_008",
+    "sentence": "The bird is locked into making each sound every time a particular idea comes into [MASK] head.",
+    "target_word": "ITS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      37506,
+      78706,
+      83764
+    ],
+    "char_labels": [
+      "I",
+      "T",
+      "S"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_009",
+    "sentence": "The term includes a huge range of types, from the Middle [MASK], about 490 million years ago, to the present day.",
+    "target_word": "ORDOVICIAN",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      112784,
+      40470,
+      39626,
+      3702,
+      33080,
+      32651,
+      50317,
+      48055,
+      95237,
+      89163
+    ],
+    "char_labels": [
+      "O",
+      "R",
+      "D",
+      "O",
+      "V",
+      "I",
+      "C",
+      "I",
+      "A",
+      "N"
+    ],
+    "source_title": "Fish",
+    "source_url": "https://simple.wikipedia.org/wiki/Fish",
+    "in_lexicon": false
+  },
+  {
+    "id": "dev_010",
+    "sentence": "Once the [MASK] have found partners, they find a suitable place to lay eggs.",
+    "target_word": "BIRDS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      81905,
+      594,
+      54499,
+      83159,
+      25076
+    ],
+    "char_labels": [
+      "B",
+      "I",
+      "R",
+      "D",
+      "S"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_011",
+    "sentence": "Their dangling stamens produce lots of pollen that is light [MASK] to be carried by the wind.",
+    "target_word": "ENOUGH",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      46681,
+      84230,
+      89543,
+      96454,
+      52204,
+      44746
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "O",
+      "U",
+      "G",
+      "H"
+    ],
+    "source_title": "Plant",
+    "source_url": "https://simple.wikipedia.org/wiki/Plant",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_012",
+    "sentence": "Trees are renewable resources because, if cut down, other [MASK] can grow in their place.",
+    "target_word": "TREES",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      41789,
+      77496,
+      46528,
+      43863,
+      16382
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "E",
+      "E",
+      "S"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_013",
+    "sentence": "On Earth, [MASK] is mostly the movement of air.",
+    "target_word": "WIND",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      54954,
+      28083,
+      62834,
+      98043
+    ],
+    "char_labels": [
+      "W",
+      "I",
+      "N",
+      "D"
+    ],
+    "source_title": "Wind",
+    "source_url": "https://simple.wikipedia.org/wiki/Wind",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_014",
+    "sentence": "Wind [MASK] move land, especially in deserts.",
+    "target_word": "CAN",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      90105,
+      49699,
+      110253
+    ],
+    "char_labels": [
+      "C",
+      "A",
+      "N"
+    ],
+    "source_title": "Wind",
+    "source_url": "https://simple.wikipedia.org/wiki/Wind",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_015",
+    "sentence": "Sugar cane needs a climate with no [MASK] and enough rain in the growing season to grow.",
+    "target_word": "FROST",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      111980,
+      48447,
+      87193,
+      33792,
+      95847
+    ],
+    "char_labels": [
+      "F",
+      "R",
+      "O",
+      "S",
+      "T"
+    ],
+    "source_title": "Sugar",
+    "source_url": "https://simple.wikipedia.org/wiki/Sugar",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_016",
+    "sentence": "The molten rock later cools off and [MASK] hardened rock.",
+    "target_word": "FORMS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      37450,
+      32273,
+      14569,
+      96125,
+      29524
+    ],
+    "char_labels": [
+      "F",
+      "O",
+      "R",
+      "M",
+      "S"
+    ],
+    "source_title": "Mountain",
+    "source_url": "https://simple.wikipedia.org/wiki/Mountain",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_017",
+    "sentence": "If by plants we mean land [MASK], the first fossils are in the Silurian.",
+    "target_word": "PLANTS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      93696,
+      9392,
+      51543,
+      49520,
+      50033,
+      16382
+    ],
+    "char_labels": [
+      "P",
+      "L",
+      "A",
+      "N",
+      "T",
+      "S"
+    ],
+    "source_title": "Plant",
+    "source_url": "https://simple.wikipedia.org/wiki/Plant",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_018",
+    "sentence": "Many fossils of [MASK] birds and small dinosaurs have been discovered in the Liaoning Province of Northeast China.",
+    "target_word": "EARLY",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      6719,
+      37992,
+      52470,
+      84202,
+      55374
+    ],
+    "char_labels": [
+      "E",
+      "A",
+      "R",
+      "L",
+      "Y"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_019",
+    "sentence": "Penguins are a very successful [MASK] of birds.",
+    "target_word": "GROUP",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      34240,
+      30685,
+      68159,
+      48099,
+      100671
+    ],
+    "char_labels": [
+      "G",
+      "R",
+      "O",
+      "U",
+      "P"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_020",
+    "sentence": "In areas with seasonal climate, wood produced at different times of the [MASK] may alternate light and dark rings.",
+    "target_word": "YEAR",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      54045,
+      61777,
+      7193,
+      22375
+    ],
+    "char_labels": [
+      "Y",
+      "E",
+      "A",
+      "R"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_021",
+    "sentence": "In the same way, when a [MASK] is asleep, often, one bird will remain awake.",
+    "target_word": "FLOCK",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      91092,
+      31339,
+      52289,
+      70286,
+      7433
+    ],
+    "char_labels": [
+      "F",
+      "L",
+      "O",
+      "C",
+      "K"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_022",
+    "sentence": "A [MASK] substance in plants called chlorophyll traps the energy from the Sun needed to make food.",
+    "target_word": "GREEN",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      57607,
+      40932,
+      15018,
+      46528,
+      53531
+    ],
+    "char_labels": [
+      "G",
+      "R",
+      "E",
+      "E",
+      "N"
+    ],
+    "source_title": "Plant",
+    "source_url": "https://simple.wikipedia.org/wiki/Plant",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_023",
+    "sentence": "The human heart has four chambers or closed [MASK].",
+    "target_word": "SPACES",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      19641,
+      63796,
+      81282,
+      30028,
+      108975,
+      61491
+    ],
+    "char_labels": [
+      "S",
+      "P",
+      "A",
+      "C",
+      "E",
+      "S"
+    ],
+    "source_title": "Heart",
+    "source_url": "https://simple.wikipedia.org/wiki/Heart",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_024",
+    "sentence": "When bees go into the flower to gather nectar, the [MASK] pollen sticks to their back legs.",
+    "target_word": "SPIKY",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      83764,
+      7096,
+      83874,
+      38388,
+      79384
+    ],
+    "char_labels": [
+      "S",
+      "P",
+      "I",
+      "K",
+      "Y"
+    ],
+    "source_title": "Plant",
+    "source_url": "https://simple.wikipedia.org/wiki/Plant",
+    "in_lexicon": false
+  },
+  {
+    "id": "dev_025",
+    "sentence": "Examples of [MASK] are aluminium, copper, iron, tin, gold, lead, silver, titanium, uranium, and zinc.",
+    "target_word": "METALS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      92499,
+      25777,
+      27557,
+      6687,
+      63067,
+      83764
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "T",
+      "A",
+      "L",
+      "S"
+    ],
+    "source_title": "Metal",
+    "source_url": "https://simple.wikipedia.org/wiki/Metal",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_026",
+    "sentence": "Most pet [MASK] are specially bred and are sold in pet shops.",
+    "target_word": "BIRDS",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      49112,
+      19589,
+      37808,
+      43252,
+      103276
+    ],
+    "char_labels": [
+      "B",
+      "I",
+      "R",
+      "D",
+      "S"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_027",
+    "sentence": "Wood consists of xylem cells, and bark is made of phloem and other [MASK] external to the vascular cambium.",
+    "target_word": "TISSUES",
+    "difficulty": "confusable",
+    "emnist_split": "val",
+    "emnist_indices": [
+      10876,
+      37694,
+      63573,
+      24561,
+      98628,
+      104399,
+      36959
+    ],
+    "char_labels": [
+      "T",
+      "I",
+      "S",
+      "S",
+      "U",
+      "E",
+      "S"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_028",
+    "sentence": "Long ago, people believed that stars could [MASK] die.",
+    "target_word": "NEVER",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      86784,
+      84460,
+      79115,
+      17572,
+      8494
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "V",
+      "E",
+      "R"
+    ],
+    "source_title": "Star",
+    "source_url": "https://simple.wikipedia.org/wiki/Star",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_029",
+    "sentence": "Raptors eat by holding the [MASK] down with a foot, and tearing it apart with their beak.",
+    "target_word": "PREY",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      44013,
+      14289,
+      28834,
+      73137
+    ],
+    "char_labels": [
+      "P",
+      "R",
+      "E",
+      "Y"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_030",
+    "sentence": "Birds such as geese that migrate from one country to another [MASK] very long distances.",
+    "target_word": "FLY",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      61503,
+      20984,
+      2325
+    ],
+    "char_labels": [
+      "F",
+      "L",
+      "Y"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_031",
+    "sentence": "Arctic terns nest every one to [MASK] years.",
+    "target_word": "THREE",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      23078,
+      49503,
+      92430,
+      37802,
+      27910
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_032",
+    "sentence": "Currawongs from some areas sing [MASK] more complex songs than others.",
+    "target_word": "MUCH",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      65261,
+      10474,
+      24927,
+      4836
+    ],
+    "char_labels": [
+      "M",
+      "U",
+      "C",
+      "H"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_033",
+    "sentence": "There is no wind or rain on the Moon, so erosion happens [MASK] slowly.",
+    "target_word": "EXTREMELY",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      56960,
+      53955,
+      65561,
+      74120,
+      41677,
+      98224,
+      104660,
+      11225,
+      102164
+    ],
+    "char_labels": [
+      "E",
+      "X",
+      "T",
+      "R",
+      "E",
+      "M",
+      "E",
+      "L",
+      "Y"
+    ],
+    "source_title": "Moon",
+    "source_url": "https://simple.wikipedia.org/wiki/Moon",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_034",
+    "sentence": "While the eggs are hatching, the females are at sea, catching fish, so that they can [MASK] the chicks when they return.",
+    "target_word": "FEED",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      20481,
+      25704,
+      56996,
+      4600
+    ],
+    "char_labels": [
+      "F",
+      "E",
+      "E",
+      "D"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_035",
+    "sentence": "Branches start at the trunk, big and thick, and get progressively smaller the farther they grow from the [MASK].",
+    "target_word": "TRUNK",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      40476,
+      22375,
+      54341,
+      92905,
+      101627
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "U",
+      "N",
+      "K"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_036",
+    "sentence": "The parts of a [MASK] are the roots, trunks, branches, twigs and leaves.",
+    "target_word": "TREE",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      22313,
+      61241,
+      52954,
+      45830
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_037",
+    "sentence": "In any [MASK], the ocean and air would have vanished before the Sun gets to that stage.",
+    "target_word": "EVENT",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      70756,
+      111154,
+      44752,
+      8796,
+      99615
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Sun",
+    "source_url": "https://simple.wikipedia.org/wiki/Sun",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_038",
+    "sentence": "The [MASK] ventricle works six times harder than the right ventricle because it carries oxygenated blood.",
+    "target_word": "LEFT",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      104630,
+      32629,
+      54401,
+      94656
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "F",
+      "T"
+    ],
+    "source_title": "Heart",
+    "source_url": "https://simple.wikipedia.org/wiki/Heart",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_039",
+    "sentence": "All the same, they were killed and eaten by sailors until there was none [MASK].",
+    "target_word": "LEFT",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      49923,
+      54412,
+      105195,
+      92274
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "F",
+      "T"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_040",
+    "sentence": "Fossils of them were [MASK] found in India.",
+    "target_word": "RECENTLY",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      56883,
+      16179,
+      48772,
+      75337,
+      32070,
+      62673,
+      67861,
+      8716
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "C",
+      "E",
+      "N",
+      "T",
+      "L",
+      "Y"
+    ],
+    "source_title": "Plant",
+    "source_url": "https://simple.wikipedia.org/wiki/Plant",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_041",
+    "sentence": "If the human cortex were flattened, it would be close to a square [MASK] in area.",
+    "target_word": "METER",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      67461,
+      81385,
+      22339,
+      59171,
+      83626
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Brain",
+    "source_url": "https://simple.wikipedia.org/wiki/Brain",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_042",
+    "sentence": "Most singing birds that are [MASK] as pets, like canaries, have several tunes and some variations.",
+    "target_word": "KEPT",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      6916,
+      72314,
+      31203,
+      46086
+    ],
+    "char_labels": [
+      "K",
+      "E",
+      "P",
+      "T"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_043",
+    "sentence": "Cold wind can sometimes have a bad [MASK] on livestock.",
+    "target_word": "EFFECT",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      73185,
+      722,
+      1535,
+      49075,
+      106621,
+      1914
+    ],
+    "char_labels": [
+      "E",
+      "F",
+      "F",
+      "E",
+      "C",
+      "T"
+    ],
+    "source_title": "Wind",
+    "source_url": "https://simple.wikipedia.org/wiki/Wind",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_044",
+    "sentence": "Many birds take turns sitting on the eggs, so that each adult can [MASK].",
+    "target_word": "FEED",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      82746,
+      6719,
+      54735,
+      44807
+    ],
+    "char_labels": [
+      "F",
+      "E",
+      "E",
+      "D"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_045",
+    "sentence": "The concept of the world [MASK] is also closely linked to the motif of the Tree of life.",
+    "target_word": "TREE",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      53453,
+      10004,
+      82848,
+      27610
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Tree",
+    "source_url": "https://simple.wikipedia.org/wiki/Tree",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_046",
+    "sentence": "Their feathers [MASK] prevent loss of body heat.",
+    "target_word": "HELP",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      89881,
+      74520,
+      53249,
+      35979
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "P"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_047",
+    "sentence": "The Phoenicians were some of the first to figure out how to do this, by pouring seawater on [MASK] land.",
+    "target_word": "DRY",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      75608,
+      112717,
+      102521
+    ],
+    "char_labels": [
+      "D",
+      "R",
+      "Y"
+    ],
+    "source_title": "Salt",
+    "source_url": "https://simple.wikipedia.org/wiki/Salt",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_048",
+    "sentence": "The outer part expands and it makes a [MASK] giant star.",
+    "target_word": "RED",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      104601,
+      23460,
+      67248
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "D"
+    ],
+    "source_title": "Star",
+    "source_url": "https://simple.wikipedia.org/wiki/Star",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_049",
+    "sentence": "The chromosphere, transition region, and corona are [MASK] hotter than the outer photosphere surface of the Sun.",
+    "target_word": "MUCH",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      46584,
+      110156,
+      106673,
+      98567
+    ],
+    "char_labels": [
+      "M",
+      "U",
+      "C",
+      "H"
+    ],
+    "source_title": "Sun",
+    "source_url": "https://simple.wikipedia.org/wiki/Sun",
+    "in_lexicon": true
+  },
+  {
+    "id": "dev_050",
+    "sentence": "Most birds can fly, and if they do, [MASK] the ability is inherited, not learnt.",
+    "target_word": "THEN",
+    "difficulty": "easy",
+    "emnist_split": "val",
+    "emnist_indices": [
+      17778,
+      37445,
+      77978,
+      86784
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "E",
+      "N"
+    ],
+    "source_title": "Bird",
+    "source_url": "https://simple.wikipedia.org/wiki/Bird",
+    "in_lexicon": true
+  }
+]

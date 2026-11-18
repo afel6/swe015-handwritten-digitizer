@@ -1,0 +1,7306 @@
+[
+  {
+    "id": "test_001",
+    "sentence": "Around [MASK] people are struck by lightning each year.",
+    "target_word": "2000",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14108,
+      5702,
+      16828,
+      7167
+    ],
+    "char_labels": [
+      "2",
+      "0",
+      "0",
+      "0"
+    ],
+    "source_title": "Lightning",
+    "source_url": "https://simple.wikipedia.org/wiki/Lightning",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_002",
+    "sentence": "Alexander Graham Bell was the first person to patent the telephone, in [MASK].",
+    "target_word": "1876",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13731,
+      18493,
+      15153,
+      1938
+    ],
+    "char_labels": [
+      "1",
+      "8",
+      "7",
+      "6"
+    ],
+    "source_title": "Telephone",
+    "source_url": "https://simple.wikipedia.org/wiki/Telephone",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_003",
+    "sentence": "As of 2017, about [MASK] million people lived in Europe.",
+    "target_word": "510",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4375,
+      14544,
+      2375
+    ],
+    "char_labels": [
+      "5",
+      "1",
+      "0"
+    ],
+    "source_title": "Europe",
+    "source_url": "https://simple.wikipedia.org/wiki/Europe",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_004",
+    "sentence": "From about [MASK] BC the Ancient Egyptians were making wooden sail boats.",
+    "target_word": "4000",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      187,
+      4419,
+      8765,
+      2520
+    ],
+    "char_labels": [
+      "4",
+      "0",
+      "0",
+      "0"
+    ],
+    "source_title": "Ship",
+    "source_url": "https://simple.wikipedia.org/wiki/Ship",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_005",
+    "sentence": "In [MASK], the Russian Revolution led to Russia leaving the war in March 1918.",
+    "target_word": "1917",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2504,
+      6434,
+      10768,
+      9962
+    ],
+    "char_labels": [
+      "1",
+      "9",
+      "1",
+      "7"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_006",
+    "sentence": "The longest freshwater lake is Lake Tanganyika, with a length of about [MASK] km.",
+    "target_word": "660",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15198,
+      18015,
+      1046
+    ],
+    "char_labels": [
+      "6",
+      "6",
+      "0"
+    ],
+    "source_title": "Lake",
+    "source_url": "https://simple.wikipedia.org/wiki/Lake",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_007",
+    "sentence": "There are over [MASK] pyramids in Egypt.",
+    "target_word": "100",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13019,
+      3099,
+      6545
+    ],
+    "char_labels": [
+      "1",
+      "0",
+      "0"
+    ],
+    "source_title": "Pyramid",
+    "source_url": "https://simple.wikipedia.org/wiki/Pyramid",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_008",
+    "sentence": "A centenarian is someone who is [MASK] years old or more.",
+    "target_word": "100",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6367,
+      12852,
+      4400
+    ],
+    "char_labels": [
+      "1",
+      "0",
+      "0"
+    ],
+    "source_title": "Century",
+    "source_url": "https://simple.wikipedia.org/wiki/Century",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_009",
+    "sentence": "The first battery was invented in [MASK] by Alessandro Volta.",
+    "target_word": "1800",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16686,
+      6951,
+      15188,
+      18110
+    ],
+    "char_labels": [
+      "1",
+      "8",
+      "0",
+      "0"
+    ],
+    "source_title": "Battery",
+    "source_url": "https://simple.wikipedia.org/wiki/Battery",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_010",
+    "sentence": "The Richter scale was invented by Charles Francis Richter in [MASK].",
+    "target_word": "1935",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9320,
+      1717,
+      12784,
+      8230
+    ],
+    "char_labels": [
+      "1",
+      "9",
+      "3",
+      "5"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_011",
+    "sentence": "However, after the British occupation of 1882, Egypt was effectively under British administration until [MASK].",
+    "target_word": "1922",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6296,
+      8536,
+      5038,
+      4783
+    ],
+    "char_labels": [
+      "1",
+      "9",
+      "2",
+      "2"
+    ],
+    "source_title": "Africa",
+    "source_url": "https://simple.wikipedia.org/wiki/Africa",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_012",
+    "sentence": "From about [MASK] BC to 400 AD, Europe experienced a Golden Age.",
+    "target_word": "400",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18549,
+      4718,
+      8220
+    ],
+    "char_labels": [
+      "4",
+      "0",
+      "0"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_013",
+    "sentence": "A bicentenary celebrates 200 years, a tercentenary [MASK] years.",
+    "target_word": "300",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12987,
+      4129,
+      11626
+    ],
+    "char_labels": [
+      "3",
+      "0",
+      "0"
+    ],
+    "source_title": "Century",
+    "source_url": "https://simple.wikipedia.org/wiki/Century",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_014",
+    "sentence": "The Stockton and Darlington Railway in [MASK] showed how a train could be run.",
+    "target_word": "1825",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16708,
+      15281,
+      443,
+      8115
+    ],
+    "char_labels": [
+      "1",
+      "8",
+      "2",
+      "5"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_015",
+    "sentence": "Problems with the treaty in Germany, where it was hated, later led to World War II in [MASK].",
+    "target_word": "1939",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      39,
+      11547,
+      5899,
+      16729
+    ],
+    "char_labels": [
+      "1",
+      "9",
+      "3",
+      "9"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_016",
+    "sentence": "An opportunity occurred after The Battle of Talas in [MASK].",
+    "target_word": "751",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3298,
+      16167,
+      6361
+    ],
+    "char_labels": [
+      "7",
+      "5",
+      "1"
+    ],
+    "source_title": "Paper",
+    "source_url": "https://simple.wikipedia.org/wiki/Paper",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_017",
+    "sentence": "In [MASK], Filippo Brunelleschi and the teenager Donatello came to Rome.",
+    "target_word": "1402",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17013,
+      3906,
+      4532,
+      6160
+    ],
+    "char_labels": [
+      "1",
+      "4",
+      "0",
+      "2"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_018",
+    "sentence": "Ancient Egypt was a society that began around [MASK] BCE and lasted until 30 BCE, when it was invaded by the Romans.",
+    "target_word": "3150",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18369,
+      13356,
+      15519,
+      10142
+    ],
+    "char_labels": [
+      "3",
+      "1",
+      "5",
+      "0"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_019",
+    "sentence": "By [MASK], trouble was on the rise in Europe, and many countries feared invasion from others.",
+    "target_word": "1914",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14492,
+      11722,
+      12606,
+      15642
+    ],
+    "char_labels": [
+      "1",
+      "9",
+      "1",
+      "4"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_020",
+    "sentence": "Nitrogen was discovered by Daniel Rutherford in [MASK], who called it noxious gas or fixed gas.",
+    "target_word": "1772",
+    "difficulty": "numeric",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18287,
+      10599,
+      8218,
+      12437
+    ],
+    "char_labels": [
+      "1",
+      "7",
+      "7",
+      "2"
+    ],
+    "source_title": "Nitrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Nitrogen",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_021",
+    "sentence": "Examples of animals that live in [MASK] deserts are lizards, small rodents, snakes, and camels.",
+    "target_word": "HOT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14071,
+      18441,
+      13363
+    ],
+    "char_labels": [
+      "H",
+      "O",
+      "T"
+    ],
+    "source_title": "Desert",
+    "source_url": "https://simple.wikipedia.org/wiki/Desert",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_022",
+    "sentence": "When the soil dries, the soil may shrink and cracks will [MASK] in the soil.",
+    "target_word": "FORM",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18129,
+      13754,
+      17841,
+      14536
+    ],
+    "char_labels": [
+      "F",
+      "O",
+      "R",
+      "M"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_023",
+    "sentence": "First was the [MASK] of steam power to run the machinery.",
+    "target_word": "USE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16713,
+      4221,
+      18656
+    ],
+    "char_labels": [
+      "U",
+      "S",
+      "E"
+    ],
+    "source_title": "Printing press",
+    "source_url": "https://simple.wikipedia.org/wiki/Printing_press",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_024",
+    "sentence": "One number system used by many libraries is the Dewey decimal [MASK].",
+    "target_word": "SYSTEM",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7103,
+      14942,
+      7989,
+      8879,
+      14400,
+      10529
+    ],
+    "char_labels": [
+      "S",
+      "Y",
+      "S",
+      "T",
+      "E",
+      "M"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_025",
+    "sentence": "The Eagle landed safely on the moon with Neil Armstrong and [MASK] Aldrin inside.",
+    "target_word": "BUZZ",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13122,
+      1582,
+      15803,
+      8209
+    ],
+    "char_labels": [
+      "B",
+      "U",
+      "Z",
+      "Z"
+    ],
+    "source_title": "Apollo 11",
+    "source_url": "https://simple.wikipedia.org/wiki/Apollo_11",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_026",
+    "sentence": "Lactic acid, C3H6O3 was found by [MASK] Wilhelm Scheele in 1780.",
+    "target_word": "CARL",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14415,
+      5263,
+      11043,
+      11666
+    ],
+    "char_labels": [
+      "C",
+      "A",
+      "R",
+      "L"
+    ],
+    "source_title": "Acid",
+    "source_url": "https://simple.wikipedia.org/wiki/Acid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_027",
+    "sentence": "Connected to the sound card are [MASK], which are like a mouth, and are where the sound comes out.",
+    "target_word": "SPEAKERS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3019,
+      9113,
+      11879,
+      15377,
+      16938,
+      7427,
+      11904,
+      3706
+    ],
+    "char_labels": [
+      "S",
+      "P",
+      "E",
+      "A",
+      "K",
+      "E",
+      "R",
+      "S"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_028",
+    "sentence": "Now the price of a book or magazine is less determined by its [MASK], and more by other factors, such as marketing.",
+    "target_word": "PRODUCTION",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16377,
+      15846,
+      18789,
+      9265,
+      6721,
+      13765,
+      13697,
+      3184,
+      9523,
+      12083
+    ],
+    "char_labels": [
+      "P",
+      "R",
+      "O",
+      "D",
+      "U",
+      "C",
+      "T",
+      "I",
+      "O",
+      "N"
+    ],
+    "source_title": "Printing press",
+    "source_url": "https://simple.wikipedia.org/wiki/Printing_press",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_029",
+    "sentence": "In rural areas books may be [MASK] in a bookmobile, or mobile library to remote places.",
+    "target_word": "TAKEN",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8838,
+      7157,
+      4864,
+      7999,
+      4465
+    ],
+    "char_labels": [
+      "T",
+      "A",
+      "K",
+      "E",
+      "N"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_030",
+    "sentence": "Sometimes [MASK] electrons are taken and sometimes three.",
+    "target_word": "TWO",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6002,
+      3462,
+      6896
+    ],
+    "char_labels": [
+      "T",
+      "W",
+      "O"
+    ],
+    "source_title": "Iron",
+    "source_url": "https://simple.wikipedia.org/wiki/Iron",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_031",
+    "sentence": "People were shocked by the size of the war, [MASK] many people it killed and how much damage it caused.",
+    "target_word": "HOW",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11737,
+      6947,
+      2724
+    ],
+    "char_labels": [
+      "H",
+      "O",
+      "W"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_032",
+    "sentence": "Some of them are transcontinental, meaning they span more than [MASK] continent.",
+    "target_word": "ONE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15256,
+      7574,
+      11366
+    ],
+    "char_labels": [
+      "O",
+      "N",
+      "E"
+    ],
+    "source_title": "Asia",
+    "source_url": "https://simple.wikipedia.org/wiki/Asia",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_033",
+    "sentence": "The best known Babylonian world map is the [MASK] Mundi of 600 BC.",
+    "target_word": "IMAGO",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9602,
+      9833,
+      8605,
+      14075,
+      16147
+    ],
+    "char_labels": [
+      "I",
+      "M",
+      "A",
+      "G",
+      "O"
+    ],
+    "source_title": "Geography",
+    "source_url": "https://simple.wikipedia.org/wiki/Geography",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_034",
+    "sentence": "If a [MASK] gets a different strain of the disease, they can still get sick.",
+    "target_word": "PERSON",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16489,
+      8615,
+      5934,
+      1680,
+      8212,
+      18516
+    ],
+    "char_labels": [
+      "P",
+      "E",
+      "R",
+      "S",
+      "O",
+      "N"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_035",
+    "sentence": "The Library of Alexandria, in [MASK], was the largest and most important library of the ancient world.",
+    "target_word": "EGYPT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5060,
+      16120,
+      14328,
+      12925,
+      10863
+    ],
+    "char_labels": [
+      "E",
+      "G",
+      "Y",
+      "P",
+      "T"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_036",
+    "sentence": "Many people believe that this version of the [MASK] was much like what the Egyptians spoke.",
+    "target_word": "LANGUAGE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14056,
+      1731,
+      2398,
+      3174,
+      14554,
+      8565,
+      3441,
+      1023
+    ],
+    "char_labels": [
+      "L",
+      "A",
+      "N",
+      "G",
+      "U",
+      "A",
+      "G",
+      "E"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_037",
+    "sentence": "That angered [MASK] and led to it becoming an Ottoman ally.",
+    "target_word": "BULGARIA",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8755,
+      7200,
+      3842,
+      385,
+      14184,
+      14175,
+      3929,
+      9663
+    ],
+    "char_labels": [
+      "B",
+      "U",
+      "L",
+      "G",
+      "A",
+      "R",
+      "I",
+      "A"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_038",
+    "sentence": "When the universe cooled even more, [MASK] and neutrons could join together to make heavier particles.",
+    "target_word": "PROTONS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4584,
+      7160,
+      1743,
+      17361,
+      13576,
+      16744,
+      5896
+    ],
+    "char_labels": [
+      "P",
+      "R",
+      "O",
+      "T",
+      "O",
+      "N",
+      "S"
+    ],
+    "source_title": "Hydrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Hydrogen",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_039",
+    "sentence": "Suddenly many [MASK] of people, even merchants, could learn far more than they ever could before.",
+    "target_word": "THOUSANDS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16396,
+      9474,
+      3188,
+      6351,
+      15587,
+      14409,
+      13402,
+      4345,
+      12756
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "O",
+      "U",
+      "S",
+      "A",
+      "N",
+      "D",
+      "S"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_040",
+    "sentence": "People in the eastern [MASK] made more maps.",
+    "target_word": "COUNTRIES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17797,
+      716,
+      5979,
+      1410,
+      2064,
+      18785,
+      3741,
+      3410,
+      1458
+    ],
+    "char_labels": [
+      "C",
+      "O",
+      "U",
+      "N",
+      "T",
+      "R",
+      "I",
+      "E",
+      "S"
+    ],
+    "source_title": "Geography",
+    "source_url": "https://simple.wikipedia.org/wiki/Geography",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_041",
+    "sentence": "The British used whistles to communicate to other soldiers and so before they shelled the [MASK] trenches, they would sound the whistle.",
+    "target_word": "GERMAN",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18467,
+      9069,
+      14456,
+      4592,
+      12419,
+      16625
+    ],
+    "char_labels": [
+      "G",
+      "E",
+      "R",
+      "M",
+      "A",
+      "N"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_042",
+    "sentence": "The countries had allies that entered the war in a [MASK] of days.",
+    "target_word": "MATTER",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12805,
+      9973,
+      4547,
+      4696,
+      11520,
+      8091
+    ],
+    "char_labels": [
+      "M",
+      "A",
+      "T",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_043",
+    "sentence": "Librarians are people who take care of the [MASK].",
+    "target_word": "LIBRARY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1014,
+      3050,
+      7660,
+      3034,
+      10725,
+      4922,
+      5705
+    ],
+    "char_labels": [
+      "L",
+      "I",
+      "B",
+      "R",
+      "A",
+      "R",
+      "Y"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_044",
+    "sentence": "Climate tells us what kinds of weather usually happen in an area at [MASK] times of the year.",
+    "target_word": "DIFFERENT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2332,
+      9298,
+      3398,
+      11972,
+      17895,
+      17046,
+      12499,
+      15481,
+      17038
+    ],
+    "char_labels": [
+      "D",
+      "I",
+      "F",
+      "F",
+      "E",
+      "R",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Weather",
+    "source_url": "https://simple.wikipedia.org/wiki/Weather",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_045",
+    "sentence": "The story of Sinuhe An Ancient Egyptian murder mystery written around 1800 [MASK].",
+    "target_word": "BCE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12618,
+      4337,
+      9968
+    ],
+    "char_labels": [
+      "B",
+      "C",
+      "E"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_046",
+    "sentence": "New leaves [MASK] the energy of the sun and sprout before the tall trees shadow them.",
+    "target_word": "CAPTURE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16308,
+      12830,
+      6632,
+      3407,
+      2537,
+      6603,
+      15437
+    ],
+    "char_labels": [
+      "C",
+      "A",
+      "P",
+      "T",
+      "U",
+      "R",
+      "E"
+    ],
+    "source_title": "Forest",
+    "source_url": "https://simple.wikipedia.org/wiki/Forest",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_047",
+    "sentence": "The two kinds of elements behave according to physical laws, in which we describe [MASK] the elements interact.",
+    "target_word": "HOW",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10121,
+      918,
+      17439
+    ],
+    "char_labels": [
+      "H",
+      "O",
+      "W"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_048",
+    "sentence": "Priests used this script for [MASK] writing on papyrus, wood, or cloth.",
+    "target_word": "EVERYDAY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7687,
+      7283,
+      15678,
+      6603,
+      11631,
+      17464,
+      10090,
+      11593
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "R",
+      "Y",
+      "D",
+      "A",
+      "Y"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_049",
+    "sentence": "Carbon nanotubes are very hard, so they might be used in [MASK].",
+    "target_word": "ARMOR",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6888,
+      16334,
+      1688,
+      4806,
+      18597
+    ],
+    "char_labels": [
+      "A",
+      "R",
+      "M",
+      "O",
+      "R"
+    ],
+    "source_title": "Carbon",
+    "source_url": "https://simple.wikipedia.org/wiki/Carbon",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_050",
+    "sentence": "Asia is surrounded by the Mediterranean Sea, the Black [MASK], the Arctic Ocean, the Pacific Ocean, and the Indian Ocean.",
+    "target_word": "SEA",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9439,
+      3370,
+      8239
+    ],
+    "char_labels": [
+      "S",
+      "E",
+      "A"
+    ],
+    "source_title": "Asia",
+    "source_url": "https://simple.wikipedia.org/wiki/Asia",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_051",
+    "sentence": "As [MASK] as we can tell, the Universe has the same physical laws and physical constants throughout.",
+    "target_word": "FAR",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5211,
+      10129,
+      3920
+    ],
+    "char_labels": [
+      "F",
+      "A",
+      "R"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_052",
+    "sentence": "The San Andreas [MASK] in San Francisco, and Rift valley fault in Africa are faults like this.",
+    "target_word": "FAULT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8390,
+      16393,
+      1589,
+      14190,
+      1627
+    ],
+    "char_labels": [
+      "F",
+      "A",
+      "U",
+      "L",
+      "T"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_053",
+    "sentence": "The [MASK] also seems to have no net momentum or angular momentum.",
+    "target_word": "UNIVERSE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8607,
+      12380,
+      18145,
+      4673,
+      1237,
+      13749,
+      16610,
+      11209
+    ],
+    "char_labels": [
+      "U",
+      "N",
+      "I",
+      "V",
+      "E",
+      "R",
+      "S",
+      "E"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_054",
+    "sentence": "With practice, algebra can be used when faced with a problem that is too hard to solve any other [MASK].",
+    "target_word": "WAY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1090,
+      9751,
+      7714
+    ],
+    "char_labels": [
+      "W",
+      "A",
+      "Y"
+    ],
+    "source_title": "Algebra",
+    "source_url": "https://simple.wikipedia.org/wiki/Algebra",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_055",
+    "sentence": "Soil holds the roots, and lets plants stand [MASK] the ground to collect the light they need to live.",
+    "target_word": "ABOVE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8741,
+      717,
+      5442,
+      18781,
+      1024
+    ],
+    "char_labels": [
+      "A",
+      "B",
+      "O",
+      "V",
+      "E"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_056",
+    "sentence": "The silt and clay and humus can [MASK] down because of the spaces in the soil.",
+    "target_word": "MOVE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17453,
+      9340,
+      10794,
+      17877
+    ],
+    "char_labels": [
+      "M",
+      "O",
+      "V",
+      "E"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_057",
+    "sentence": "Its features are [MASK] like continents, seas, rivers and mountains.",
+    "target_word": "THINGS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4635,
+      18303,
+      4437,
+      6455,
+      8052,
+      11791
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "I",
+      "N",
+      "G",
+      "S"
+    ],
+    "source_title": "Geography",
+    "source_url": "https://simple.wikipedia.org/wiki/Geography",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_058",
+    "sentence": "The Egyptian rulers, called pharaohs, were thought to be close to the [MASK].",
+    "target_word": "GODS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6004,
+      15037,
+      500,
+      13144
+    ],
+    "char_labels": [
+      "G",
+      "O",
+      "D",
+      "S"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_059",
+    "sentence": "In practice it has many of the problems which are endemic in American [MASK] schools.",
+    "target_word": "HIGH",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12112,
+      9882,
+      11341,
+      14225
+    ],
+    "char_labels": [
+      "H",
+      "I",
+      "G",
+      "H"
+    ],
+    "source_title": "School",
+    "source_url": "https://simple.wikipedia.org/wiki/School",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_060",
+    "sentence": "As a [MASK] moves, it picks up more ice and gets bigger and bigger.",
+    "target_word": "GLACIER",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17422,
+      4566,
+      9256,
+      10158,
+      5656,
+      18478,
+      9195
+    ],
+    "char_labels": [
+      "G",
+      "L",
+      "A",
+      "C",
+      "I",
+      "E",
+      "R"
+    ],
+    "source_title": "Valley",
+    "source_url": "https://simple.wikipedia.org/wiki/Valley",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_061",
+    "sentence": "The organic matter found in the soil is not counted in the [MASK] texture.",
+    "target_word": "SOIL",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11712,
+      3136,
+      7306,
+      12250
+    ],
+    "char_labels": [
+      "S",
+      "O",
+      "I",
+      "L"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_062",
+    "sentence": "Some examples are controlling [MASK] lights, vehicles, security systems, washing machines and digital televisions.",
+    "target_word": "TRAFFIC",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8474,
+      14060,
+      2716,
+      2690,
+      6743,
+      5286,
+      15076
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "A",
+      "F",
+      "F",
+      "I",
+      "C"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_063",
+    "sentence": "Copper can be used in many ways but one [MASK] is wires.",
+    "target_word": "EXAMPLE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16676,
+      8904,
+      9831,
+      5666,
+      10262,
+      13240,
+      13650
+    ],
+    "char_labels": [
+      "E",
+      "X",
+      "A",
+      "M",
+      "P",
+      "L",
+      "E"
+    ],
+    "source_title": "Copper",
+    "source_url": "https://simple.wikipedia.org/wiki/Copper",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_064",
+    "sentence": "However, one of them, a Serbian student, Gavrilo Princip, shot him and his [MASK] wife with a pistol.",
+    "target_word": "PREGNANT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18018,
+      10682,
+      6450,
+      1265,
+      12855,
+      14880,
+      9769,
+      17061
+    ],
+    "char_labels": [
+      "P",
+      "R",
+      "E",
+      "G",
+      "N",
+      "A",
+      "N",
+      "T"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_065",
+    "sentence": "The [MASK] largest one is the Arctic desert, but that has started to warm up now.",
+    "target_word": "SECOND",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6630,
+      1237,
+      11235,
+      2032,
+      1454,
+      13460
+    ],
+    "char_labels": [
+      "S",
+      "E",
+      "C",
+      "O",
+      "N",
+      "D"
+    ],
+    "source_title": "Desert",
+    "source_url": "https://simple.wikipedia.org/wiki/Desert",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_066",
+    "sentence": "Florence, where the Renaissance is [MASK] to have started, was another important city.",
+    "target_word": "SAID",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8588,
+      11730,
+      13985,
+      7487
+    ],
+    "char_labels": [
+      "S",
+      "A",
+      "I",
+      "D"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_067",
+    "sentence": "Deserts are mostly in the western [MASK] of the Americas, Western Asia, Central and western Australia, Namibia and North Africa.",
+    "target_word": "PART",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12090,
+      10534,
+      10808,
+      13419
+    ],
+    "char_labels": [
+      "P",
+      "A",
+      "R",
+      "T"
+    ],
+    "source_title": "Desert",
+    "source_url": "https://simple.wikipedia.org/wiki/Desert",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_068",
+    "sentence": "Even the coldest [MASK], like the Arctic Ocean, only freeze on the top, leaving liquid ocean circulating below.",
+    "target_word": "OCEANS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7021,
+      9263,
+      11466,
+      2766,
+      3884,
+      1787
+    ],
+    "char_labels": [
+      "O",
+      "C",
+      "E",
+      "A",
+      "N",
+      "S"
+    ],
+    "source_title": "Ice",
+    "source_url": "https://simple.wikipedia.org/wiki/Ice",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_069",
+    "sentence": "Carbon dioxide passes from the [MASK] into the alveoli.",
+    "target_word": "BLOOD",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3346,
+      8051,
+      17472,
+      17264,
+      14565
+    ],
+    "char_labels": [
+      "B",
+      "L",
+      "O",
+      "O",
+      "D"
+    ],
+    "source_title": "Lung",
+    "source_url": "https://simple.wikipedia.org/wiki/Lung",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_070",
+    "sentence": "A [MASK] is a type of rectangle with all sides of equal length.",
+    "target_word": "SQUARE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11114,
+      3868,
+      6721,
+      14282,
+      16946,
+      18229
+    ],
+    "char_labels": [
+      "S",
+      "Q",
+      "U",
+      "A",
+      "R",
+      "E"
+    ],
+    "source_title": "Square",
+    "source_url": "https://simple.wikipedia.org/wiki/Square",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_071",
+    "sentence": "People learned to [MASK] linen as paper raw material and to use starch made from flour as an additive.",
+    "target_word": "USE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7071,
+      9459,
+      10126
+    ],
+    "char_labels": [
+      "U",
+      "S",
+      "E"
+    ],
+    "source_title": "Paper",
+    "source_url": "https://simple.wikipedia.org/wiki/Paper",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_072",
+    "sentence": "Public officials use libraries for research and public [MASK].",
+    "target_word": "ISSUES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1214,
+      2445,
+      1020,
+      14209,
+      4368,
+      13752
+    ],
+    "char_labels": [
+      "I",
+      "S",
+      "S",
+      "U",
+      "E",
+      "S"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_073",
+    "sentence": "In the winter, snow covers the ground and the deciduous trees and plants lose their [MASK].",
+    "target_word": "LEAVES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7102,
+      15191,
+      2051,
+      5708,
+      3982,
+      8624
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "A",
+      "V",
+      "E",
+      "S"
+    ],
+    "source_title": "Forest",
+    "source_url": "https://simple.wikipedia.org/wiki/Forest",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_074",
+    "sentence": "Russia gave Germany money and land to stop the [MASK] between those two countries.",
+    "target_word": "FIGHTING",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10783,
+      2626,
+      12404,
+      18097,
+      625,
+      1460,
+      17710,
+      12121
+    ],
+    "char_labels": [
+      "F",
+      "I",
+      "G",
+      "H",
+      "T",
+      "I",
+      "N",
+      "G"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_075",
+    "sentence": "A valley is a lower part in the land that sits between two higher parts which might be hills or [MASK].",
+    "target_word": "MOUNTAINS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17501,
+      13168,
+      13801,
+      2935,
+      9891,
+      7067,
+      15536,
+      796,
+      211
+    ],
+    "char_labels": [
+      "M",
+      "O",
+      "U",
+      "N",
+      "T",
+      "A",
+      "I",
+      "N",
+      "S"
+    ],
+    "source_title": "Valley",
+    "source_url": "https://simple.wikipedia.org/wiki/Valley",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_076",
+    "sentence": "A bolt of lightning can reach temperatures [MASK] than the surface of the sun.",
+    "target_word": "HOTTER",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10133,
+      18232,
+      18769,
+      11428,
+      8167,
+      4595
+    ],
+    "char_labels": [
+      "H",
+      "O",
+      "T",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Lightning",
+    "source_url": "https://simple.wikipedia.org/wiki/Lightning",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_077",
+    "sentence": "Also, the influenza pandemic of 1918 [MASK] a big influence.",
+    "target_word": "HAD",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18629,
+      3674,
+      2563
+    ],
+    "char_labels": [
+      "H",
+      "A",
+      "D"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_078",
+    "sentence": "A computer is a [MASK] that uses electronics to input, process, store, and output data.",
+    "target_word": "MACHINE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10010,
+      7680,
+      9108,
+      17167,
+      4414,
+      16498,
+      4126
+    ],
+    "char_labels": [
+      "M",
+      "A",
+      "C",
+      "H",
+      "I",
+      "N",
+      "E"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_079",
+    "sentence": "The ancient Romans used the word [MASK] to describe a group of about one hundred soldiers, organized into a single unit.",
+    "target_word": "CENTURIA",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5677,
+      49,
+      12735,
+      16180,
+      16765,
+      2639,
+      14151,
+      2766
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "U",
+      "R",
+      "I",
+      "A"
+    ],
+    "source_title": "Century",
+    "source_url": "https://simple.wikipedia.org/wiki/Century",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_080",
+    "sentence": "Thermal energy is the type of energy that a thing has because of [MASK] temperature.",
+    "target_word": "ITS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11912,
+      13408,
+      3438
+    ],
+    "char_labels": [
+      "I",
+      "T",
+      "S"
+    ],
+    "source_title": "Heat",
+    "source_url": "https://simple.wikipedia.org/wiki/Heat",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_081",
+    "sentence": "The steam to power a steam engine is made in a boiler that heats [MASK] to make steam.",
+    "target_word": "WATER",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2146,
+      1188,
+      13445,
+      11678,
+      2194
+    ],
+    "char_labels": [
+      "W",
+      "A",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Steam engine",
+    "source_url": "https://simple.wikipedia.org/wiki/Steam_engine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_082",
+    "sentence": "Most earthquakes form part of a sequence, related to each other in [MASK] of location and time.",
+    "target_word": "TERMS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9748,
+      15211,
+      3944,
+      11785,
+      5872
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "R",
+      "M",
+      "S"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_083",
+    "sentence": "In the [MASK] of evolution, many species have leaves which are adapted to other functions.",
+    "target_word": "COURSE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4548,
+      7104,
+      6683,
+      9035,
+      4452,
+      7520
+    ],
+    "char_labels": [
+      "C",
+      "O",
+      "U",
+      "R",
+      "S",
+      "E"
+    ],
+    "source_title": "Leaf",
+    "source_url": "https://simple.wikipedia.org/wiki/Leaf",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_084",
+    "sentence": "The tire is specially [MASK] to ride smoothly on hills, grass, and mountains.",
+    "target_word": "DESIGNED",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11893,
+      7488,
+      12898,
+      1810,
+      2341,
+      16400,
+      8868,
+      11582
+    ],
+    "char_labels": [
+      "D",
+      "E",
+      "S",
+      "I",
+      "G",
+      "N",
+      "E",
+      "D"
+    ],
+    "source_title": "Bicycle",
+    "source_url": "https://simple.wikipedia.org/wiki/Bicycle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_085",
+    "sentence": "In the end, storing hydrogen is still a [MASK] challenge.",
+    "target_word": "BIG",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13621,
+      2278,
+      18408
+    ],
+    "char_labels": [
+      "B",
+      "I",
+      "G"
+    ],
+    "source_title": "Hydrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Hydrogen",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_086",
+    "sentence": "A [MASK] theory is an early Greek model of the universe.",
+    "target_word": "DIFFERENT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8477,
+      16517,
+      8646,
+      8551,
+      11562,
+      3215,
+      11615,
+      18388,
+      12294
+    ],
+    "char_labels": [
+      "D",
+      "I",
+      "F",
+      "F",
+      "E",
+      "R",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_087",
+    "sentence": "Magnets are only [MASK] to special metals.",
+    "target_word": "ATTRACTED",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1179,
+      13363,
+      488,
+      1960,
+      5234,
+      5087,
+      90,
+      416,
+      14911
+    ],
+    "char_labels": [
+      "A",
+      "T",
+      "T",
+      "R",
+      "A",
+      "C",
+      "T",
+      "E",
+      "D"
+    ],
+    "source_title": "Magnet",
+    "source_url": "https://simple.wikipedia.org/wiki/Magnet",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_088",
+    "sentence": "Most children have all 20 teeth by two or three years of [MASK].",
+    "target_word": "AGE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8816,
+      3281,
+      8167
+    ],
+    "char_labels": [
+      "A",
+      "G",
+      "E"
+    ],
+    "source_title": "Tooth",
+    "source_url": "https://simple.wikipedia.org/wiki/Tooth",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_089",
+    "sentence": "Other things, like ethnicity, age, and genetics, can [MASK] how a person reacts to a vaccine.",
+    "target_word": "AFFECT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13274,
+      13743,
+      5607,
+      3190,
+      18087,
+      12155
+    ],
+    "char_labels": [
+      "A",
+      "F",
+      "F",
+      "E",
+      "C",
+      "T"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_090",
+    "sentence": "Tsar Nicholas II [MASK] to give up power and a new government was established.",
+    "target_word": "HAD",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18303,
+      5696,
+      2400
+    ],
+    "char_labels": [
+      "H",
+      "A",
+      "D"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_091",
+    "sentence": "Sometimes, people are chosen to make decisions more or [MASK] at random.",
+    "target_word": "LESS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7149,
+      6246,
+      14088,
+      14021
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "S",
+      "S"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_092",
+    "sentence": "Most computers have a sound card or another method of making [MASK], which is like vocal cords, or a voice box.",
+    "target_word": "SOUND",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1427,
+      10565,
+      6401,
+      11146,
+      7577
+    ],
+    "char_labels": [
+      "S",
+      "O",
+      "U",
+      "N",
+      "D"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_093",
+    "sentence": "The carbon [MASK] in it make rings, which are on top of each other and slide very easily.",
+    "target_word": "ATOMS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10426,
+      13556,
+      5020,
+      3754,
+      13811
+    ],
+    "char_labels": [
+      "A",
+      "T",
+      "O",
+      "M",
+      "S"
+    ],
+    "source_title": "Carbon",
+    "source_url": "https://simple.wikipedia.org/wiki/Carbon",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_094",
+    "sentence": "Fiction books are novels and [MASK] stories.",
+    "target_word": "SHORT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17663,
+      8205,
+      18789,
+      3133,
+      15379
+    ],
+    "char_labels": [
+      "S",
+      "H",
+      "O",
+      "R",
+      "T"
+    ],
+    "source_title": "Book",
+    "source_url": "https://simple.wikipedia.org/wiki/Book",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_095",
+    "sentence": "Almost all countries and states have systems of formal education, which is sometimes [MASK] or legally required.",
+    "target_word": "COMPULSORY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18709,
+      5092,
+      2997,
+      12973,
+      16574,
+      1708,
+      12683,
+      16537,
+      854,
+      9777
+    ],
+    "char_labels": [
+      "C",
+      "O",
+      "M",
+      "P",
+      "U",
+      "L",
+      "S",
+      "O",
+      "R",
+      "Y"
+    ],
+    "source_title": "School",
+    "source_url": "https://simple.wikipedia.org/wiki/School",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_096",
+    "sentence": "The television was invented in the 1920s but the [MASK] was expensive and the pictures were poor.",
+    "target_word": "EQUIPMENT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1564,
+      3340,
+      9259,
+      5462,
+      1695,
+      15280,
+      3982,
+      16412,
+      3602
+    ],
+    "char_labels": [
+      "E",
+      "Q",
+      "U",
+      "I",
+      "P",
+      "M",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Television",
+    "source_url": "https://simple.wikipedia.org/wiki/Television",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_097",
+    "sentence": "At the tip of [MASK] root, there is a small group of tough, dead, hard cells called the root cap.",
+    "target_word": "EACH",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10484,
+      13626,
+      8691,
+      7883
+    ],
+    "char_labels": [
+      "E",
+      "A",
+      "C",
+      "H"
+    ],
+    "source_title": "Root",
+    "source_url": "https://simple.wikipedia.org/wiki/Root",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_098",
+    "sentence": "Batteries come in many different shapes, sizes and [MASK].",
+    "target_word": "VOLTAGES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14172,
+      341,
+      15414,
+      13038,
+      14253,
+      7528,
+      7427,
+      11277
+    ],
+    "char_labels": [
+      "V",
+      "O",
+      "L",
+      "T",
+      "A",
+      "G",
+      "E",
+      "S"
+    ],
+    "source_title": "Battery",
+    "source_url": "https://simple.wikipedia.org/wiki/Battery",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_099",
+    "sentence": "Most bacteria live in the ground or in water, but many live inside or on the [MASK] of other organisms, including humans.",
+    "target_word": "SKIN",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12683,
+      17544,
+      15851,
+      856
+    ],
+    "char_labels": [
+      "S",
+      "K",
+      "I",
+      "N"
+    ],
+    "source_title": "Bacteria",
+    "source_url": "https://simple.wikipedia.org/wiki/Bacteria",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_100",
+    "sentence": "Many places have a public library, where anybody can join if they [MASK] in the area.",
+    "target_word": "LIVE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3290,
+      17682,
+      7204,
+      11344
+    ],
+    "char_labels": [
+      "L",
+      "I",
+      "V",
+      "E"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_101",
+    "sentence": "The steam engine became the main [MASK] of power.",
+    "target_word": "SOURCE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1147,
+      1732,
+      7436,
+      13055,
+      13997,
+      16942
+    ],
+    "char_labels": [
+      "S",
+      "O",
+      "U",
+      "R",
+      "C",
+      "E"
+    ],
+    "source_title": "Industrial Revolution",
+    "source_url": "https://simple.wikipedia.org/wiki/Industrial_Revolution",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_102",
+    "sentence": "The symbols are in a [MASK] ordered list, called alphabetical order.",
+    "target_word": "STRICT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4297,
+      4289,
+      9940,
+      10029,
+      630,
+      8602
+    ],
+    "char_labels": [
+      "S",
+      "T",
+      "R",
+      "I",
+      "C",
+      "T"
+    ],
+    "source_title": "Alphabet",
+    "source_url": "https://simple.wikipedia.org/wiki/Alphabet",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_103",
+    "sentence": "Because of this, they [MASK] the mysterious energy causing the expansion dark energy.",
+    "target_word": "CALL",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17218,
+      3311,
+      15322,
+      8129
+    ],
+    "char_labels": [
+      "C",
+      "A",
+      "L",
+      "L"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_104",
+    "sentence": "In [MASK] that has hills, but is not very steep, a river or stream runs more slowly.",
+    "target_word": "COUNTRY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9707,
+      11693,
+      13591,
+      11932,
+      2064,
+      4852,
+      15902
+    ],
+    "char_labels": [
+      "C",
+      "O",
+      "U",
+      "N",
+      "T",
+      "R",
+      "Y"
+    ],
+    "source_title": "Valley",
+    "source_url": "https://simple.wikipedia.org/wiki/Valley",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_105",
+    "sentence": "In those days, Italy was not one [MASK] country but was made of many little states.",
+    "target_word": "SINGLE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      653,
+      13507,
+      9174,
+      2031,
+      2607,
+      18507
+    ],
+    "char_labels": [
+      "S",
+      "I",
+      "N",
+      "G",
+      "L",
+      "E"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_106",
+    "sentence": "After World War II ships with diesel engines [MASK] commonplace.",
+    "target_word": "BECAME",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      489,
+      652,
+      142,
+      12191,
+      17756,
+      3221
+    ],
+    "char_labels": [
+      "B",
+      "E",
+      "C",
+      "A",
+      "M",
+      "E"
+    ],
+    "source_title": "Ship",
+    "source_url": "https://simple.wikipedia.org/wiki/Ship",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_107",
+    "sentence": "Most were built on the western side of the [MASK] in desert areas.",
+    "target_word": "NILE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15344,
+      13523,
+      4794,
+      1507
+    ],
+    "char_labels": [
+      "N",
+      "I",
+      "L",
+      "E"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_108",
+    "sentence": "The flooding [MASK] lasted from June to September.",
+    "target_word": "SEASON",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9491,
+      1686,
+      2002,
+      9182,
+      15521,
+      18587
+    ],
+    "char_labels": [
+      "S",
+      "E",
+      "A",
+      "S",
+      "O",
+      "N"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_109",
+    "sentence": "The holes [MASK] up into trenches until the lines of trenches went all the way from Switzerland to the North Sea.",
+    "target_word": "JOINED",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11837,
+      4806,
+      5502,
+      11146,
+      3370,
+      9787
+    ],
+    "char_labels": [
+      "J",
+      "O",
+      "I",
+      "N",
+      "E",
+      "D"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_110",
+    "sentence": "People get bored [MASK] doing the same thing over and over.",
+    "target_word": "EASILY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14746,
+      15495,
+      1155,
+      4544,
+      5214,
+      10205
+    ],
+    "char_labels": [
+      "E",
+      "A",
+      "S",
+      "I",
+      "L",
+      "Y"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_111",
+    "sentence": "For example, the flu vaccine makes it very much less likely that a [MASK] will get the flu.",
+    "target_word": "PERSON",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3472,
+      18190,
+      17194,
+      6850,
+      7715,
+      7782
+    ],
+    "char_labels": [
+      "P",
+      "E",
+      "R",
+      "S",
+      "O",
+      "N"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_112",
+    "sentence": "Zealandia may have broken off the Australian plate between 85 and 130 [MASK] years ago.",
+    "target_word": "MILLION",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1189,
+      16517,
+      14500,
+      6231,
+      10029,
+      7021,
+      4111
+    ],
+    "char_labels": [
+      "M",
+      "I",
+      "L",
+      "L",
+      "I",
+      "O",
+      "N"
+    ],
+    "source_title": "Continent",
+    "source_url": "https://simple.wikipedia.org/wiki/Continent",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_113",
+    "sentence": "In the 1970s, technologies were [MASK] on integrated circuits.",
+    "target_word": "BASED",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5209,
+      1822,
+      15585,
+      12360,
+      17678
+    ],
+    "char_labels": [
+      "B",
+      "A",
+      "S",
+      "E",
+      "D"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_114",
+    "sentence": "Snow plows are used to [MASK] snow from roads to make driving easier and safer.",
+    "target_word": "REMOVE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      276,
+      11842,
+      10928,
+      11420,
+      18680,
+      7520
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "M",
+      "O",
+      "V",
+      "E"
+    ],
+    "source_title": "Snow",
+    "source_url": "https://simple.wikipedia.org/wiki/Snow",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_115",
+    "sentence": "Examples of surgical specialists include orthopedic surgeons, neurosurgeons, and trauma [MASK].",
+    "target_word": "SURGEONS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3041,
+      278,
+      9025,
+      2800,
+      2793,
+      2372,
+      4996,
+      2445
+    ],
+    "char_labels": [
+      "S",
+      "U",
+      "R",
+      "G",
+      "E",
+      "O",
+      "N",
+      "S"
+    ],
+    "source_title": "Medicine",
+    "source_url": "https://simple.wikipedia.org/wiki/Medicine",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_116",
+    "sentence": "A computer is [MASK] almost always an electronic device.",
+    "target_word": "NOW",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8591,
+      11948,
+      5772
+    ],
+    "char_labels": [
+      "N",
+      "O",
+      "W"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_117",
+    "sentence": "Physical [MASK] were the rules governing the properties of matter, form and their changes.",
+    "target_word": "LAWS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3109,
+      11268,
+      1698,
+      14256
+    ],
+    "char_labels": [
+      "L",
+      "A",
+      "W",
+      "S"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_118",
+    "sentence": "A long, [MASK] land border in the west separates Europe and Asia.",
+    "target_word": "MAINLY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7150,
+      7974,
+      4151,
+      5300,
+      3185,
+      10267
+    ],
+    "char_labels": [
+      "M",
+      "A",
+      "I",
+      "N",
+      "L",
+      "Y"
+    ],
+    "source_title": "Asia",
+    "source_url": "https://simple.wikipedia.org/wiki/Asia",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_119",
+    "sentence": "More [MASK] acids are often more dangerous.",
+    "target_word": "REACTIVE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2495,
+      12942,
+      4935,
+      10234,
+      10450,
+      11998,
+      14399,
+      11179
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "A",
+      "C",
+      "T",
+      "I",
+      "V",
+      "E"
+    ],
+    "source_title": "Acid",
+    "source_url": "https://simple.wikipedia.org/wiki/Acid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_120",
+    "sentence": "Almost all ironworks are today [MASK] of steel mills, and almost all iron is made into steel.",
+    "target_word": "PART",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15866,
+      4949,
+      13749,
+      6623
+    ],
+    "char_labels": [
+      "P",
+      "A",
+      "R",
+      "T"
+    ],
+    "source_title": "Iron",
+    "source_url": "https://simple.wikipedia.org/wiki/Iron",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_121",
+    "sentence": "The weather during the winter is cold, but when [MASK] melts in the spring, some parts of the forest become swamps.",
+    "target_word": "SNOW",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12433,
+      8715,
+      17087,
+      5341
+    ],
+    "char_labels": [
+      "S",
+      "N",
+      "O",
+      "W"
+    ],
+    "source_title": "Forest",
+    "source_url": "https://simple.wikipedia.org/wiki/Forest",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_122",
+    "sentence": "Some stone bridges have lasted [MASK] of years.",
+    "target_word": "THOUSANDS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9948,
+      2991,
+      11545,
+      726,
+      8436,
+      140,
+      5960,
+      9261,
+      6839
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "O",
+      "U",
+      "S",
+      "A",
+      "N",
+      "D",
+      "S"
+    ],
+    "source_title": "Bridge",
+    "source_url": "https://simple.wikipedia.org/wiki/Bridge",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_123",
+    "sentence": "During her term as a hospital ship, she was sunk by either a mine or [MASK], no one knows for sure.",
+    "target_word": "TORPEDO",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7823,
+      2394,
+      12967,
+      14830,
+      8833,
+      1174,
+      970
+    ],
+    "char_labels": [
+      "T",
+      "O",
+      "R",
+      "P",
+      "E",
+      "D",
+      "O"
+    ],
+    "source_title": "Ship",
+    "source_url": "https://simple.wikipedia.org/wiki/Ship",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_124",
+    "sentence": "Animal skins can be made into [MASK].",
+    "target_word": "LEATHER",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12818,
+      17551,
+      15944,
+      8097,
+      9030,
+      3157,
+      1449
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "A",
+      "T",
+      "H",
+      "E",
+      "R"
+    ],
+    "source_title": "Skin",
+    "source_url": "https://simple.wikipedia.org/wiki/Skin",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_125",
+    "sentence": "Vertebrates have a second, more specific, immune [MASK].",
+    "target_word": "SYSTEM",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14813,
+      8300,
+      9603,
+      6623,
+      5903,
+      18636
+    ],
+    "char_labels": [
+      "S",
+      "Y",
+      "S",
+      "T",
+      "E",
+      "M"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_126",
+    "sentence": "At the end of the wars, Augustus overcame his Roman enemies and the Ptolemaic [MASK], which controlled the Kingdom of Egypt.",
+    "target_word": "DYNASTY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15203,
+      12905,
+      7042,
+      13585,
+      6861,
+      9932,
+      3200
+    ],
+    "char_labels": [
+      "D",
+      "Y",
+      "N",
+      "A",
+      "S",
+      "T",
+      "Y"
+    ],
+    "source_title": "Ancient Rome",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Rome",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_127",
+    "sentence": "In the 1950s, [MASK] Salk created the polio vaccine.",
+    "target_word": "JONAS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13378,
+      970,
+      13478,
+      11730,
+      1275
+    ],
+    "char_labels": [
+      "J",
+      "O",
+      "N",
+      "A",
+      "S"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_128",
+    "sentence": "In thermodynamics, [MASK] energy is the internal energy present in a system in a state of thermodynamic equilibrium because of its temperature.",
+    "target_word": "THERMAL",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9847,
+      3901,
+      9185,
+      327,
+      13742,
+      9867,
+      6835
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "E",
+      "R",
+      "M",
+      "A",
+      "L"
+    ],
+    "source_title": "Heat",
+    "source_url": "https://simple.wikipedia.org/wiki/Heat",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_129",
+    "sentence": "Guns were put on planes for the first [MASK] during the war.",
+    "target_word": "TIME",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16411,
+      12228,
+      11801,
+      2888
+    ],
+    "char_labels": [
+      "T",
+      "I",
+      "M",
+      "E"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_130",
+    "sentence": "Making maps is called cartography, and people [MASK] specialize in making maps are called cartographers.",
+    "target_word": "WHO",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9607,
+      13391,
+      17272
+    ],
+    "char_labels": [
+      "W",
+      "H",
+      "O"
+    ],
+    "source_title": "Geography",
+    "source_url": "https://simple.wikipedia.org/wiki/Geography",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_131",
+    "sentence": "Books are kept on [MASK] in a special order so they are easy to find.",
+    "target_word": "SHELVES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11847,
+      3062,
+      12928,
+      1465,
+      5583,
+      17288,
+      15480
+    ],
+    "char_labels": [
+      "S",
+      "H",
+      "E",
+      "L",
+      "V",
+      "E",
+      "S"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_132",
+    "sentence": "Not everyone can vote in an [MASK].",
+    "target_word": "ELECTION",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17121,
+      6618,
+      13012,
+      12561,
+      5084,
+      17661,
+      18230,
+      2056
+    ],
+    "char_labels": [
+      "E",
+      "L",
+      "E",
+      "C",
+      "T",
+      "I",
+      "O",
+      "N"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_133",
+    "sentence": "By about 5500 BCE, small [MASK] living in the Nile Valley had developed into a series of cultures.",
+    "target_word": "TRIBES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14441,
+      8090,
+      12908,
+      10345,
+      4368,
+      1926
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "I",
+      "B",
+      "E",
+      "S"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_134",
+    "sentence": "The equation says that if [MASK] objects are very heavy then there is a strong force between them because of gravity.",
+    "target_word": "TWO",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9904,
+      16163,
+      15698
+    ],
+    "char_labels": [
+      "T",
+      "W",
+      "O"
+    ],
+    "source_title": "Force",
+    "source_url": "https://simple.wikipedia.org/wiki/Force",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_135",
+    "sentence": "For example, Germany was becoming increasingly powerful, and the British Empire saw that as a [MASK].",
+    "target_word": "THREAT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5624,
+      16462,
+      6181,
+      11179,
+      6510,
+      10069
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "R",
+      "E",
+      "A",
+      "T"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_136",
+    "sentence": "Iron is not very reactive, so it is both [MASK] and cheap to extract from ores.",
+    "target_word": "EASY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10572,
+      13341,
+      9275,
+      9950
+    ],
+    "char_labels": [
+      "E",
+      "A",
+      "S",
+      "Y"
+    ],
+    "source_title": "Iron",
+    "source_url": "https://simple.wikipedia.org/wiki/Iron",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_137",
+    "sentence": "An hourglass, also called a sandglass or sand timer, uses sand trickling slowly to [MASK] time.",
+    "target_word": "MEASURE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12491,
+      8068,
+      10115,
+      1771,
+      16574,
+      2309,
+      16703
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "A",
+      "S",
+      "U",
+      "R",
+      "E"
+    ],
+    "source_title": "Clock",
+    "source_url": "https://simple.wikipedia.org/wiki/Clock",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_138",
+    "sentence": "In other words, a person can get a disease that they were [MASK] against.",
+    "target_word": "VACCINATED",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14428,
+      17918,
+      228,
+      3720,
+      1001,
+      7381,
+      16328,
+      14441,
+      13381,
+      15684
+    ],
+    "char_labels": [
+      "V",
+      "A",
+      "C",
+      "C",
+      "I",
+      "N",
+      "A",
+      "T",
+      "E",
+      "D"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_139",
+    "sentence": "The [MASK] of pit eyes can be improved a lot by adding a material to make a lens.",
+    "target_word": "RESOLUTION",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      114,
+      15165,
+      6540,
+      12689,
+      14190,
+      13139,
+      8217,
+      11417,
+      8550,
+      11515
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "S",
+      "O",
+      "L",
+      "U",
+      "T",
+      "I",
+      "O",
+      "N"
+    ],
+    "source_title": "Eye",
+    "source_url": "https://simple.wikipedia.org/wiki/Eye",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_140",
+    "sentence": "Without [MASK], people would easily get infections and diseases.",
+    "target_word": "SKIN",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8997,
+      7712,
+      3069,
+      7040
+    ],
+    "char_labels": [
+      "S",
+      "K",
+      "I",
+      "N"
+    ],
+    "source_title": "Skin",
+    "source_url": "https://simple.wikipedia.org/wiki/Skin",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_141",
+    "sentence": "The sudden release of stress in the tectonic plates sends waves of [MASK] that travel through the Earth.",
+    "target_word": "ENERGY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13650,
+      16412,
+      1961,
+      3133,
+      9168,
+      13310
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "E",
+      "R",
+      "G",
+      "Y"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_142",
+    "sentence": "Africa is the second largest [MASK] on Earth.",
+    "target_word": "CONTINENT",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3335,
+      5752,
+      799,
+      900,
+      2172,
+      13510,
+      16676,
+      8826,
+      3602
+    ],
+    "char_labels": [
+      "C",
+      "O",
+      "N",
+      "T",
+      "I",
+      "N",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Africa",
+    "source_url": "https://simple.wikipedia.org/wiki/Africa",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_143",
+    "sentence": "For example, [MASK] and Spinoza have active principles governing the universe which act on passive elements.",
+    "target_word": "AVERROES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16759,
+      5149,
+      2910,
+      2402,
+      6157,
+      13816,
+      7544,
+      8940
+    ],
+    "char_labels": [
+      "A",
+      "V",
+      "E",
+      "R",
+      "R",
+      "O",
+      "E",
+      "S"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_144",
+    "sentence": "Human bodies need iron to help oxygen get to our muscles, which [MASK] red blood cells.",
+    "target_word": "USES",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6389,
+      17644,
+      13012,
+      13136
+    ],
+    "char_labels": [
+      "U",
+      "S",
+      "E",
+      "S"
+    ],
+    "source_title": "Iron",
+    "source_url": "https://simple.wikipedia.org/wiki/Iron",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_145",
+    "sentence": "In 2023, China produced the most [MASK], followed by Russia and Australia.",
+    "target_word": "GOLD",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7857,
+      9404,
+      16227,
+      12599
+    ],
+    "char_labels": [
+      "G",
+      "O",
+      "L",
+      "D"
+    ],
+    "source_title": "Gold",
+    "source_url": "https://simple.wikipedia.org/wiki/Gold",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_146",
+    "sentence": "Most [MASK] and reptiles, such as snakes and lizards, have scales.",
+    "target_word": "FISH",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15490,
+      667,
+      16165,
+      17863
+    ],
+    "char_labels": [
+      "F",
+      "I",
+      "S",
+      "H"
+    ],
+    "source_title": "Skin",
+    "source_url": "https://simple.wikipedia.org/wiki/Skin",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_147",
+    "sentence": "The soil with small round clumps is best because it lets in [MASK] and water.",
+    "target_word": "AIR",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12830,
+      18145,
+      10378
+    ],
+    "char_labels": [
+      "A",
+      "I",
+      "R"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_148",
+    "sentence": "Once the [MASK] is heated past a temperature called the ignition point, it will start to burn, beginning a fire.",
+    "target_word": "THING",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5642,
+      11292,
+      11912,
+      2754,
+      3319
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "I",
+      "N",
+      "G"
+    ],
+    "source_title": "Fire",
+    "source_url": "https://simple.wikipedia.org/wiki/Fire",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_149",
+    "sentence": "Some chemicals [MASK] carry a lot of hydrogen but cannot be reused easily.",
+    "target_word": "CAN",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4960,
+      10623,
+      2828
+    ],
+    "char_labels": [
+      "C",
+      "A",
+      "N"
+    ],
+    "source_title": "Hydrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Hydrogen",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_150",
+    "sentence": "Since the beginning of history, knowing when the seasons would start for [MASK] was very important for farmers.",
+    "target_word": "CROPS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13997,
+      2048,
+      17472,
+      13059,
+      6861
+    ],
+    "char_labels": [
+      "C",
+      "R",
+      "O",
+      "P",
+      "S"
+    ],
+    "source_title": "Calendar",
+    "source_url": "https://simple.wikipedia.org/wiki/Calendar",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_151",
+    "sentence": "The Internet is the thing that lets [MASK] communicate between their computers.",
+    "target_word": "PEOPLE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7058,
+      13089,
+      1368,
+      13736,
+      10757,
+      4361
+    ],
+    "char_labels": [
+      "P",
+      "E",
+      "O",
+      "P",
+      "L",
+      "E"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_152",
+    "sentence": "If there is too much bacteria, they eat [MASK] faster than teeth make enamel.",
+    "target_word": "ENAMEL",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16949,
+      11515,
+      3311,
+      12631,
+      7999,
+      14190
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "A",
+      "M",
+      "E",
+      "L"
+    ],
+    "source_title": "Tooth",
+    "source_url": "https://simple.wikipedia.org/wiki/Tooth",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_153",
+    "sentence": "A Second Industrial [MASK] began in the 1870s.",
+    "target_word": "REVOLUTION",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9025,
+      18724,
+      17734,
+      644,
+      7518,
+      3801,
+      8644,
+      2278,
+      9522,
+      2889
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "V",
+      "O",
+      "L",
+      "U",
+      "T",
+      "I",
+      "O",
+      "N"
+    ],
+    "source_title": "Industrial Revolution",
+    "source_url": "https://simple.wikipedia.org/wiki/Industrial_Revolution",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_154",
+    "sentence": "A tsunami is a chain of fast [MASK] waves in the ocean caused by powerful earthquakes.",
+    "target_word": "MOVING",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12058,
+      8338,
+      18715,
+      16269,
+      10740,
+      8052
+    ],
+    "char_labels": [
+      "M",
+      "O",
+      "V",
+      "I",
+      "N",
+      "G"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_155",
+    "sentence": "When the bacteria are [MASK] eating, what is left behind is called humus.",
+    "target_word": "DONE",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13784,
+      12150,
+      2627,
+      7328
+    ],
+    "char_labels": [
+      "D",
+      "O",
+      "N",
+      "E"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_156",
+    "sentence": "A fibrous root system is usually [MASK] than deep.",
+    "target_word": "WIDER",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18718,
+      5286,
+      252,
+      16137,
+      17440
+    ],
+    "char_labels": [
+      "W",
+      "I",
+      "D",
+      "E",
+      "R"
+    ],
+    "source_title": "Root",
+    "source_url": "https://simple.wikipedia.org/wiki/Root",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_157",
+    "sentence": "The [MASK] between roots and fungus is known as mycorrhiza.",
+    "target_word": "SYMBIOSIS",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12898,
+      11918,
+      6486,
+      6144,
+      16969,
+      16219,
+      9667,
+      5219,
+      4134
+    ],
+    "char_labels": [
+      "S",
+      "Y",
+      "M",
+      "B",
+      "I",
+      "O",
+      "S",
+      "I",
+      "S"
+    ],
+    "source_title": "Root",
+    "source_url": "https://simple.wikipedia.org/wiki/Root",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_158",
+    "sentence": "Instead, muscular air sacs push the air forward through [MASK] lungs.",
+    "target_word": "BIRD",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      107,
+      8884,
+      10064,
+      12935
+    ],
+    "char_labels": [
+      "B",
+      "I",
+      "R",
+      "D"
+    ],
+    "source_title": "Lung",
+    "source_url": "https://simple.wikipedia.org/wiki/Lung",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_159",
+    "sentence": "A sandstorm or [MASK] storm arises when wind blows loose sand and dust from a dry surface.",
+    "target_word": "DUST",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15099,
+      6817,
+      3653,
+      15651
+    ],
+    "char_labels": [
+      "D",
+      "U",
+      "S",
+      "T"
+    ],
+    "source_title": "Desert",
+    "source_url": "https://simple.wikipedia.org/wiki/Desert",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_160",
+    "sentence": "Below that layer there may be a layer of [MASK].",
+    "target_word": "CLAY",
+    "difficulty": "confusable",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13773,
+      10436,
+      539,
+      8941
+    ],
+    "char_labels": [
+      "C",
+      "L",
+      "A",
+      "Y"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_161",
+    "sentence": "Elections are either [MASK] after a certain time, or when a leader dies.",
+    "target_word": "HELD",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11543,
+      16523,
+      9995,
+      8849
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "D"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_162",
+    "sentence": "Copper is [MASK] from the body easily, so it does not build up in toxic effects.",
+    "target_word": "EXPELLED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7389,
+      7547,
+      207,
+      1961,
+      14056,
+      6835,
+      16410,
+      7632
+    ],
+    "char_labels": [
+      "E",
+      "X",
+      "P",
+      "E",
+      "L",
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "Copper",
+    "source_url": "https://simple.wikipedia.org/wiki/Copper",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_163",
+    "sentence": "Children may [MASK] be sent to another country.",
+    "target_word": "EVEN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18705,
+      3244,
+      3633,
+      10392
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "N"
+    ],
+    "source_title": "School",
+    "source_url": "https://simple.wikipedia.org/wiki/School",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_164",
+    "sentence": "About 97 [MASK] of animal species have eyes.",
+    "target_word": "PERCENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15017,
+      2809,
+      9085,
+      3835,
+      14146,
+      9894,
+      12386
+    ],
+    "char_labels": [
+      "P",
+      "E",
+      "R",
+      "C",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Eye",
+    "source_url": "https://simple.wikipedia.org/wiki/Eye",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_165",
+    "sentence": "There were 42 of them, and each was [MASK] by a governor, chosen by the pharaoh.",
+    "target_word": "RULED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4583,
+      5239,
+      12387,
+      6879,
+      13229
+    ],
+    "char_labels": [
+      "R",
+      "U",
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_166",
+    "sentence": "Bacteriophages have evolved to enter bacterial cells, which have a different [MASK] of cell wall from eukaryote cell membranes.",
+    "target_word": "TYPE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3097,
+      5790,
+      1857,
+      1699
+    ],
+    "char_labels": [
+      "T",
+      "Y",
+      "P",
+      "E"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_167",
+    "sentence": "Later in the 19th century came machines which speeded up typesetting, which was previously done by hand, [MASK] by letter.",
+    "target_word": "LETTER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5252,
+      9471,
+      3012,
+      1873,
+      16814,
+      9282
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "T",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Printing press",
+    "source_url": "https://simple.wikipedia.org/wiki/Printing_press",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_168",
+    "sentence": "The locomotive Coalbrookdale was built by Richard Trevithick [MASK] by the owner of the ironworks Samual Homfray.",
+    "target_word": "HELPED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13574,
+      13814,
+      2231,
+      12466,
+      16525,
+      8673
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "P",
+      "E",
+      "D"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_169",
+    "sentence": "The ruling Medicis were an important banking family and [MASK] to make Florence a powerful city and the centre of Renaissance learning.",
+    "target_word": "HELPED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16462,
+      18084,
+      10711,
+      1857,
+      11702,
+      16510
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "P",
+      "E",
+      "D"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_170",
+    "sentence": "The cells that get the message from nerves [MASK] other cells that are near them.",
+    "target_word": "TELL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11132,
+      15402,
+      10437,
+      7719
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "L",
+      "L"
+    ],
+    "source_title": "Muscle",
+    "source_url": "https://simple.wikipedia.org/wiki/Muscle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_171",
+    "sentence": "After a pope died, a new pope was [MASK].",
+    "target_word": "ELECTED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18084,
+      3303,
+      8629,
+      3195,
+      12386,
+      17362,
+      18766
+    ],
+    "char_labels": [
+      "E",
+      "L",
+      "E",
+      "C",
+      "T",
+      "E",
+      "D"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_172",
+    "sentence": "Mathematicians use the [MASK] c for the length of this line.",
+    "target_word": "LETTER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4832,
+      13977,
+      16396,
+      15600,
+      9975,
+      2904
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "T",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Circle",
+    "source_url": "https://simple.wikipedia.org/wiki/Circle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_173",
+    "sentence": "If they are very far apart [MASK] the force is weaker.",
+    "target_word": "THEN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8918,
+      14906,
+      11719,
+      7042
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "E",
+      "N"
+    ],
+    "source_title": "Force",
+    "source_url": "https://simple.wikipedia.org/wiki/Force",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_174",
+    "sentence": "An example of the first [MASK] is HIV, which is a retrovirus.",
+    "target_word": "TYPE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4575,
+      12085,
+      8437,
+      9124
+    ],
+    "char_labels": [
+      "T",
+      "Y",
+      "P",
+      "E"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_175",
+    "sentence": "Later inventors made bikes out of metal only, and made the front [MASK] very big, giving higher speed.",
+    "target_word": "WHEEL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17816,
+      216,
+      4515,
+      17355,
+      17299
+    ],
+    "char_labels": [
+      "W",
+      "H",
+      "E",
+      "E",
+      "L"
+    ],
+    "source_title": "Bicycle",
+    "source_url": "https://simple.wikipedia.org/wiki/Bicycle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_176",
+    "sentence": "There are laws in some places which [MASK] bicycles follow different rules than cars.",
+    "target_word": "LET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5774,
+      18656,
+      4547
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "T"
+    ],
+    "source_title": "Bicycle",
+    "source_url": "https://simple.wikipedia.org/wiki/Bicycle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_177",
+    "sentence": "Because the Egyptians [MASK] written records, we know about the building of some pyramids.",
+    "target_word": "KEPT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      990,
+      5685,
+      10262,
+      132
+    ],
+    "char_labels": [
+      "K",
+      "E",
+      "P",
+      "T"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_178",
+    "sentence": "Before going on to the rules, [MASK] on two definitions that will be given.",
+    "target_word": "REFLECT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2903,
+      15172,
+      11810,
+      11894,
+      18553,
+      3857,
+      16640
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "F",
+      "L",
+      "E",
+      "C",
+      "T"
+    ],
+    "source_title": "Algebra",
+    "source_url": "https://simple.wikipedia.org/wiki/Algebra",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_179",
+    "sentence": "Acids dissolved in water normally contain high levels of hydrogen ions, in other words, [MASK] protons.",
+    "target_word": "FREE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7047,
+      17255,
+      15136,
+      4197
+    ],
+    "char_labels": [
+      "F",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Hydrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Hydrogen",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_180",
+    "sentence": "The ancient Egyptians believed that the Egyptian pharaohs [MASK] to the stars to join their gods in the afterlife.",
+    "target_word": "WENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3960,
+      10867,
+      8911,
+      4696
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Pyramid",
+    "source_url": "https://simple.wikipedia.org/wiki/Pyramid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_181",
+    "sentence": "The steam engine, improved by James Watt around 1776, was used to power the factories and [MASK] out the deeper mines.",
+    "target_word": "PUMP",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4721,
+      17212,
+      14547,
+      3567
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "M",
+      "P"
+    ],
+    "source_title": "Industrial Revolution",
+    "source_url": "https://simple.wikipedia.org/wiki/Industrial_Revolution",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_182",
+    "sentence": "Around the same time [MASK] ideas in farming were leaving some farm workers without jobs.",
+    "target_word": "NEW",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13485,
+      2910,
+      8512
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "W"
+    ],
+    "source_title": "Industrial Revolution",
+    "source_url": "https://simple.wikipedia.org/wiki/Industrial_Revolution",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_183",
+    "sentence": "Between 1808 and 1860, the British Navy captured approximately 1,600 slave ships and [MASK] 150,000 Africans who were aboard.",
+    "target_word": "FREED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      283,
+      11926,
+      3482,
+      4476,
+      3578
+    ],
+    "char_labels": [
+      "F",
+      "R",
+      "E",
+      "E",
+      "D"
+    ],
+    "source_title": "Africa",
+    "source_url": "https://simple.wikipedia.org/wiki/Africa",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_184",
+    "sentence": "In other deserts it may rain every year or once every [MASK] years.",
+    "target_word": "FEW",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3177,
+      1564,
+      10744
+    ],
+    "char_labels": [
+      "F",
+      "E",
+      "W"
+    ],
+    "source_title": "Desert",
+    "source_url": "https://simple.wikipedia.org/wiki/Desert",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_185",
+    "sentence": "Bigger and [MASK] faster presses were invented in the industrial revolution.",
+    "target_word": "MUCH",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16432,
+      5548,
+      14270,
+      9986
+    ],
+    "char_labels": [
+      "M",
+      "U",
+      "C",
+      "H"
+    ],
+    "source_title": "Printing press",
+    "source_url": "https://simple.wikipedia.org/wiki/Printing_press",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_186",
+    "sentence": "Military bridges are portable, so that they may be easily moved to where they are [MASK].",
+    "target_word": "NEEDED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4715,
+      1354,
+      15136,
+      684,
+      8101,
+      867
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "E",
+      "D",
+      "E",
+      "D"
+    ],
+    "source_title": "Bridge",
+    "source_url": "https://simple.wikipedia.org/wiki/Bridge",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_187",
+    "sentence": "The expedition is completed under the command of Juan Sabastian [MASK] Cano.",
+    "target_word": "DEL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14727,
+      18553,
+      6048
+    ],
+    "char_labels": [
+      "D",
+      "E",
+      "L"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_188",
+    "sentence": "Valleys like this are often [MASK] and very narrow.",
+    "target_word": "DEEP",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6134,
+      11192,
+      9968,
+      7212
+    ],
+    "char_labels": [
+      "D",
+      "E",
+      "E",
+      "P"
+    ],
+    "source_title": "Valley",
+    "source_url": "https://simple.wikipedia.org/wiki/Valley",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_189",
+    "sentence": "Colloidal silver, a common homeopathic [MASK], is not toxic in normal amounts, but it does not do much.",
+    "target_word": "REMEDY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6381,
+      3633,
+      4592,
+      11376,
+      14055,
+      14241
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "M",
+      "E",
+      "D",
+      "Y"
+    ],
+    "source_title": "Silver",
+    "source_url": "https://simple.wikipedia.org/wiki/Silver",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_190",
+    "sentence": "Others in order of size are Pandoravirus, then Megavirus, [MASK] Mimivirus.",
+    "target_word": "THEN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9932,
+      14259,
+      11466,
+      6643
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "E",
+      "N"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_191",
+    "sentence": "The spiral arms are where [MASK] hot stars are born.",
+    "target_word": "NEW",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6494,
+      10484,
+      6021
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "W"
+    ],
+    "source_title": "Galaxy",
+    "source_url": "https://simple.wikipedia.org/wiki/Galaxy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_192",
+    "sentence": "With eukaryotic cells, the virus protein coat is able to [MASK] the target cells by certain cell membrane receptors.",
+    "target_word": "ENTER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14716,
+      3313,
+      900,
+      9637,
+      1449
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_193",
+    "sentence": "The letters would leave ink on the paper in the shape of the letters, creating [MASK] or illustrations.",
+    "target_word": "TEXT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4033,
+      7328,
+      27,
+      4646
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "X",
+      "T"
+    ],
+    "source_title": "Printing press",
+    "source_url": "https://simple.wikipedia.org/wiki/Printing_press",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_194",
+    "sentence": "Most libraries are public and [MASK] people take the books to use in their home.",
+    "target_word": "LET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10689,
+      7327,
+      16640
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "T"
+    ],
+    "source_title": "Library",
+    "source_url": "https://simple.wikipedia.org/wiki/Library",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_195",
+    "sentence": "When these [MASK] erupt it can really hurt.",
+    "target_word": "TEETH",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1873,
+      13612,
+      11466,
+      12289,
+      12509
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "E",
+      "T",
+      "H"
+    ],
+    "source_title": "Tooth",
+    "source_url": "https://simple.wikipedia.org/wiki/Tooth",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_196",
+    "sentence": "The amount of heat that is [MASK] to make a substance one degree higher is called its heat capacity.",
+    "target_word": "NEEDED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      845,
+      15172,
+      6293,
+      12524,
+      5554,
+      7632
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "E",
+      "D",
+      "E",
+      "D"
+    ],
+    "source_title": "Temperature",
+    "source_url": "https://simple.wikipedia.org/wiki/Temperature",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_197",
+    "sentence": "Hot and [MASK] weather make one kind of soil.",
+    "target_word": "WET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13404,
+      17877,
+      16417
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "T"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_198",
+    "sentence": "In 1801, Joseph Marie Jacquard used [MASK] paper cards to tell his textile loom what kind of pattern to weave.",
+    "target_word": "PUNCHED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13874,
+      10507,
+      9466,
+      18178,
+      3739,
+      18199,
+      12474
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "N",
+      "C",
+      "H",
+      "E",
+      "D"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_199",
+    "sentence": "The defeat of Russia on the Eastern Front caused unrest there, which [MASK] to the Russian Revolutions.",
+    "target_word": "LED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12105,
+      11466,
+      15150
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_200",
+    "sentence": "A particle that is easier to move will [MASK] less heat for the same change in temperature.",
+    "target_word": "NEED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12772,
+      1851,
+      15107,
+      14018
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "E",
+      "D"
+    ],
+    "source_title": "Heat",
+    "source_url": "https://simple.wikipedia.org/wiki/Heat",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_201",
+    "sentence": "Bastet was the goddess of cats and so the Ancient Egyptians mummified cats in [MASK] honour.",
+    "target_word": "HER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17325,
+      17893,
+      17787
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "R"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_202",
+    "sentence": "The reaction will leave [MASK] liquid iron in the blast furnace, where it can be shaped and hardened after cooling down.",
+    "target_word": "PURE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      780,
+      11971,
+      17440,
+      18274
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "R",
+      "E"
+    ],
+    "source_title": "Iron",
+    "source_url": "https://simple.wikipedia.org/wiki/Iron",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_203",
+    "sentence": "No one can [MASK] when an earthquake will happen.",
+    "target_word": "TELL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10686,
+      17217,
+      16222,
+      53
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "L",
+      "L"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_204",
+    "sentence": "Often the causes are not known, [MASK] in the most general terms.",
+    "target_word": "EXCEPT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16887,
+      11973,
+      10385,
+      3410,
+      16781,
+      5974
+    ],
+    "char_labels": [
+      "E",
+      "X",
+      "C",
+      "E",
+      "P",
+      "T"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_205",
+    "sentence": "Since gold conducts electricity, gold jewelry should [MASK] be worn when working with electricity.",
+    "target_word": "NEVER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7381,
+      5654,
+      18427,
+      9279,
+      2077
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "V",
+      "E",
+      "R"
+    ],
+    "source_title": "Gold",
+    "source_url": "https://simple.wikipedia.org/wiki/Gold",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_206",
+    "sentence": "Russia wanted to [MASK] the war against Germany and just fight the Bolsheviks in the Russian Civil War.",
+    "target_word": "END",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      321,
+      18263,
+      4560
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "D"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_207",
+    "sentence": "A much easier way to approach is to draw an imaginary circle of radius r [MASK] at the origin.",
+    "target_word": "CENTERED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13997,
+      790,
+      16669,
+      12343,
+      4368,
+      16277,
+      5654,
+      18766
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "E",
+      "R",
+      "E",
+      "D"
+    ],
+    "source_title": "Circle",
+    "source_url": "https://simple.wikipedia.org/wiki/Circle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_208",
+    "sentence": "But there are many other ways to [MASK] leaders.",
+    "target_word": "ELECT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11530,
+      8144,
+      1343,
+      4548,
+      1168
+    ],
+    "char_labels": [
+      "E",
+      "L",
+      "E",
+      "C",
+      "T"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_209",
+    "sentence": "A battery is called a wet cell or [MASK] cell battery, depending on the type of electrolyte.",
+    "target_word": "DRY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15951,
+      1900,
+      2796
+    ],
+    "char_labels": [
+      "D",
+      "R",
+      "Y"
+    ],
+    "source_title": "Battery",
+    "source_url": "https://simple.wikipedia.org/wiki/Battery",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_210",
+    "sentence": "A book is a set of printed sheets of paper [MASK] together between two covers.",
+    "target_word": "HELD",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2235,
+      18478,
+      18335,
+      13782
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "D"
+    ],
+    "source_title": "Book",
+    "source_url": "https://simple.wikipedia.org/wiki/Book",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_211",
+    "sentence": "Such a pattern happened in the North Anatolian fault in [MASK] in the 20th century.",
+    "target_word": "TURKEY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1562,
+      9697,
+      17787,
+      1834,
+      15191,
+      511
+    ],
+    "char_labels": [
+      "T",
+      "U",
+      "R",
+      "K",
+      "E",
+      "Y"
+    ],
+    "source_title": "Earthquake",
+    "source_url": "https://simple.wikipedia.org/wiki/Earthquake",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_212",
+    "sentence": "Carbon is the fourth most common [MASK] in the sun.",
+    "target_word": "ELEMENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15437,
+      10689,
+      16924,
+      7935,
+      15148,
+      16156,
+      6302
+    ],
+    "char_labels": [
+      "E",
+      "L",
+      "E",
+      "M",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Carbon",
+    "source_url": "https://simple.wikipedia.org/wiki/Carbon",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_213",
+    "sentence": "When the host [MASK] has finished making more viruses, it undergoes lysis, or breaks apart.",
+    "target_word": "CELL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11319,
+      8868,
+      7975,
+      14987
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "L",
+      "L"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_214",
+    "sentence": "In [MASK] decades, the number of vaccines given throughout the world has increased dramatically.",
+    "target_word": "RECENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3848,
+      2190,
+      8691,
+      15729,
+      2998,
+      6502
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "C",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_215",
+    "sentence": "Jupiter is the biggest planet in the Solar System, while the smallest planet in the Solar System is [MASK].",
+    "target_word": "MERCURY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12749,
+      9185,
+      11294,
+      9727,
+      15420,
+      15994,
+      8687
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "R",
+      "C",
+      "U",
+      "R",
+      "Y"
+    ],
+    "source_title": "Planet",
+    "source_url": "https://simple.wikipedia.org/wiki/Planet",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_216",
+    "sentence": "Scientists are trying to make vaccines to [MASK] cure chronic infections, instead of only preventing disease.",
+    "target_word": "HELP",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8123,
+      5262,
+      8105,
+      15602
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "P"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_217",
+    "sentence": "The Karlsruhe Pyramid is in the [MASK] of the market square of Karlsruhe, Germany.",
+    "target_word": "CENTRE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9201,
+      13041,
+      7381,
+      13426,
+      12960,
+      10572
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "R",
+      "E"
+    ],
+    "source_title": "Pyramid",
+    "source_url": "https://simple.wikipedia.org/wiki/Pyramid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_218",
+    "sentence": "A book can be a [MASK] that is a part of a larger collection of texts.",
+    "target_word": "TEXT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17147,
+      16814,
+      2709,
+      4660
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "X",
+      "T"
+    ],
+    "source_title": "Book",
+    "source_url": "https://simple.wikipedia.org/wiki/Book",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_219",
+    "sentence": "Many people lose their [MASK] early because they do not do the right things to keep teeth healthy.",
+    "target_word": "TEETH",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17647,
+      7591,
+      5849,
+      15079,
+      11095
+    ],
+    "char_labels": [
+      "T",
+      "E",
+      "E",
+      "T",
+      "H"
+    ],
+    "source_title": "Tooth",
+    "source_url": "https://simple.wikipedia.org/wiki/Tooth",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_220",
+    "sentence": "On Earth, hydrogen is not usually found as a [MASK] gas because it is so light and reactive.",
+    "target_word": "PURE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2765,
+      1744,
+      14848,
+      14716
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "R",
+      "E"
+    ],
+    "source_title": "Hydrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Hydrogen",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_221",
+    "sentence": "If your face becomes [MASK], irritated, itchy, or flaky, you may have sensitive skin.",
+    "target_word": "RED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6157,
+      16525,
+      2563
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "D"
+    ],
+    "source_title": "Skin",
+    "source_url": "https://simple.wikipedia.org/wiki/Skin",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_222",
+    "sentence": "Many were [MASK] down to use as building stone.",
+    "target_word": "PULLED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16101,
+      1582,
+      12350,
+      15625,
+      11719,
+      14739
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "L",
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_223",
+    "sentence": "That is because experience has shown that readers [MASK] certain things for pleasurable reading.",
+    "target_word": "NEED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6393,
+      5499,
+      5088,
+      2411
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "E",
+      "D"
+    ],
+    "source_title": "Book",
+    "source_url": "https://simple.wikipedia.org/wiki/Book",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_224",
+    "sentence": "Direct democracies are not usually used to [MASK] countries.",
+    "target_word": "RUN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4659,
+      4497,
+      14246
+    ],
+    "char_labels": [
+      "R",
+      "U",
+      "N"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_225",
+    "sentence": "Rapid transit and trams were first built in the late 19th [MASK] to transport large numbers of people in and around cities.",
+    "target_word": "CENTURY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3716,
+      3190,
+      13533,
+      10472,
+      3971,
+      12909,
+      4174
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "U",
+      "R",
+      "Y"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_226",
+    "sentence": "There are no forests in deserts, just a [MASK] trees in places where their roots can get some underground water.",
+    "target_word": "FEW",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14875,
+      807,
+      11695
+    ],
+    "char_labels": [
+      "F",
+      "E",
+      "W"
+    ],
+    "source_title": "Forest",
+    "source_url": "https://simple.wikipedia.org/wiki/Forest",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_227",
+    "sentence": "In the early modern period, hospitals began to be [MASK] by donations from rich people and by governments.",
+    "target_word": "FUNDED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11399,
+      6924,
+      12855,
+      7431,
+      12360,
+      4260
+    ],
+    "char_labels": [
+      "F",
+      "U",
+      "N",
+      "D",
+      "E",
+      "D"
+    ],
+    "source_title": "Hospital",
+    "source_url": "https://simple.wikipedia.org/wiki/Hospital",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_228",
+    "sentence": "Nuclear reactions among the nuclei [MASK] to the present abundances of the lighter nuclei, particularly hydrogen, deuterium, and helium.",
+    "target_word": "LED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      11214,
+      14454,
+      18166
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_229",
+    "sentence": "If your skin feels tight and [MASK], you may have dry skin.",
+    "target_word": "DRY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7095,
+      8740,
+      9106
+    ],
+    "char_labels": [
+      "D",
+      "R",
+      "Y"
+    ],
+    "source_title": "Skin",
+    "source_url": "https://simple.wikipedia.org/wiki/Skin",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_230",
+    "sentence": "Evidence for lowered standards for examinations are disputed, but widely believed to be [MASK].",
+    "target_word": "TRUE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16196,
+      18020,
+      12216,
+      15729
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "U",
+      "E"
+    ],
+    "source_title": "School",
+    "source_url": "https://simple.wikipedia.org/wiki/School",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_231",
+    "sentence": "Wild flowers and ferns grow almost [MASK] in the spring.",
+    "target_word": "EVERYWHERE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1693,
+      14399,
+      15479,
+      12967,
+      10995,
+      17128,
+      11990,
+      16276,
+      3055,
+      12499
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "R",
+      "Y",
+      "W",
+      "H",
+      "E",
+      "R",
+      "E"
+    ],
+    "source_title": "Forest",
+    "source_url": "https://simple.wikipedia.org/wiki/Forest",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_232",
+    "sentence": "Soon other inventions were added, such as the making of cheaper paper by using wood [MASK] instead of rags.",
+    "target_word": "PULP",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8656,
+      16574,
+      16222,
+      15702
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "L",
+      "P"
+    ],
+    "source_title": "Printing press",
+    "source_url": "https://simple.wikipedia.org/wiki/Printing_press",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_233",
+    "sentence": "Large amounts of copper are [MASK] because of its high value and the increasing depletion of worldwide copper reserves.",
+    "target_word": "RECYCLED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3698,
+      9637,
+      9,
+      18436,
+      4523,
+      12217,
+      9471,
+      17130
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "C",
+      "Y",
+      "C",
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "Copper",
+    "source_url": "https://simple.wikipedia.org/wiki/Copper",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_234",
+    "sentence": "That is [MASK] they are also called polar deserts.",
+    "target_word": "WHY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15862,
+      14906,
+      12039
+    ],
+    "char_labels": [
+      "W",
+      "H",
+      "Y"
+    ],
+    "source_title": "Desert",
+    "source_url": "https://simple.wikipedia.org/wiki/Desert",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_235",
+    "sentence": "Carbon is a very important chemical [MASK], with a chemical symbol of C.",
+    "target_word": "ELEMENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2190,
+      17257,
+      1457,
+      8698,
+      7389,
+      7118,
+      18066
+    ],
+    "char_labels": [
+      "E",
+      "L",
+      "E",
+      "M",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Carbon",
+    "source_url": "https://simple.wikipedia.org/wiki/Carbon",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_236",
+    "sentence": "Before the late 20th [MASK] almost all maps were on paper.",
+    "target_word": "CENTURY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3865,
+      11340,
+      3993,
+      16844,
+      14209,
+      7243,
+      1658
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "U",
+      "R",
+      "Y"
+    ],
+    "source_title": "Map",
+    "source_url": "https://simple.wikipedia.org/wiki/Map",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_237",
+    "sentence": "The field also increases with the [MASK].",
+    "target_word": "CURRENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3134,
+      4472,
+      7135,
+      16193,
+      2190,
+      10178,
+      6661
+    ],
+    "char_labels": [
+      "C",
+      "U",
+      "R",
+      "R",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Magnet",
+    "source_url": "https://simple.wikipedia.org/wiki/Magnet",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_238",
+    "sentence": "That is [MASK] if there is a small scratch in the paint, the whole thing can rust.",
+    "target_word": "WHY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      907,
+      11543,
+      13310
+    ],
+    "char_labels": [
+      "W",
+      "H",
+      "Y"
+    ],
+    "source_title": "Iron",
+    "source_url": "https://simple.wikipedia.org/wiki/Iron",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_239",
+    "sentence": "The multiverse is not [MASK] a scientific idea because there is no way to test it.",
+    "target_word": "YET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18181,
+      10113,
+      6322
+    ],
+    "char_labels": [
+      "Y",
+      "E",
+      "T"
+    ],
+    "source_title": "Universe",
+    "source_url": "https://simple.wikipedia.org/wiki/Universe",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_240",
+    "sentence": "Edward [MASK] created the first vaccine in the 1770s.",
+    "target_word": "JENNER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15910,
+      4777,
+      12769,
+      17520,
+      49,
+      17265
+    ],
+    "char_labels": [
+      "J",
+      "E",
+      "N",
+      "N",
+      "E",
+      "R"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_241",
+    "sentence": "When they got out the [MASK] were heroes around the world.",
+    "target_word": "MEN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3933,
+      9200,
+      4831
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "N"
+    ],
+    "source_title": "Apollo 11",
+    "source_url": "https://simple.wikipedia.org/wiki/Apollo_11",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_242",
+    "sentence": "As time [MASK] on, computers were used more.",
+    "target_word": "WENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2781,
+      13312,
+      8456,
+      9890
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_243",
+    "sentence": "At the [MASK] of the Middle Ages, people started thinking math and engineering were more important.",
+    "target_word": "END",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9279,
+      13998,
+      18166
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "D"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_244",
+    "sentence": "In human [MASK], fire is often used as a symbol of destruction and anger.",
+    "target_word": "CULTURE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9458,
+      2838,
+      6097,
+      9709,
+      2007,
+      3874,
+      3982
+    ],
+    "char_labels": [
+      "C",
+      "U",
+      "L",
+      "T",
+      "U",
+      "R",
+      "E"
+    ],
+    "source_title": "Fire",
+    "source_url": "https://simple.wikipedia.org/wiki/Fire",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_245",
+    "sentence": "If the soil has too [MASK] glue the soil will be hard.",
+    "target_word": "MUCH",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18433,
+      7272,
+      16900,
+      10103
+    ],
+    "char_labels": [
+      "M",
+      "U",
+      "C",
+      "H"
+    ],
+    "source_title": "Soil",
+    "source_url": "https://simple.wikipedia.org/wiki/Soil",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_246",
+    "sentence": "The [MASK] pyramids of Moody Gardens in Galveston, Texas.",
+    "target_word": "THREE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9847,
+      17669,
+      12659,
+      4515,
+      5292
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Pyramid",
+    "source_url": "https://simple.wikipedia.org/wiki/Pyramid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_247",
+    "sentence": "The image can then be [MASK] to focus at a central point.",
+    "target_word": "REFLECTED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12137,
+      6,
+      2690,
+      1465,
+      13608,
+      7820,
+      191,
+      14205,
+      12599
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "F",
+      "L",
+      "E",
+      "C",
+      "T",
+      "E",
+      "D"
+    ],
+    "source_title": "Eye",
+    "source_url": "https://simple.wikipedia.org/wiki/Eye",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_248",
+    "sentence": "For the [MASK] two and a half hours Aldrin and Armstrong took notes, pictures and made holes to get moon rock.",
+    "target_word": "NEXT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13401,
+      3157,
+      16005,
+      3786
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "X",
+      "T"
+    ],
+    "source_title": "Apollo 11",
+    "source_url": "https://simple.wikipedia.org/wiki/Apollo_11",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_249",
+    "sentence": "Everything in a galaxy moves around a [MASK] of mass, which is also an effect of gravity.",
+    "target_word": "CENTRE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10242,
+      11074,
+      3993,
+      7233,
+      1103,
+      9124
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "R",
+      "E"
+    ],
+    "source_title": "Galaxy",
+    "source_url": "https://simple.wikipedia.org/wiki/Galaxy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_250",
+    "sentence": "However, Germany could not quickly invade France directly because France had [MASK] so many forts on the border.",
+    "target_word": "PUT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13059,
+      5726,
+      10472
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "T"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_251",
+    "sentence": "Several Roman states took pieces of the [MASK] empire.",
+    "target_word": "REDUCED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17888,
+      4466,
+      5845,
+      2175,
+      9824,
+      3982,
+      15951
+    ],
+    "char_labels": [
+      "R",
+      "E",
+      "D",
+      "U",
+      "C",
+      "E",
+      "D"
+    ],
+    "source_title": "Ancient Rome",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Rome",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_252",
+    "sentence": "Dictionaries need to be updated [MASK] because of the way language changes.",
+    "target_word": "FREQUENTLY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5609,
+      12075,
+      3633,
+      6463,
+      3047,
+      10949,
+      451,
+      1725,
+      9541,
+      10164
+    ],
+    "char_labels": [
+      "F",
+      "R",
+      "E",
+      "Q",
+      "U",
+      "E",
+      "N",
+      "T",
+      "L",
+      "Y"
+    ],
+    "source_title": "Dictionary",
+    "source_url": "https://simple.wikipedia.org/wiki/Dictionary",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_253",
+    "sentence": "An average surgical resident works 75 hours per [MASK].",
+    "target_word": "WEEK",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6470,
+      8200,
+      8067,
+      14602
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "E",
+      "K"
+    ],
+    "source_title": "Medicine",
+    "source_url": "https://simple.wikipedia.org/wiki/Medicine",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_254",
+    "sentence": "Hieratic was always written from right to [MASK], usually in horizontal rows.",
+    "target_word": "LEFT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8129,
+      16325,
+      4080,
+      4179
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "F",
+      "T"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_255",
+    "sentence": "The common cheap supply of paper [MASK] the faster printing machines, and books became cheaper.",
+    "target_word": "FED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8542,
+      1686,
+      12930
+    ],
+    "char_labels": [
+      "F",
+      "E",
+      "D"
+    ],
+    "source_title": "Book",
+    "source_url": "https://simple.wikipedia.org/wiki/Book",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_256",
+    "sentence": "Carbon can even form [MASK] bonds with another atom, called a triple bond.",
+    "target_word": "THREE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7942,
+      6847,
+      9750,
+      1686,
+      7328
+    ],
+    "char_labels": [
+      "T",
+      "H",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Carbon",
+    "source_url": "https://simple.wikipedia.org/wiki/Carbon",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_257",
+    "sentence": "People use calendars to say when something happened, and for planning things that have not happened [MASK].",
+    "target_word": "YET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18393,
+      11807,
+      11013
+    ],
+    "char_labels": [
+      "Y",
+      "E",
+      "T"
+    ],
+    "source_title": "Calendar",
+    "source_url": "https://simple.wikipedia.org/wiki/Calendar",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_258",
+    "sentence": "Usually a train needs a driver to make it run [MASK], but a few are run by computer.",
+    "target_word": "WELL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9741,
+      9069,
+      17727,
+      17579
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "L",
+      "L"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_259",
+    "sentence": "When comparing a computer to a human body, the [MASK] is like a brain.",
+    "target_word": "CPU",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7280,
+      16826,
+      1589
+    ],
+    "char_labels": [
+      "C",
+      "P",
+      "U"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_260",
+    "sentence": "To test this idea, [MASK] gave a boy cowpox.",
+    "target_word": "JENNER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6386,
+      5661,
+      12924,
+      10917,
+      9149,
+      4406
+    ],
+    "char_labels": [
+      "J",
+      "E",
+      "N",
+      "N",
+      "E",
+      "R"
+    ],
+    "source_title": "Vaccine",
+    "source_url": "https://simple.wikipedia.org/wiki/Vaccine",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_261",
+    "sentence": "Africa south of the Sahara desert and Australia did not have the wheel until people there [MASK] people from Europe.",
+    "target_word": "MET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9833,
+      5109,
+      9709
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "T"
+    ],
+    "source_title": "Wheel",
+    "source_url": "https://simple.wikipedia.org/wiki/Wheel",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_262",
+    "sentence": "The same is [MASK] of many chitons.",
+    "target_word": "TRUE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      6416,
+      16277,
+      14318,
+      3396
+    ],
+    "char_labels": [
+      "T",
+      "R",
+      "U",
+      "E"
+    ],
+    "source_title": "Eye",
+    "source_url": "https://simple.wikipedia.org/wiki/Eye",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_263",
+    "sentence": "Silver can be alloyed with gold, copper, zinc, cadmium, tin, nickel, lead, bismuth, germanium, and [MASK].",
+    "target_word": "MERCURY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17883,
+      12397,
+      6043,
+      9757,
+      3722,
+      1048,
+      8257
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "R",
+      "C",
+      "U",
+      "R",
+      "Y"
+    ],
+    "source_title": "Silver",
+    "source_url": "https://simple.wikipedia.org/wiki/Silver",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_264",
+    "sentence": "In 1000 AD, the Byzantine Empire had its largest area, and its [MASK] and trade flourished.",
+    "target_word": "CULTURE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14307,
+      6683,
+      7215,
+      18628,
+      18572,
+      8393,
+      1023
+    ],
+    "char_labels": [
+      "C",
+      "U",
+      "L",
+      "T",
+      "U",
+      "R",
+      "E"
+    ],
+    "source_title": "Ancient Rome",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Rome",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_265",
+    "sentence": "And this certainly has to be the most historic telephone call [MASK] made.",
+    "target_word": "EVER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12928,
+      13563,
+      17238,
+      17787
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "R"
+    ],
+    "source_title": "Apollo 11",
+    "source_url": "https://simple.wikipedia.org/wiki/Apollo_11",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_266",
+    "sentence": "The Analytical Engine contained an Arithmetic Logic Unit, basic flow control, [MASK] cards, and integrated memory.",
+    "target_word": "PUNCHED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      12528,
+      2019,
+      4513,
+      12831,
+      11292,
+      8360,
+      7738
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "N",
+      "C",
+      "H",
+      "E",
+      "D"
+    ],
+    "source_title": "Computer",
+    "source_url": "https://simple.wikipedia.org/wiki/Computer",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_267",
+    "sentence": "When the rocket was sent to space it was a worldwide [MASK].",
+    "target_word": "EVENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13454,
+      7950,
+      2910,
+      18194,
+      6673
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Apollo 11",
+    "source_url": "https://simple.wikipedia.org/wiki/Apollo_11",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_268",
+    "sentence": "When two air masses of different temperatures [MASK], this is called a warm front or cold front.",
+    "target_word": "MEET",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5206,
+      1479,
+      9069,
+      18386
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "E",
+      "T"
+    ],
+    "source_title": "Weather",
+    "source_url": "https://simple.wikipedia.org/wiki/Weather",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_269",
+    "sentence": "The ancient Egyptian pyramids are very [MASK] built.",
+    "target_word": "WELL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2933,
+      4602,
+      3842,
+      2090
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "L",
+      "L"
+    ],
+    "source_title": "Pyramid",
+    "source_url": "https://simple.wikipedia.org/wiki/Pyramid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_270",
+    "sentence": "The cell then bursts open, spreading the [MASK] created viruses.",
+    "target_word": "NEWLY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10746,
+      5654,
+      14410,
+      7367,
+      11958
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "W",
+      "L",
+      "Y"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_271",
+    "sentence": "The Great Pyramid, at Giza, is the largest and most famous pyramid and was built for Pharaoh [MASK].",
+    "target_word": "KHUFU",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1555,
+      5769,
+      7475,
+      1149,
+      7666
+    ],
+    "char_labels": [
+      "K",
+      "H",
+      "U",
+      "F",
+      "U"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": false
+  },
+  {
+    "id": "test_272",
+    "sentence": "Until the 1990s, people only [MASK] the planets in the Solar System.",
+    "target_word": "KNEW",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9288,
+      7222,
+      9975,
+      15617
+    ],
+    "char_labels": [
+      "K",
+      "N",
+      "E",
+      "W"
+    ],
+    "source_title": "Planet",
+    "source_url": "https://simple.wikipedia.org/wiki/Planet",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_273",
+    "sentence": "A [MASK] cell joins hydrogen with an oxygen molecule, releasing an electron as electricity.",
+    "target_word": "FUEL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14622,
+      344,
+      12087,
+      16557
+    ],
+    "char_labels": [
+      "F",
+      "U",
+      "E",
+      "L"
+    ],
+    "source_title": "Hydrogen",
+    "source_url": "https://simple.wikipedia.org/wiki/Hydrogen",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_274",
+    "sentence": "For example, when choosing a [MASK] for a trial.",
+    "target_word": "JURY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      16363,
+      5989,
+      14287,
+      15056
+    ],
+    "char_labels": [
+      "J",
+      "U",
+      "R",
+      "Y"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_275",
+    "sentence": "Centennial means something that happens [MASK] 100 years, or that lasts 100 years.",
+    "target_word": "EVERY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7163,
+      16621,
+      11842,
+      13749,
+      14211
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "R",
+      "Y"
+    ],
+    "source_title": "Century",
+    "source_url": "https://simple.wikipedia.org/wiki/Century",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_276",
+    "sentence": "The amount of ions that get released [MASK] molecule will determine if the acid is weak or strong.",
+    "target_word": "PER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14611,
+      18205,
+      15626
+    ],
+    "char_labels": [
+      "P",
+      "E",
+      "R"
+    ],
+    "source_title": "Acid",
+    "source_url": "https://simple.wikipedia.org/wiki/Acid",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_277",
+    "sentence": "Some websites and tools are [MASK], while others may show ads to earn money.",
+    "target_word": "FREE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8707,
+      10155,
+      12229,
+      16519
+    ],
+    "char_labels": [
+      "F",
+      "R",
+      "E",
+      "E"
+    ],
+    "source_title": "Internet",
+    "source_url": "https://simple.wikipedia.org/wiki/Internet",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_278",
+    "sentence": "The saliva can not do that if there is a continuous food film being [MASK] on to the teeth.",
+    "target_word": "PUT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7318,
+      5897,
+      13800
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "T"
+    ],
+    "source_title": "Tooth",
+    "source_url": "https://simple.wikipedia.org/wiki/Tooth",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_279",
+    "sentence": "Plants have a rigid [MASK] wall made of cellulose, and fungi one of chitin.",
+    "target_word": "CELL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      18049,
+      17217,
+      3201,
+      17257
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "L",
+      "L"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_280",
+    "sentence": "Farming in Egypt [MASK] on the cycle of the Nile.",
+    "target_word": "DEPENDED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14911,
+      2989,
+      130,
+      3982,
+      17307,
+      14402,
+      11336,
+      12213
+    ],
+    "char_labels": [
+      "D",
+      "E",
+      "P",
+      "E",
+      "N",
+      "D",
+      "E",
+      "D"
+    ],
+    "source_title": "Ancient Egypt",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_281",
+    "sentence": "Silver was also used to [MASK] infections and decay.",
+    "target_word": "PREVENT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      8046,
+      16851,
+      2989,
+      5583,
+      3938,
+      16182,
+      10482
+    ],
+    "char_labels": [
+      "P",
+      "R",
+      "E",
+      "V",
+      "E",
+      "N",
+      "T"
+    ],
+    "source_title": "Silver",
+    "source_url": "https://simple.wikipedia.org/wiki/Silver",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_282",
+    "sentence": "In the 1930s, the US president started sending a message about the country every [MASK] to the American people.",
+    "target_word": "WEEK",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13142,
+      17355,
+      3763,
+      18395
+    ],
+    "char_labels": [
+      "W",
+      "E",
+      "E",
+      "K"
+    ],
+    "source_title": "Radio",
+    "source_url": "https://simple.wikipedia.org/wiki/Radio",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_283",
+    "sentence": "Solar calendars ignore the moon, and [MASK] entirely on the Sun.",
+    "target_word": "DEPEND",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2563,
+      14423,
+      13555,
+      15746,
+      2935,
+      18046
+    ],
+    "char_labels": [
+      "D",
+      "E",
+      "P",
+      "E",
+      "N",
+      "D"
+    ],
+    "source_title": "Calendar",
+    "source_url": "https://simple.wikipedia.org/wiki/Calendar",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_284",
+    "sentence": "From the 1950s the aeroplane became a better way for people to go to some places that were [MASK] away.",
+    "target_word": "FURTHER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14927,
+      2083,
+      10137,
+      15371,
+      8613,
+      7417,
+      4659
+    ],
+    "char_labels": [
+      "F",
+      "U",
+      "R",
+      "T",
+      "H",
+      "E",
+      "R"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_285",
+    "sentence": "Viruses are [MASK] in the environment, and all organisms can be infected by them.",
+    "target_word": "EVERYWHERE",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10409,
+      18651,
+      11615,
+      13127,
+      14712,
+      15082,
+      7572,
+      14746,
+      5494,
+      11366
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "R",
+      "Y",
+      "W",
+      "H",
+      "E",
+      "R",
+      "E"
+    ],
+    "source_title": "Virus",
+    "source_url": "https://simple.wikipedia.org/wiki/Virus",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_286",
+    "sentence": "In many parts of the world, schools also [MASK] children learn things about life.",
+    "target_word": "HELP",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      5082,
+      17895,
+      13887,
+      11144
+    ],
+    "char_labels": [
+      "H",
+      "E",
+      "L",
+      "P"
+    ],
+    "source_title": "School",
+    "source_url": "https://simple.wikipedia.org/wiki/School",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_287",
+    "sentence": "Silver is less reactive than most other metals, because of its [MASK] 4d shell.",
+    "target_word": "FULL",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      9312,
+      10294,
+      14500,
+      5331
+    ],
+    "char_labels": [
+      "F",
+      "U",
+      "L",
+      "L"
+    ],
+    "source_title": "Silver",
+    "source_url": "https://simple.wikipedia.org/wiki/Silver",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_288",
+    "sentence": "New digital clocks can [MASK] correct themselves using the internet or radio signals.",
+    "target_word": "EVEN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      15942,
+      5170,
+      2793,
+      13803
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "N"
+    ],
+    "source_title": "Clock",
+    "source_url": "https://simple.wikipedia.org/wiki/Clock",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_289",
+    "sentence": "Over the [MASK] century, the Arabs also captured southern Italy and Sicily.",
+    "target_word": "NEXT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13329,
+      6310,
+      12208,
+      13744
+    ],
+    "char_labels": [
+      "N",
+      "E",
+      "X",
+      "T"
+    ],
+    "source_title": "Ancient Rome",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Rome",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_290",
+    "sentence": "Now only copper and sulfide are [MASK].",
+    "target_word": "LEFT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14934,
+      18199,
+      16546,
+      8557
+    ],
+    "char_labels": [
+      "L",
+      "E",
+      "F",
+      "T"
+    ],
+    "source_title": "Copper",
+    "source_url": "https://simple.wikipedia.org/wiki/Copper",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_291",
+    "sentence": "Also in 1917, the United States [MASK] the war, but it took a year for most of its army to arrive.",
+    "target_word": "ENTERED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      4455,
+      1830,
+      11013,
+      12499,
+      12659,
+      182,
+      13460
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "T",
+      "E",
+      "R",
+      "E",
+      "D"
+    ],
+    "source_title": "World War I",
+    "source_url": "https://simple.wikipedia.org/wiki/World_War_I",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_292",
+    "sentence": "Airplanes [MASK] between many cities all over the world, carrying people and cargo.",
+    "target_word": "FLY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      14875,
+      13420,
+      9931
+    ],
+    "char_labels": [
+      "F",
+      "L",
+      "Y"
+    ],
+    "source_title": "Airplane",
+    "source_url": "https://simple.wikipedia.org/wiki/Airplane",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_293",
+    "sentence": "The state [MASK] of the Roman Empire became the state religion of the empire.",
+    "target_word": "CHURCH",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      142,
+      8778,
+      12182,
+      10378,
+      10385,
+      9399
+    ],
+    "char_labels": [
+      "C",
+      "H",
+      "U",
+      "R",
+      "C",
+      "H"
+    ],
+    "source_title": "Ancient Rome",
+    "source_url": "https://simple.wikipedia.org/wiki/Ancient_Rome",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_294",
+    "sentence": "All points on the edge of the circle are at the same distance from the [MASK].",
+    "target_word": "CENTER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      10073,
+      6173,
+      10746,
+      5798,
+      9637,
+      7245
+    ],
+    "char_labels": [
+      "C",
+      "E",
+      "N",
+      "T",
+      "E",
+      "R"
+    ],
+    "source_title": "Circle",
+    "source_url": "https://simple.wikipedia.org/wiki/Circle",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_295",
+    "sentence": "Before steam trains there were wagonways where horses and people [MASK] cars over tracks made of stone and wood.",
+    "target_word": "PULLED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      13725,
+      17042,
+      12339,
+      3109,
+      12617,
+      6425
+    ],
+    "char_labels": [
+      "P",
+      "U",
+      "L",
+      "L",
+      "E",
+      "D"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_296",
+    "sentence": "In a direct democracy, [MASK] adult has the right to vote on individual laws.",
+    "target_word": "EVERY",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      1080,
+      3332,
+      18724,
+      7616,
+      4021
+    ],
+    "char_labels": [
+      "E",
+      "V",
+      "E",
+      "R",
+      "Y"
+    ],
+    "source_title": "Democracy",
+    "source_url": "https://simple.wikipedia.org/wiki/Democracy",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_297",
+    "sentence": "The Renaissance is a period in European history that followed the Middle Ages and [MASK] in the 17th century.",
+    "target_word": "ENDED",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      2517,
+      12110,
+      14556,
+      6879,
+      2317
+    ],
+    "char_labels": [
+      "E",
+      "N",
+      "D",
+      "E",
+      "D"
+    ],
+    "source_title": "Renaissance",
+    "source_url": "https://simple.wikipedia.org/wiki/Renaissance",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_298",
+    "sentence": "In algebra, there are a few rules that can be used for [MASK] understanding of equations.",
+    "target_word": "FURTHER",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      7006,
+      12675,
+      2077,
+      5593,
+      55,
+      9124,
+      2903
+    ],
+    "char_labels": [
+      "F",
+      "U",
+      "R",
+      "T",
+      "H",
+      "E",
+      "R"
+    ],
+    "source_title": "Algebra",
+    "source_url": "https://simple.wikipedia.org/wiki/Algebra",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_299",
+    "sentence": "When it snows, the snow will [MASK] a little during the daytime and freeze again at night.",
+    "target_word": "MELT",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      3754,
+      2132,
+      13887,
+      9444
+    ],
+    "char_labels": [
+      "M",
+      "E",
+      "L",
+      "T"
+    ],
+    "source_title": "Snow",
+    "source_url": "https://simple.wikipedia.org/wiki/Snow",
+    "in_lexicon": true
+  },
+  {
+    "id": "test_300",
+    "sentence": "The steam engine was the main way to [MASK] trains until the 1960s, when many countries stopped using them.",
+    "target_word": "RUN",
+    "difficulty": "easy",
+    "emnist_split": "test",
+    "emnist_indices": [
+      17787,
+      7192,
+      4007
+    ],
+    "char_labels": [
+      "R",
+      "U",
+      "N"
+    ],
+    "source_title": "Train",
+    "source_url": "https://simple.wikipedia.org/wiki/Train",
+    "in_lexicon": true
+  }
+]

@@ -1,0 +1,1335 @@
+{
+  "sources": [
+    {
+      "split": "train",
+      "source_type": "gutenberg",
+      "title": "Pride and Prejudice",
+      "url": "https://gutenberg.pglaf.org/1/3/4/1342/1342-0.txt",
+      "word_count": 128706,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "train",
+      "source_type": "gutenberg",
+      "title": "Frankenstein",
+      "url": "https://gutenberg.pglaf.org/8/84/84-0.txt",
+      "word_count": 75394,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "train",
+      "source_type": "gutenberg",
+      "title": "The Adventures of Sherlock Holmes",
+      "url": "https://gutenberg.pglaf.org/1/6/6/1661/1661-0.txt",
+      "word_count": 109148,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "train",
+      "source_type": "gutenberg",
+      "title": "Alice's Adventures in Wonderland",
+      "url": "https://gutenberg.pglaf.org/1/11/11-0.txt",
+      "word_count": 27429,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "train",
+      "source_type": "gutenberg",
+      "title": "On the Origin of Species",
+      "url": "https://gutenberg.pglaf.org/1/2/2/1228/1228-0.txt",
+      "word_count": 157186,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "train",
+      "source_type": "gutenberg",
+      "title": "Dracula",
+      "url": "https://gutenberg.pglaf.org/3/4/345/345-0.txt",
+      "word_count": 163669,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "dev",
+      "source_type": "gutenberg",
+      "title": "The Strange Case of Dr Jekyll and Mr Hyde",
+      "url": "https://gutenberg.pglaf.org/4/43/43-0.txt",
+      "word_count": 25972,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "dev",
+      "source_type": "gutenberg",
+      "title": "The Call of the Wild",
+      "url": "https://gutenberg.pglaf.org/2/1/215/215-0.txt",
+      "word_count": 32433,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "gutenberg",
+      "title": "The Time Machine",
+      "url": "https://gutenberg.pglaf.org/3/35/35-0.txt",
+      "word_count": 32896,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "gutenberg",
+      "title": "The War of the Worlds",
+      "url": "https://gutenberg.pglaf.org/3/36/36-0.txt",
+      "word_count": 61018,
+      "license": "Public Domain (Project Gutenberg)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Science",
+      "url": "https://en.wikipedia.org/wiki/Science",
+      "word_count": 7032,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Physics",
+      "url": "https://en.wikipedia.org/wiki/Physics",
+      "word_count": 5342,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Chemistry",
+      "url": "https://en.wikipedia.org/wiki/Chemistry",
+      "word_count": 6790,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Biology",
+      "url": "https://en.wikipedia.org/wiki/Biology",
+      "word_count": 1647,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Astronomy",
+      "url": "https://en.wikipedia.org/wiki/Astronomy",
+      "word_count": 4397,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Solar System",
+      "url": "https://en.wikipedia.org/wiki/Solar_System",
+      "word_count": 10223,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Gravity",
+      "url": "https://en.wikipedia.org/wiki/Gravity",
+      "word_count": 5935,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Oxygen",
+      "url": "https://en.wikipedia.org/wiki/Oxygen",
+      "word_count": 7773,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Photosynthesis",
+      "url": "https://en.wikipedia.org/wiki/Photosynthesis",
+      "word_count": 7392,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Electricity",
+      "url": "https://en.wikipedia.org/wiki/Electricity",
+      "word_count": 6783,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Atom",
+      "url": "https://en.wikipedia.org/wiki/Atom",
+      "word_count": 8757,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Water",
+      "url": "https://en.wikipedia.org/wiki/Water",
+      "word_count": 11077,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Earth",
+      "url": "https://en.wikipedia.org/wiki/Earth",
+      "word_count": 9611,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Atmosphere",
+      "url": "https://en.wikipedia.org/wiki/Atmosphere",
+      "word_count": 4177,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "DNA",
+      "url": "https://en.wikipedia.org/wiki/DNA",
+      "word_count": 9277,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Periodic table",
+      "url": "https://en.wikipedia.org/wiki/Periodic_table",
+      "word_count": 15442,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "World War II",
+      "url": "https://en.wikipedia.org/wiki/World_War_II",
+      "word_count": 13039,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Mathematics",
+      "url": "https://en.wikipedia.org/wiki/Mathematics",
+      "word_count": 8191,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Light",
+      "url": "https://en.wikipedia.org/wiki/Light",
+      "word_count": 5141,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Energy",
+      "url": "https://en.wikipedia.org/wiki/Energy",
+      "word_count": 6714,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Evolution",
+      "url": "https://en.wikipedia.org/wiki/Evolution",
+      "word_count": 10654,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Volcano",
+      "url": "https://en.wikipedia.org/wiki/Volcano",
+      "word_count": 7634,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Ocean",
+      "url": "https://en.wikipedia.org/wiki/Ocean",
+      "word_count": 9368,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "train",
+      "source_type": "en.wikipedia",
+      "title": "Climate",
+      "url": "https://en.wikipedia.org/wiki/Climate",
+      "word_count": 2279,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Thermodynamics",
+      "url": "https://en.wikipedia.org/wiki/Thermodynamics",
+      "word_count": 4734,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Magnetism",
+      "url": "https://en.wikipedia.org/wiki/Magnetism",
+      "word_count": 4605,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Cell (biology)",
+      "url": "https://en.wikipedia.org/wiki/Cell_%28biology%29",
+      "word_count": 5961,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Plate tectonics",
+      "url": "https://en.wikipedia.org/wiki/Plate_tectonics",
+      "word_count": 9221,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Sound",
+      "url": "https://en.wikipedia.org/wiki/Sound",
+      "word_count": 3115,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Glacier",
+      "url": "https://en.wikipedia.org/wiki/Glacier",
+      "word_count": 7002,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Ecosystem",
+      "url": "https://en.wikipedia.org/wiki/Ecosystem",
+      "word_count": 4659,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "dev",
+      "source_type": "en.wikipedia",
+      "title": "Rocket",
+      "url": "https://en.wikipedia.org/wiki/Rocket",
+      "word_count": 8208,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Quantum mechanics",
+      "url": "https://en.wikipedia.org/wiki/Quantum_mechanics",
+      "word_count": 6875,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Genetics",
+      "url": "https://en.wikipedia.org/wiki/Genetics",
+      "word_count": 6311,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Electromagnetism",
+      "url": "https://en.wikipedia.org/wiki/Electromagnetism",
+      "word_count": 2764,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Mineral",
+      "url": "https://en.wikipedia.org/wiki/Mineral",
+      "word_count": 11028,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Neuron",
+      "url": "https://en.wikipedia.org/wiki/Neuron",
+      "word_count": 6449,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Fossil",
+      "url": "https://en.wikipedia.org/wiki/Fossil",
+      "word_count": 6924,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Telescope",
+      "url": "https://en.wikipedia.org/wiki/Telescope",
+      "word_count": 2065,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "ppl_test",
+      "source_type": "en.wikipedia",
+      "title": "Microscope",
+      "url": "https://en.wikipedia.org/wiki/Microscope",
+      "word_count": 3007,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Plant",
+      "url": "https://simple.wikipedia.org/wiki/Plant",
+      "word_count": 1335,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Animal",
+      "url": "https://simple.wikipedia.org/wiki/Animal",
+      "word_count": 450,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Sun",
+      "url": "https://simple.wikipedia.org/wiki/Sun",
+      "word_count": 2064,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Moon",
+      "url": "https://simple.wikipedia.org/wiki/Moon",
+      "word_count": 1492,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Star",
+      "url": "https://simple.wikipedia.org/wiki/Star",
+      "word_count": 1806,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Rain",
+      "url": "https://simple.wikipedia.org/wiki/Rain",
+      "word_count": 421,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "River",
+      "url": "https://simple.wikipedia.org/wiki/River",
+      "word_count": 1395,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Mountain",
+      "url": "https://simple.wikipedia.org/wiki/Mountain",
+      "word_count": 1031,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Metal",
+      "url": "https://simple.wikipedia.org/wiki/Metal",
+      "word_count": 1208,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Glass",
+      "url": "https://simple.wikipedia.org/wiki/Glass",
+      "word_count": 404,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Salt",
+      "url": "https://simple.wikipedia.org/wiki/Salt",
+      "word_count": 463,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Sugar",
+      "url": "https://simple.wikipedia.org/wiki/Sugar",
+      "word_count": 711,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Heart",
+      "url": "https://simple.wikipedia.org/wiki/Heart",
+      "word_count": 1289,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Brain",
+      "url": "https://simple.wikipedia.org/wiki/Brain",
+      "word_count": 1036,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Blood",
+      "url": "https://simple.wikipedia.org/wiki/Blood",
+      "word_count": 873,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Bone",
+      "url": "https://simple.wikipedia.org/wiki/Bone",
+      "word_count": 322,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Tree",
+      "url": "https://simple.wikipedia.org/wiki/Tree",
+      "word_count": 2970,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Flower",
+      "url": "https://simple.wikipedia.org/wiki/Flower",
+      "word_count": 903,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Bird",
+      "url": "https://simple.wikipedia.org/wiki/Bird",
+      "word_count": 5925,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Fish",
+      "url": "https://simple.wikipedia.org/wiki/Fish",
+      "word_count": 1645,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Cloud",
+      "url": "https://simple.wikipedia.org/wiki/Cloud",
+      "word_count": 1038,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_dev",
+      "source_type": "simple.wikipedia",
+      "title": "Wind",
+      "url": "https://simple.wikipedia.org/wiki/Wind",
+      "word_count": 813,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Planet",
+      "url": "https://simple.wikipedia.org/wiki/Planet",
+      "word_count": 655,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Galaxy",
+      "url": "https://simple.wikipedia.org/wiki/Galaxy",
+      "word_count": 1047,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Universe",
+      "url": "https://simple.wikipedia.org/wiki/Universe",
+      "word_count": 3467,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Earthquake",
+      "url": "https://simple.wikipedia.org/wiki/Earthquake",
+      "word_count": 1183,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Desert",
+      "url": "https://simple.wikipedia.org/wiki/Desert",
+      "word_count": 746,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Forest",
+      "url": "https://simple.wikipedia.org/wiki/Forest",
+      "word_count": 955,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Ice",
+      "url": "https://simple.wikipedia.org/wiki/Ice",
+      "word_count": 568,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Fire",
+      "url": "https://simple.wikipedia.org/wiki/Fire",
+      "word_count": 765,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Heat",
+      "url": "https://simple.wikipedia.org/wiki/Heat",
+      "word_count": 481,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Force",
+      "url": "https://simple.wikipedia.org/wiki/Force",
+      "word_count": 724,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Magnet",
+      "url": "https://simple.wikipedia.org/wiki/Magnet",
+      "word_count": 571,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Battery",
+      "url": "https://simple.wikipedia.org/wiki/Battery",
+      "word_count": 946,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Computer",
+      "url": "https://simple.wikipedia.org/wiki/Computer",
+      "word_count": 3237,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Internet",
+      "url": "https://simple.wikipedia.org/wiki/Internet",
+      "word_count": 889,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Airplane",
+      "url": "https://simple.wikipedia.org/wiki/Airplane",
+      "word_count": 560,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Train",
+      "url": "https://simple.wikipedia.org/wiki/Train",
+      "word_count": 1279,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Bridge",
+      "url": "https://simple.wikipedia.org/wiki/Bridge",
+      "word_count": 150,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Clock",
+      "url": "https://simple.wikipedia.org/wiki/Clock",
+      "word_count": 866,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Calendar",
+      "url": "https://simple.wikipedia.org/wiki/Calendar",
+      "word_count": 355,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Year",
+      "url": "https://simple.wikipedia.org/wiki/Year",
+      "word_count": 374,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Century",
+      "url": "https://simple.wikipedia.org/wiki/Century",
+      "word_count": 98,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "History",
+      "url": "https://simple.wikipedia.org/wiki/History",
+      "word_count": 324,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Geography",
+      "url": "https://simple.wikipedia.org/wiki/Geography",
+      "word_count": 511,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Map",
+      "url": "https://simple.wikipedia.org/wiki/Map",
+      "word_count": 215,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Continent",
+      "url": "https://simple.wikipedia.org/wiki/Continent",
+      "word_count": 728,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Europe",
+      "url": "https://simple.wikipedia.org/wiki/Europe",
+      "word_count": 644,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Asia",
+      "url": "https://simple.wikipedia.org/wiki/Asia",
+      "word_count": 351,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Africa",
+      "url": "https://simple.wikipedia.org/wiki/Africa",
+      "word_count": 1254,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Human skeleton",
+      "url": "https://simple.wikipedia.org/wiki/Human_skeleton",
+      "word_count": 272,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Muscle",
+      "url": "https://simple.wikipedia.org/wiki/Muscle",
+      "word_count": 583,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Lung",
+      "url": "https://simple.wikipedia.org/wiki/Lung",
+      "word_count": 420,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Stomach",
+      "url": "https://simple.wikipedia.org/wiki/Stomach",
+      "word_count": 228,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Eye",
+      "url": "https://simple.wikipedia.org/wiki/Eye",
+      "word_count": 1536,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Ear",
+      "url": "https://simple.wikipedia.org/wiki/Ear",
+      "word_count": 272,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Skin",
+      "url": "https://simple.wikipedia.org/wiki/Skin",
+      "word_count": 382,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Tooth",
+      "url": "https://simple.wikipedia.org/wiki/Tooth",
+      "word_count": 794,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Seed",
+      "url": "https://simple.wikipedia.org/wiki/Seed",
+      "word_count": 825,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Leaf",
+      "url": "https://simple.wikipedia.org/wiki/Leaf",
+      "word_count": 1293,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Root",
+      "url": "https://simple.wikipedia.org/wiki/Root",
+      "word_count": 698,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Soil",
+      "url": "https://simple.wikipedia.org/wiki/Soil",
+      "word_count": 1650,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Rock",
+      "url": "https://simple.wikipedia.org/wiki/Rock",
+      "word_count": 36,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Gold",
+      "url": "https://simple.wikipedia.org/wiki/Gold",
+      "word_count": 1188,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Iron",
+      "url": "https://simple.wikipedia.org/wiki/Iron",
+      "word_count": 1720,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Copper",
+      "url": "https://simple.wikipedia.org/wiki/Copper",
+      "word_count": 1105,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Silver",
+      "url": "https://simple.wikipedia.org/wiki/Silver",
+      "word_count": 775,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Carbon",
+      "url": "https://simple.wikipedia.org/wiki/Carbon",
+      "word_count": 712,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Nitrogen",
+      "url": "https://simple.wikipedia.org/wiki/Nitrogen",
+      "word_count": 727,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Hydrogen",
+      "url": "https://simple.wikipedia.org/wiki/Hydrogen",
+      "word_count": 2972,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Acid",
+      "url": "https://simple.wikipedia.org/wiki/Acid",
+      "word_count": 882,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Temperature",
+      "url": "https://simple.wikipedia.org/wiki/Temperature",
+      "word_count": 619,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Thermometer",
+      "url": "https://simple.wikipedia.org/wiki/Thermometer",
+      "word_count": 428,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Compass",
+      "url": "https://simple.wikipedia.org/wiki/Compass",
+      "word_count": 62,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Wheel",
+      "url": "https://simple.wikipedia.org/wiki/Wheel",
+      "word_count": 243,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Paper",
+      "url": "https://simple.wikipedia.org/wiki/Paper",
+      "word_count": 949,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Book",
+      "url": "https://simple.wikipedia.org/wiki/Book",
+      "word_count": 1071,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "School",
+      "url": "https://simple.wikipedia.org/wiki/School",
+      "word_count": 1001,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Library",
+      "url": "https://simple.wikipedia.org/wiki/Library",
+      "word_count": 915,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Hospital",
+      "url": "https://simple.wikipedia.org/wiki/Hospital",
+      "word_count": 268,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Medicine",
+      "url": "https://simple.wikipedia.org/wiki/Medicine",
+      "word_count": 1226,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Vaccine",
+      "url": "https://simple.wikipedia.org/wiki/Vaccine",
+      "word_count": 1976,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Virus",
+      "url": "https://simple.wikipedia.org/wiki/Virus",
+      "word_count": 2037,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Bacteria",
+      "url": "https://simple.wikipedia.org/wiki/Bacteria",
+      "word_count": 748,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Boiling point",
+      "url": "https://simple.wikipedia.org/wiki/Boiling_point",
+      "word_count": 212,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Melting point",
+      "url": "https://simple.wikipedia.org/wiki/Melting_point",
+      "word_count": 154,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Triangle",
+      "url": "https://simple.wikipedia.org/wiki/Triangle",
+      "word_count": 511,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Circle",
+      "url": "https://simple.wikipedia.org/wiki/Circle",
+      "word_count": 752,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "World War I",
+      "url": "https://simple.wikipedia.org/wiki/World_War_I",
+      "word_count": 3434,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Apollo 11",
+      "url": "https://simple.wikipedia.org/wiki/Apollo_11",
+      "word_count": 901,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Steam engine",
+      "url": "https://simple.wikipedia.org/wiki/Steam_engine",
+      "word_count": 383,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Printing press",
+      "url": "https://simple.wikipedia.org/wiki/Printing_press",
+      "word_count": 387,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Telephone",
+      "url": "https://simple.wikipedia.org/wiki/Telephone",
+      "word_count": 519,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Radio",
+      "url": "https://simple.wikipedia.org/wiki/Radio",
+      "word_count": 621,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Television",
+      "url": "https://simple.wikipedia.org/wiki/Television",
+      "word_count": 373,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Bicycle",
+      "url": "https://simple.wikipedia.org/wiki/Bicycle",
+      "word_count": 1328,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Ship",
+      "url": "https://simple.wikipedia.org/wiki/Ship",
+      "word_count": 895,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Pyramid",
+      "url": "https://simple.wikipedia.org/wiki/Pyramid",
+      "word_count": 1253,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Ancient Egypt",
+      "url": "https://simple.wikipedia.org/wiki/Ancient_Egypt",
+      "word_count": 2291,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Ancient Rome",
+      "url": "https://simple.wikipedia.org/wiki/Ancient_Rome",
+      "word_count": 1433,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Industrial Revolution",
+      "url": "https://simple.wikipedia.org/wiki/Industrial_Revolution",
+      "word_count": 767,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Renaissance",
+      "url": "https://simple.wikipedia.org/wiki/Renaissance",
+      "word_count": 1646,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Democracy",
+      "url": "https://simple.wikipedia.org/wiki/Democracy",
+      "word_count": 1000,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Alphabet",
+      "url": "https://simple.wikipedia.org/wiki/Alphabet",
+      "word_count": 790,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Dictionary",
+      "url": "https://simple.wikipedia.org/wiki/Dictionary",
+      "word_count": 641,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Square",
+      "url": "https://simple.wikipedia.org/wiki/Square",
+      "word_count": 150,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Geometry",
+      "url": "https://simple.wikipedia.org/wiki/Geometry",
+      "word_count": 477,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Algebra",
+      "url": "https://simple.wikipedia.org/wiki/Algebra",
+      "word_count": 2057,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Weather",
+      "url": "https://simple.wikipedia.org/wiki/Weather",
+      "word_count": 356,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Lightning",
+      "url": "https://simple.wikipedia.org/wiki/Lightning",
+      "word_count": 337,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Snow",
+      "url": "https://simple.wikipedia.org/wiki/Snow",
+      "word_count": 259,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Lake",
+      "url": "https://simple.wikipedia.org/wiki/Lake",
+      "word_count": 569,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Island",
+      "url": "https://simple.wikipedia.org/wiki/Island",
+      "word_count": 400,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    },
+    {
+      "split": "worksheet_test",
+      "source_type": "simple.wikipedia",
+      "title": "Valley",
+      "url": "https://simple.wikipedia.org/wiki/Valley",
+      "word_count": 1080,
+      "license": "CC BY-SA 4.0 (Wikipedia)"
+    }
+  ],
+  "stats": {
+    "word_counts": {
+      "train": 846207,
+      "dev": 105910,
+      "ppl_test": 139337,
+      "worksheet_dev": 29594,
+      "worksheet_test": 80532
+    },
+    "doc_counts": {
+      "train": 30,
+      "dev": 10,
+      "ppl_test": 10,
+      "worksheet_dev": 22,
+      "worksheet_test": 92
+    },
+    "lexicon_size": 22000,
+    "dev_oov_rate": 0.12,
+    "test_oov_rate": 0.12666666666666668
+  }
+}

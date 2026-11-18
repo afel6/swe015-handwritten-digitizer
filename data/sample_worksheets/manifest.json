@@ -1,0 +1,107 @@
+[
+  {
+    "id": "test_001",
+    "filename": "sample_01.png",
+    "sentence": "Around [MASK] people are struck by lightning each year.",
+    "target_word": "2000",
+    "difficulty": "numeric"
+  },
+  {
+    "id": "test_002",
+    "filename": "sample_02.png",
+    "sentence": "Alexander Graham Bell was the first person to patent the telephone, in [MASK].",
+    "target_word": "1876",
+    "difficulty": "numeric"
+  },
+  {
+    "id": "test_003",
+    "filename": "sample_03.png",
+    "sentence": "As of 2017, about [MASK] million people lived in Europe.",
+    "target_word": "510",
+    "difficulty": "numeric"
+  },
+  {
+    "id": "test_009",
+    "filename": "sample_04.png",
+    "sentence": "The first battery was invented in [MASK] by Alessandro Volta.",
+    "target_word": "1800",
+    "difficulty": "numeric"
+  },
+  {
+    "id": "test_021",
+    "filename": "sample_05.png",
+    "sentence": "Examples of animals that live in [MASK] deserts are lizards, small rodents, snakes, and camels.",
+    "target_word": "HOT",
+    "difficulty": "confusable"
+  },
+  {
+    "id": "test_028",
+    "filename": "sample_06.png",
+    "sentence": "Now the price of a book or magazine is less determined by its [MASK], and more by other factors, such as marketing.",
+    "target_word": "PRODUCTION",
+    "difficulty": "confusable"
+  },
+  {
+    "id": "test_023",
+    "filename": "sample_07.png",
+    "sentence": "First was the [MASK] of steam power to run the machinery.",
+    "target_word": "USE",
+    "difficulty": "confusable"
+  },
+  {
+    "id": "test_025",
+    "filename": "sample_08.png",
+    "sentence": "The Eagle landed safely on the moon with Neil Armstrong and [MASK] Aldrin inside.",
+    "target_word": "BUZZ",
+    "difficulty": "confusable"
+  },
+  {
+    "id": "test_004",
+    "filename": "sample_09.png",
+    "sentence": "From about [MASK] BC the Ancient Egyptians were making wooden sail boats.",
+    "target_word": "4000",
+    "difficulty": "numeric"
+  },
+  {
+    "id": "test_022",
+    "filename": "sample_10.png",
+    "sentence": "When the soil dries, the soil may shrink and cracks will [MASK] in the soil.",
+    "target_word": "FORM",
+    "difficulty": "confusable"
+  },
+  {
+    "id": "test_161",
+    "filename": "sample_11.png",
+    "sentence": "Elections are either [MASK] after a certain time, or when a leader dies.",
+    "target_word": "HELD",
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_162",
+    "filename": "sample_12.png",
+    "sentence": "Copper is [MASK] from the body easily, so it does not build up in toxic effects.",
+    "target_word": "EXPELLED",
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_163",
+    "filename": "sample_13.png",
+    "sentence": "Children may [MASK] be sent to another country.",
+    "target_word": "EVEN",
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_164",
+    "filename": "sample_14.png",
+    "sentence": "About 97 [MASK] of animal species have eyes.",
+    "target_word": "PERCENT",
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_165",
+    "filename": "sample_15.png",
+    "sentence": "There were 42 of them, and each was [MASK] by a governor, chosen by the pharaoh.",
+    "target_word": "RULED",
+    "difficulty": "easy"
+  }
+]
