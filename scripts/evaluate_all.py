@@ -215,12 +215,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--no-save", action="store_true", help="Print the Markdown summary without writing any file.")
     parser.add_argument("--retime", action="store_true", help="Timing-only re-measure: outputs must match the committed predictions exactly.")
     parser.add_argument("--passes", type=int, default=3, help="Timing passes for --retime (the median pass is reported).")
+    parser.add_argument("--superseded-file", type=Path, default=None, help="--retime: where to keep the timings being replaced.")
+    parser.add_argument("--superseded-reason", default=None, help="--retime: why those timings are replaced.")
     args = parser.parse_args(argv)
     try:
         if args.retime:
             from scripts.retime_benchmark import retime
 
-            summary = retime(args.worksheets, args.passes)
+            extra = {k: v for k, v in (("superseded", args.superseded_file), ("reason", args.superseded_reason)) if v is not None}
+            summary = retime(args.worksheets, args.passes, **extra)
             sys.stdout.write(bench_report.render_markdown(summary) + "\n")
             return 0
         result = evaluate(args.worksheets, save=not args.no_save)

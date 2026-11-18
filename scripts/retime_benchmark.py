@@ -63,8 +63,8 @@ def _summary(p: Mapping[str, Any]) -> dict[str, Any]:
             "vision_latency_ms": {k: {"b1": v["latency_b1_ms"], "b8": v["latency_b8_ms"]} for k, v in p["vision"].items()}, "bert_latency_ms": p["bert_latency_ms"]}
 
 
-def _superseded(results: Mapping[str, Any]) -> dict[str, Any]:
-    return {"reason": REASON, "power_state": results.get("hardware", {}).get("power", "not recorded in run 3"),
+def _superseded(results: Mapping[str, Any], reason: str = REASON) -> dict[str, Any]:
+    return {"reason": reason, "power_state": results.get("hardware", {}).get("power", "not recorded in run 3"),
             "ladder_latency_mean_ms": {k: v["latency_mean_ms"] for k, v in results["ladder"].items()},
             "vision_latency_ms": {k: {"b1": v["latency_b1_ms"], "b8": v["latency_b8_ms"]} for k, v in results["vision"].items()},
             "bert_latency_ms": results["bert_latency_ms"]}
@@ -82,8 +82,12 @@ def _merge(results: Mapping[str, Any], committed: Mapping[str, Any], chosen: Map
     return new, preds
 
 
-def retime(worksheets: Path, passes: int, emnist_root: Path = ev.EMNIST_ROOT) -> dict[str, Any]:
-    """Re-measure latencies `passes` times; write only if every pass reproduces the committed outputs."""
+def retime(worksheets: Path, passes: int, emnist_root: Path = ev.EMNIST_ROOT, superseded: Path | None = None, reason: str = REASON) -> dict[str, Any]:
+    """Re-measure latencies `passes` times; write only if every pass reproduces the committed outputs.
+
+    The timings being replaced are kept once in `superseded` (default SUPERSEDED) with `reason`.
+    """
+    superseded = SUPERSEDED if superseded is None else Path(superseded)
     if passes < 1:
         raise ValueError("--passes must be at least 1.")
     torch.set_num_threads(ev.THREADS)
@@ -105,8 +109,8 @@ def retime(worksheets: Path, passes: int, emnist_root: Path = ev.EMNIST_ROOT) ->
     order = sorted(range(passes), key=lambda i: runs[i]["ladder"]["quantized_app"]["latency_mean_ms"])
     index = order[(passes - 1) // 2]
     new_results, new_preds = _merge(results, committed, runs[index], [_summary(r) for r in runs], index)
-    if not SUPERSEDED.is_file():
-        write_data(SUPERSEDED, _superseded(results), as_json=True)
+    if not superseded.is_file():
+        write_data(superseded, _superseded(results, reason), as_json=True)
     write_data(ev.OUT["json"], new_results, as_json=True)
     write_data(ev.OUT["md"], bench_report.render_markdown(new_results))
     write_data(ev.OUT["predictions"], new_preds, as_json=True)

@@ -4,7 +4,7 @@ This was the second benchmark run over the 300 test worksheets; it is kept for t
 
 ## Why it was superseded
 
-A code review of the run-2 code found two problems on the code and dev side. First, the classical candidate pool was cut to 20 words using the fusion weights, so the classical tuner optimised over a pool built with the default weights, while inference, BERT tuning and the benchmark cut the pool with the tuned weights. Second, `scripts/train_ngram.py` read the test worksheets (after tuning) to report an out-of-vocabulary statistic. Both were fixed in code and on the dev set only. The pool is now cut by a fixed rule (visual log-probability minus 2.0 x weighted edit distance) that never reads the fusion weights, and the training pipeline never opens the test file. The classical and BERT fusion weights were re-tuned on the dev worksheets. No change was informed by test results.
+The run-2 code had two defects on the code and dev side. First, the classical candidate pool was cut to 20 words using the fusion weights, so the classical tuner optimised over a pool built with the default weights, while inference, BERT tuning and the benchmark cut the pool with the tuned weights. Second, `scripts/train_ngram.py` read the test worksheets (after tuning) to report an out-of-vocabulary statistic. Both were fixed in code and on the dev set only. The pool is now cut by a fixed rule (visual log-probability minus 2.0 x weighted edit distance) that never reads the fusion weights, and the training pipeline never opens the test file. The classical and BERT fusion weights were re-tuned on the dev worksheets. No change was informed by test results.
 
 ## Run 2 results as reported
 

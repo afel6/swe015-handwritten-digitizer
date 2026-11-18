@@ -10,7 +10,7 @@ INT8-quantized model as the default.
 <!-- grader section: keep identical to AGENTS.md -->
 ## For graders
 
-Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13 (the versions tested in CI on Ubuntu and Windows).
+Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13. CI runs the tests and `verify.py` on Ubuntu and Windows with both versions without the downloaded assets, and on Ubuntu and Windows with Python 3.13 after `python scripts/download_assets.py`.
 
 1. Install (CPU build of torch first, then the pinned requirements):
 
@@ -22,7 +22,9 @@ Everything below is a plain Python command; run them from the repository root in
        python verify.py
        python -m pytest -q
 
-   Without the model weights, tests that need them are skipped with a reason; none fail.
+   Without the model weights, tests that need them are skipped with a reason; in CI no test fails.
+
+   If pytest or the app stops with `Windows fatal exception: code 0xc000001d`, set ONEDNN_MAX_CPU_ISA=AVX2 before starting Python: PowerShell `$env:ONEDNN_MAX_CPU_ISA="AVX2"`, cmd `set ONEDNN_MAX_CPU_ISA=AVX2`.
 
 3. Optional, to run the weight-dependent checks and the app (downloads about 175 MB from this repository's public releases and checks every sha256; the app also downloads bert-base-uncased from Hugging Face on first start):
 
@@ -143,8 +145,8 @@ throttled power state; it is kept in `results/benchmark_run3_timing_superseded.j
 - All fusion weights were tuned on the 50 dev worksheets only (EMNIST validation glyphs the CNN never trained
   on), with a continuous objective (mean log-softmax of the target over the candidate pool) on a simplex.
 - The 300 test worksheets (EMNIST test glyphs) were evaluated three times. Run 3 is reported. Run 1 was
-  replaced after a review found the tuner pushed every weight to the edge of its grid; run 2 after a review
-  found the candidate pool was cut with the fusion weights and that training read the test file for a
+  replaced because its tuner pushed every weight to the edge of its grid; run 2 because the candidate pool
+  was cut with the fusion weights and training read the test file for an out-of-vocabulary
   statistic. Both fixes were made on the code and dev side only; reasons and the old numbers are in
   `results/benchmark_run1_superseded.md` and `results/benchmark_run2_superseded.md`.
 - `results/test_predictions.json` holds every per-item prediction; `python scripts/recompute_metrics.py`
@@ -158,6 +160,7 @@ python scripts/train_vision.py              # Dense MLP, CharCNN FP32, CharCNN I
 python scripts/train_ngram.py               # n-gram LM, dev fusion tuning -> results/ngram_metrics.json
 python scripts/tune_bert_fusion.py          # BERT fusion weights on dev -> results/bert_fusion_params.json
 python scripts/evaluate_all.py              # Tables 1 and 2 (CPU; run alone) -> results/benchmark_results.*
+python scripts/evaluate_all.py --retime     # timing-only re-measure; outputs must match the committed predictions
 python scripts/generate_slides.py --name "Abdalraouf Alkabir" --student-id 2309015482 --video-url "..."
 ```
 
@@ -177,9 +180,10 @@ the dev set without writing anything.
 
 The app binds to 127.0.0.1 only, accepts only `localhost`/`127.0.0.1` Host headers and JSON request bodies,
 caps the body at 8 MB and each image at 5 MB / 4096×4096 (checked before decoding), and returns one-line
-errors without tracebacks. `weights/ngram_lm.pkl` is loaded with `pickle`: it is a trusted local artifact,
-installed only through `scripts/download_assets.py`, which checks its sha256. Never load a pickle from another
-source.
+errors without tracebacks. Recognition runs one request at a time. `weights/ngram_lm.pkl` is a pickle: it is
+installed only through `scripts/download_assets.py`, which checks its sha256, and it is read with a restricted
+unpickler that only allows the numpy types the model needs, so a tampered file cannot run code.
+bert-base-uncased is loaded at the pinned Hugging Face revision `86b5e0934494bd15c9632b12f734a8a67f723594`.
 
 ## Citations
 

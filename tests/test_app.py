@@ -5,9 +5,6 @@ from __future__ import annotations
 import base64
 import io
 import json
-import os
-import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -210,13 +207,76 @@ def test_int8_bert_loaded_from_file_matches_fresh_quantization(client: Any) -> N
     assert all(loaded[w] == pytest.approx(rebuilt[w], abs=1e-5) for w in words)
 
 
-# ---------------------------------------------------------------- startup
 
 
-def test_missing_weights_exit_with_one_line_and_fix_command(tmp_path: Path) -> None:
-    env = {**os.environ, "SWE015_WEIGHTS_DIR": str(tmp_path)}
-    proc = subprocess.run([sys.executable, "-W", "error", str(REPO_ROOT / "app.py")], cwd=REPO_ROOT, env=env, capture_output=True, text=True, timeout=300, check=False)
-    assert proc.returncode == 1
-    lines = proc.stderr.strip().splitlines()
-    assert len(lines) == 1 and "Traceback" not in proc.stderr
-    assert "dense_mlp.pt" in lines[0] and "python scripts/download_assets.py" in lines[0]
+# ---------------------------------------------------------------- request limits and error isolation
+
+
+def test_transfer_encoding_cannot_bypass_the_body_cap(client: Any) -> None:
+    resp = client.post("/api/recognize", content=b'{"sentence": "x"}', headers={"content-type": "application/json", "content-length": "16", "transfer-encoding": "chunked"})
+    assert resp.status_code == 400 and resp.json()["detail"].startswith("Request body must declare its size")
+
+
+def test_a_body_of_exactly_the_cap_is_not_refused_for_size(client: Any) -> None:
+    prefix, suffix = b'{"sentence": "', b'", "boxes_base64": ["x"]}'
+    body = prefix + b"a" * (8 * 1024 * 1024 - len(prefix) - len(suffix)) + suffix
+    assert len(body) == 8 * 1024 * 1024
+    detail = _assert_one_line_400(client.post("/api/recognize", content=body, headers={"content-type": "application/json"}))
+    assert not detail.startswith("Request body must declare its size")
+
+
+def test_sixteen_boxes_and_num_boxes_sixteen_pass_the_count_checks(client: Any) -> None:
+    sample, boxes = _boxes_b64(1)
+    assert client.post("/api/recognize", json={"sentence": sample["sentence"], "boxes_base64": (boxes * 16)[:16]}).status_code == 200
+    resp = client.post("/api/recognize", json={"sentence": sample["sentence"], "strip_base64": sample["strip_base64"], "num_boxes": 16})
+    assert "between 1 and 16" not in resp.json().get("detail", "")
+
+
+def test_num_boxes_out_of_range_is_refused_even_with_boxes(client: Any) -> None:
+    sample, boxes = _boxes_b64(1)
+    detail = _assert_one_line_400(client.post("/api/recognize", json={"sentence": sample["sentence"], "boxes_base64": boxes, "num_boxes": 99}))
+    assert "num_boxes" in detail
+
+
+def test_library_errors_never_reach_the_client(client: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    def boom(*_a: Any, **_k: Any) -> Any:
+        raise ValueError("boom\nC:\\secret\\path.py")
+
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setattr(client.app.state.service, "recognize", boom)
+    sample, boxes = _boxes_b64(1)
+    production_like = TestClient(client.app, base_url="http://127.0.0.1:8000", raise_server_exceptions=False)
+    resp = production_like.post("/api/recognize", json={"sentence": sample["sentence"], "boxes_base64": boxes})
+    assert resp.status_code == 500 and resp.json() == {"detail": "Internal error while processing the request."}
+
+
+def test_recognition_runs_one_request_at_a_time(client: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    import threading
+    import time
+
+    state = {"active": 0, "peak": 0}
+    guard = threading.Lock()
+
+    def slow(*_a: Any, **_k: Any) -> dict[str, Any]:
+        with guard:
+            state["active"] += 1
+            state["peak"] = max(state["peak"], state["active"])
+        time.sleep(0.2)
+        with guard:
+            state["active"] -= 1
+        return {"request_id": "x", "boxes": [], "models": [], "primary_model": "quantized_app"}
+
+    monkeypatch.setattr(client.app.state.service, "recognize", slow)
+    sample, boxes = _boxes_b64(1)
+    threads = [threading.Thread(target=lambda: client.post("/api/recognize", json={"sentence": sample["sentence"], "boxes_base64": boxes})) for _ in range(4)]
+    for th in threads:
+        th.start()
+    for th in threads:
+        th.join()
+    assert state["peak"] == 1
+
+
+def test_ui_shows_the_primary_rows_own_raw_read() -> None:
+    script = (REPO_ROOT / "static" / "app.js").read_text(encoding="utf-8")
+    assert "primary.raw_word" in script and "data.models[0].raw_word" not in script

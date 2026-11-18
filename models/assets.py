@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 WEIGHT_FILES = ("dense_mlp.pt", "char_cnn_fp32.pt", "char_cnn_int8.pt", "ngram_lm.pkl")
-RESULT_FILES = ("bert_fusion_params.json", "ngram_metrics.json")
+RESULT_FILES = ("bert_fusion_params.json",)
 BERT_INT8_FILE = "bert_int8_dynamic.pt"
 FIX_COMMAND = "python scripts/download_assets.py"
 

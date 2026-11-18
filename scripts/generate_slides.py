@@ -97,7 +97,7 @@ def slide_intro(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
         "Problem: worksheets ask students to write one missing word in boxes; a teacher must read every box by hand.",
         "Goal: recognise each boxed character with a neural network, then use the sentence to fix misreads (0/O, 1/I, 5/S ...).",
         "Constraint: one local app on a laptop CPU, quantized for speed and size, with every claim measured on held-out data.",
-        f"Result on 300 held-out worksheets: word accuracy {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
+        f"Result on {res['benchmark_results']['ladder_n']} held-out worksheets: word accuracy {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
         f"-> {br['bert_fp32']['word_acc_pct']:.1f} % (BERT) / {br['quantized_app']['word_acc_pct']:.1f} % (INT8 app model).",
     ])
     return fig
@@ -134,21 +134,16 @@ def slide_technique_map(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 
 
 def _gradcam_examples(count: int = 3) -> list[Any]:
-    try:
-        import torch
+    """Grad-CAM overlays for the first boxes of a committed sample strip (errors propagate: no silent blank slide)."""
+    from data.preprocess import preprocess_box, slice_strip_image
+    from models.char_models import load_char_cnn_fp32
+    from models.gradcam import generate_gradcam_b64
 
-        from data.preprocess import preprocess_box, slice_strip_image
-        from models.char_models import load_char_cnn_fp32
-        from models.gradcam import generate_gradcam_b64
-
-        cnn = load_char_cnn_fp32("weights/char_cnn_fp32.pt")
-        with Image.open("data/sample_worksheets/sample_05.png") as strip:
-            boxes = slice_strip_image(strip.copy(), num_boxes=3)
-        maps = [generate_gradcam_b64(cnn, preprocess_box(b)[0].unsqueeze(0)) for b in boxes[:count]]
-        del torch
-        return [Image.open(io.BytesIO(base64.b64decode(m))) for m in maps]
-    except (OSError, ValueError, RuntimeError):
-        return []
+    cnn = load_char_cnn_fp32("weights/char_cnn_fp32.pt")
+    with Image.open("data/sample_worksheets/sample_05.png") as strip:
+        boxes = slice_strip_image(strip.copy(), num_boxes=3)
+    maps = [generate_gradcam_b64(cnn, preprocess_box(b)[0].unsqueeze(0)) for b in boxes[:count]]
+    return [Image.open(io.BytesIO(base64.b64decode(m))) for m in maps]
 
 
 def slide_area_a(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
@@ -170,9 +165,9 @@ def slide_areas_bc(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 
 def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Area D: quantization and R4 results", 8)
-    _table(fig, (0.04, 0.47, 0.92, 0.37), ["Pipeline (N=300)", "Word %", "Char %", "MB", "ms/word"], sc.ladder_rows(res), highlight=4, first_col=0.36)
+    _table(fig, (0.04, 0.47, 0.92, 0.37), [f"Pipeline (N={res['benchmark_results']['ladder_n']})", "Word %", "Char %", "MB", "ms/word"], sc.ladder_rows(res), highlight=4, first_col=0.36)
     y = _bullets(ax, ["Static INT8 CNN (observers on train data) and dynamic INT8 BERT; sizes are serialized state_dicts; CPU, 4 threads, perf_counter.", *sc.checks_lines(res)], top=0.45, size=11)
-    note = sc.hardware_line(res) + ". Tuned on dev only; the test set was evaluated 3 times and run 3 is reported (runs 1-2 superseded; reasons in results/); latencies re-timed on AC power, median of 3 passes, outputs verified identical."
+    note = sc.hardware_line(res) + ". " + sc.methodology_note(res)
     ax.text(0.05, y - 0.01, "\n".join(textwrap.wrap(note, 150)), fontsize=9.5, color=MUTED, va="top")
     return fig
 
@@ -228,7 +223,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except OSError as exc:
         sys.stderr.write(describe_cli_os_error(exc) + "\n")
         return 1
-    except (KeyError, ValueError) as exc:
+    except (KeyError, ValueError, RuntimeError) as exc:
         sys.stderr.write(f"Error: results are incomplete ({' '.join(str(exc).split())}); run the benchmark first.\n")
         return 1
     sys.stdout.write(f"Wrote {pdf} and {pptx}\n")

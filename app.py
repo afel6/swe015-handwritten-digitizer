@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import base64
 import binascii
+import logging
 import math
 import os
+import pickle
 import re
 import sys
+import threading
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -19,12 +22,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 WEIGHTS_DIR = Path(os.environ.get("SWE015_WEIGHTS_DIR", ROOT / "weights"))
 RESULTS_DIR = ROOT / "results"
-
-from models.assets import missing_assets, missing_assets_message  # noqa: E402
-
-if __name__ == "__main__" and (_missing := missing_assets(WEIGHTS_DIR, RESULTS_DIR)):  # fail fast, before torch/transformers load
-    sys.stderr.write(missing_assets_message(_missing) + "\n")
-    raise SystemExit(1)
+# torch logs a Windows-only "Redirects are currently not supported" note when transformers loads; it is not an error.
+logging.getLogger("torch.distributed.elastic.multiprocessing.redirects").setLevel(logging.ERROR)
 
 from fastapi import FastAPI, HTTPException, Request  # noqa: E402
 from fastapi.exceptions import RequestValidationError  # noqa: E402
@@ -32,6 +31,7 @@ from fastapi.responses import FileResponse, JSONResponse  # noqa: E402
 from PIL import Image  # noqa: E402
 from pydantic import BaseModel, ConfigDict  # noqa: E402
 
+from data._io_errors import describe_os_error  # noqa: E402
 from data.prepare_data import read_data  # noqa: E402
 from data.preprocess import (  # noqa: E402
     MAX_IMAGE_BYTES,
@@ -39,8 +39,13 @@ from data.preprocess import (  # noqa: E402
     load_validated_image_bytes,
     slice_strip_image,
 )
+from models.assets import (  # noqa: E402
+    FIX_COMMAND,
+    missing_assets,
+    missing_assets_message,
+)
 from models.cloze import normalize_masked_sentence  # noqa: E402
-from models.recognizer import RecognitionService  # noqa: E402
+from models.errors import UserInputError  # noqa: E402
 
 HOST, PORT = "127.0.0.1", 8000
 STATIC_DIR, SAMPLES_DIR = ROOT / "static", ROOT / "data" / "sample_worksheets"
@@ -54,6 +59,7 @@ _SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer",
 }
 _BAD_REQUEST = "Send JSON with a text 'sentence' and either 'boxes_base64' (list of base64 images) or 'strip_base64' (base64 image) plus optional integer 'num_boxes'."
+_RECOGNIZE_LOCK = threading.Lock()
 _IMAGE_RULES = f"Each image must be a PNG or JPEG of at most {MAX_IMAGE_BYTES // (1024 * 1024)} MB and {MAX_IMAGE_DIM}x{MAX_IMAGE_DIM} pixels."
 
 
@@ -80,12 +86,37 @@ def _load_samples() -> list[dict[str, Any]]:
     return out
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+class StartupError(RuntimeError):
+    """A one-line, user-facing reason the app cannot start."""
+
+
+def _load_error(exc: Exception) -> str:
+    if isinstance(exc, OSError) and exc.errno is None and not exc.filename:
+        detail = " ".join(str(exc).split())[:300]
+        return f"Could not load bert-base-uncased from Hugging Face (first start needs internet or a filled cache): {detail}"
+    if isinstance(exc, OSError):
+        return f"Cannot use a model file: {describe_os_error(exc)}. Run: {FIX_COMMAND}"
+    return f"A model file is corrupt or incompatible ({' '.join(str(exc).split())[:300]}). Run: {FIX_COMMAND}"
+
+
+def build_service() -> Any:
+    """The single startup check: required files, then every model; any failure becomes one StartupError line."""
     missing = missing_assets(WEIGHTS_DIR, RESULTS_DIR)
     if missing:
-        raise RuntimeError(missing_assets_message(missing))
-    app.state.service = RecognitionService(WEIGHTS_DIR, RESULTS_DIR)
+        raise StartupError(missing_assets_message(missing))
+    try:
+        from models.recognizer import RecognitionService
+
+        return RecognitionService(WEIGHTS_DIR, RESULTS_DIR)
+    except (OSError, ValueError, RuntimeError, KeyError, pickle.UnpicklingError) as exc:
+        raise StartupError(_load_error(exc)) from exc
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Attach the service main() built before serving (or build it when the app is embedded, e.g. in tests)."""
+    if getattr(app.state, "service", None) is None:
+        app.state.service = build_service()
     app.state.samples = _load_samples()
     yield
 
@@ -102,7 +133,7 @@ async def guard_and_headers(request: Request, call_next: Any) -> Any:
         if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json":
             return _secure(JSONResponse({"detail": "Send the request body as application/json."}, status_code=400))
         length = request.headers.get("content-length")
-        if length is None or not length.isdigit() or int(length) > MAX_BODY_BYTES:
+        if "transfer-encoding" in request.headers or length is None or not length.isdigit() or int(length) > MAX_BODY_BYTES:
             return _secure(JSONResponse({"detail": f"Request body must declare its size and be at most {MAX_BODY_BYTES // (1024 * 1024)} MB."}, status_code=400))
     return _secure(await call_next(request))
 
@@ -141,14 +172,14 @@ def _decode_image(b64: str) -> Image.Image:
 
 
 def _box_images(body: RecognizeRequest) -> list[Image.Image]:
+    if body.num_boxes is not None and not MIN_BOXES <= body.num_boxes <= MAX_BOXES:
+        raise _bad(f"num_boxes must be between {MIN_BOXES} and {MAX_BOXES}.")
     if (body.boxes_base64 is None) == (body.strip_base64 is None):
         raise _bad("Send exactly one of 'boxes_base64' or 'strip_base64'.")
     if body.boxes_base64 is not None:
         if not MIN_BOXES <= len(body.boxes_base64) <= MAX_BOXES:
             raise _bad(f"Send between {MIN_BOXES} and {MAX_BOXES} boxes.")
         return [_decode_image(b) for b in body.boxes_base64]
-    if body.num_boxes is not None and not MIN_BOXES <= body.num_boxes <= MAX_BOXES:
-        raise _bad(f"num_boxes must be between {MIN_BOXES} and {MAX_BOXES}.")
     strip = _decode_image(str(body.strip_base64))
     try:
         boxes = slice_strip_image(strip, num_boxes=body.num_boxes)
@@ -186,23 +217,26 @@ def samples(request: Request) -> list[dict[str, Any]]:
 
 @app.post("/api/recognize")
 def recognize(body: RecognizeRequest, request: Request) -> dict[str, Any]:
-    """Plain def: runs in the threadpool so CPU-bound inference never blocks the event loop."""
+    """Plain def (threadpool). One request at a time: bounds memory and keeps Grad-CAM hooks per request."""
     try:
         sentence = normalize_masked_sentence(body.sentence)
-    except ValueError as exc:
+    except UserInputError as exc:
         message = str(exc)
         raise _bad(message[:1].upper() + message[1:]) from exc
-    images = _box_images(body)
-    try:
-        return request.app.state.service.recognize(sentence, images)
-    except ValueError as exc:
-        raise _bad(str(exc)) from exc
+    with _RECOGNIZE_LOCK:
+        images = _box_images(body)
+        try:
+            return request.app.state.service.recognize(sentence, images)
+        except UserInputError as exc:
+            raise _bad(str(exc)) from exc
 
 
 def main() -> int:
-    missing = missing_assets(WEIGHTS_DIR, RESULTS_DIR)
-    if missing:
-        sys.stderr.write(missing_assets_message(missing) + "\n")
+    """Build every model before serving, so startup problems are one line and exit 1, never a server traceback."""
+    try:
+        app.state.service = build_service()
+    except StartupError as exc:
+        sys.stderr.write(f"{exc}\n")
         return 1
     import uvicorn
 

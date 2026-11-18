@@ -419,3 +419,44 @@ def test_cli_errors_print_one_line(module: Any, monkeypatch: pytest.MonkeyPatch,
     assert module.main([]) == 1
     err = capsys.readouterr().err.strip().splitlines()
     assert len(err) == 1 and str(tmp_path) in err[0]
+
+
+def test_masked_position_head_matches_full_logits_on_seventy_sequences(tiny_reranker: BertMLMReranker) -> None:
+    gen = torch.Generator().manual_seed(3)
+    seqs = [[2, *torch.randint(5, len(VOCAB), (int(n),), generator=gen).tolist(), 3] for n in torch.randint(3, 20, (70,), generator=gen)]
+    positions = [int(torch.randint(1, len(s) - 1, (1,), generator=gen)) for s in seqs]
+    got = tiny_reranker._forward(seqs, positions)
+    width = max(len(s) for s in seqs)
+    ids = torch.zeros((70, width), dtype=torch.long)
+    mask = torch.zeros((70, width), dtype=torch.long)
+    for row, seq in enumerate(seqs):
+        ids[row, : len(seq)] = torch.tensor(seq)
+        mask[row, : len(seq)] = 1
+    with torch.no_grad():
+        full = torch.log_softmax(tiny_reranker.model(input_ids=ids, attention_mask=mask).logits, dim=-1)
+    reference = full[torch.arange(70), torch.tensor(positions)]
+    assert got.shape == (70, len(VOCAB)) and torch.allclose(got, reference, atol=1e-5)
+
+
+def test_lm_head_runs_only_on_masked_rows(tiny_reranker: BertMLMReranker) -> None:
+    seen: list[int] = []
+    handle = tiny_reranker.model.cls.register_forward_hook(lambda _m, inputs, _o: seen.append(inputs[0].dim()))
+    try:
+        before = tiny_reranker.forward_calls
+        tiny_reranker.span_log_probs("the [MASK] is hot", ["science", "silence"])
+    finally:
+        handle.remove()
+    assert seen == [2] and tiny_reranker.forward_calls - before == 1  # one batched encoder pass, head on (rows, hidden) only
+
+
+def test_bert_is_loaded_at_the_pinned_revision(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[dict[str, Any]] = []
+
+    def capture(*_a: Any, **kwargs: Any) -> Any:
+        calls.append(kwargs)
+        raise OSError("stop after recording the call")
+
+    monkeypatch.setattr(bert_reranker.AutoTokenizer, "from_pretrained", capture)
+    with pytest.raises(OSError):
+        BertMLMReranker()
+    assert calls and calls[0]["revision"] == bert_reranker.BERT_REVISION and len(bert_reranker.BERT_REVISION) == 40

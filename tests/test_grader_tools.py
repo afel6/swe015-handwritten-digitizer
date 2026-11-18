@@ -6,6 +6,7 @@ import hashlib
 import io
 import zipfile
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -142,3 +143,35 @@ def test_pyproject_declares_the_tested_python_range() -> None:
 
     project = tomllib.loads((REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
     assert project["requires-python"] == ">=3.12,<3.14"
+
+
+class _FakeResponse:
+    def __init__(self, data: bytes) -> None:
+        self.data = data
+
+    def __enter__(self) -> _FakeResponse:
+        return self
+
+    def __exit__(self, *_a: Any) -> None:
+        return None
+
+    def read(self, size: int = -1) -> bytes:
+        return self.data if size < 0 else self.data[:size]
+
+
+def test_downloads_larger_than_the_cap_are_refused(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(download_assets, "MAX_DOWNLOAD_BYTES", 10)
+    monkeypatch.setattr(download_assets.urllib.request, "urlopen", lambda *_a, **_k: _FakeResponse(b"x" * 11))
+    with pytest.raises(ValueError, match="larger than"):
+        download_assets._fetch("https://example.invalid/big.zip")
+
+
+def test_interrupted_download_is_one_line(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    import http.client
+
+    def broken(*_a: Any, **_k: Any) -> Any:
+        raise http.client.IncompleteRead(b"partial")
+
+    monkeypatch.setattr(download_assets.urllib.request, "urlopen", broken)
+    assert download_assets.main(["--root", str(tmp_path)]) == 1
+    assert capsys.readouterr().err.count("\n") == 1

@@ -22,11 +22,18 @@ from typing import Any
 import torch
 from torch import nn
 from transformers import AutoTokenizer, BertForMaskedLM
+from transformers.utils import logging as hf_logging
 
 from models.cloze import MASK_TOKEN, normalize_masked_sentence
+from models.errors import UserInputError
 from models.quantization import quantize_bert_dynamic
 
+# The masked-LM checkpoint ships unused pooler/NSP weights; transformers reports them on every load. Only errors are shown.
+hf_logging.set_verbosity_error()
+hf_logging.disable_progress_bar()
+
 DEFAULT_MODEL_NAME = "bert-base-uncased"
+BERT_REVISION = "86b5e0934494bd15c9632b12f734a8a67f723594"  # exact Hugging Face commit of bert-base-uncased (reproducibility)
 DEFAULT_FUSION_PARAMS: dict[str, float] = {"alpha": 1.0, "lambda_vis": 1.0, "lambda_bert": 1.0, "gamma": 1.0}
 _PARAM_NAMES = ("alpha", "lambda_vis", "lambda_bert", "gamma")
 
@@ -58,8 +65,8 @@ class BertMLMReranker:
     def __init__(self, model_name: str = DEFAULT_MODEL_NAME, device: str = "cpu", *, model: nn.Module | None = None, tokenizer: Any = None) -> None:
         self.model_name = model_name
         self.device = torch.device(device)
-        self.tokenizer = tokenizer if tokenizer is not None else AutoTokenizer.from_pretrained(model_name)
-        loaded = model if model is not None else BertForMaskedLM.from_pretrained(model_name)
+        self.tokenizer = tokenizer if tokenizer is not None else AutoTokenizer.from_pretrained(model_name, revision=BERT_REVISION)
+        loaded = model if model is not None else BertForMaskedLM.from_pretrained(model_name, revision=BERT_REVISION)
         self.model = loaded.to(self.device).eval()
         self.forward_calls = 0
         self._lowercase = bool(getattr(self.tokenizer, "do_lower_case", True))
@@ -87,7 +94,7 @@ class BertMLMReranker:
         width = max(len(s) for s in sequences)
         limit = int(getattr(self.model.config, "max_position_embeddings", width))
         if width > limit:
-            raise ValueError(f"Sentence plus candidate is {width} WordPieces; the model accepts at most {limit}.")
+            raise UserInputError(f"Sentence plus candidate is {width} WordPieces; the model accepts at most {limit}.")
         self.forward_calls += 1
         pad = int(self.tokenizer.pad_token_id)
         ids = torch.full((len(sequences), width), pad, dtype=torch.long)
@@ -96,9 +103,10 @@ class BertMLMReranker:
             ids[row, : len(seq)] = torch.tensor(seq, dtype=torch.long)
             mask[row, : len(seq)] = 1
         with torch.no_grad():
-            logits = self.model(input_ids=ids.to(self.device), attention_mask=mask.to(self.device)).logits
-            picked = logits[torch.arange(len(sequences)), torch.tensor(list(positions), dtype=torch.long)]
-        return torch.log_softmax(picked.float(), dim=-1).cpu()
+            hidden = self.model.bert(input_ids=ids.to(self.device), attention_mask=mask.to(self.device)).last_hidden_state
+            picked = hidden[torch.arange(len(sequences)), torch.tensor(list(positions), dtype=torch.long)]
+            logits = self.model.cls(picked)  # vocabulary logits only for the B masked rows, never (B, T, V)
+        return torch.log_softmax(logits.float(), dim=-1).cpu()
 
     def span_log_probs(self, sentence: str, words: Sequence[str]) -> dict[str, list[float]]:
         """Per-piece log P(s_j | ...) for each word: one pass for all 1-piece words, one batched pass for the rest."""

@@ -64,10 +64,25 @@ _CHAR36_TO_IDX = {ch: idx for idx, ch in enumerate(CANONICAL_36_CHARS)}
 FOLD_TARGET_MAP = torch.tensor([_CHAR36_TO_IDX[ch.upper()] for ch in EMNIST_BALANCED_CHARS], dtype=torch.long)
 
 __all__ = [
-    "BATCH_SIZE", "EMNIST_ROOT", "RESULTS_DIR", "SEED", "TRAIN_FRAC", "WEIGHTS_DIR",
-    "apply_random_affine_batch", "build_emnist_transform", "compute_stratified_split",
-    "FOLD_TARGET_MAP", "evaluate_vision_model", "extract_oriented_tensors", "load_emnist_datasets", "make_latency_batches",
-    "main", "parse_args", "run_vision_training", "train_char_cnn", "train_dense_mlp",
+    "BATCH_SIZE",
+    "EMNIST_ROOT",
+    "FOLD_TARGET_MAP",
+    "RESULTS_DIR",
+    "SEED",
+    "TRAIN_FRAC",
+    "WEIGHTS_DIR",
+    "apply_random_affine_batch",
+    "build_emnist_transform",
+    "compute_stratified_split",
+    "evaluate_vision_model",
+    "extract_oriented_tensors",
+    "load_emnist_datasets",
+    "main",
+    "make_latency_batches",
+    "parse_args",
+    "run_vision_training",
+    "train_char_cnn",
+    "train_dense_mlp",
 ]
 
 

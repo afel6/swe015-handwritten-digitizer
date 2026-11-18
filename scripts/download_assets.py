@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import http.client
 import io
 import shutil
 import sys
@@ -20,6 +21,7 @@ from pathlib import Path, PurePosixPath
 
 RELEASES = "https://github.com/afel6/swe015-handwritten-digitizer/releases/download"
 TIMEOUT_S = 300
+MAX_DOWNLOAD_BYTES = 512 * 1024 * 1024  # largest release zip is ~154 MB
 _USER_AGENT = "swe015-download-assets/1.0"
 
 
@@ -54,7 +56,10 @@ def _sha256(data: bytes) -> str:
 def _fetch(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
     with urllib.request.urlopen(request, timeout=TIMEOUT_S) as response:
-        return response.read()
+        payload = response.read(MAX_DOWNLOAD_BYTES + 1)
+    if len(payload) > MAX_DOWNLOAD_BYTES:
+        raise ValueError(f"download is larger than the {MAX_DOWNLOAD_BYTES // (1024 * 1024)} MB limit")
+    return payload
 
 
 def _installed(asset: Asset, root: Path) -> bool:
@@ -108,7 +113,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     for asset in ASSETS:
         try:
             done = install(asset, args.root)
-        except (OSError, ValueError, zipfile.BadZipFile) as exc:
+        except (OSError, ValueError, zipfile.BadZipFile, http.client.HTTPException) as exc:
             sys.stderr.write(f"Could not install {asset.name} from {asset.url}: {' '.join(str(exc).split())}\n")
             return 1
         sys.stdout.write(f"{'Installed' if done else 'Already present'}: {asset.name} ({len(asset.files)} pinned files verified)\n")

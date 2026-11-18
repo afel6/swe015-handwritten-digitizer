@@ -1,7 +1,7 @@
 # Benchmark run 1 (superseded)
 
 This is the first benchmark run over the 300 test worksheets. It is kept for transparency.
-The reported result is `results/benchmark_results.md` (run 2).
+The reported result is `results/benchmark_results.md` (run 3).
 
 ## Why it was superseded
 
@@ -9,7 +9,7 @@ The first fusion tuner used a free grid with the dev objective (mean log-softmax
 among the candidate scores). That objective always improves when every weight is scaled up once
 the target already ranks first. On the dev set it pushed every fused weight to the edge of its
 grid, the dev objective saturated at about -1e-5, and classical dev word accuracy fell from
-0.92 to 0.88. A code review found this, using dev results only. The fix also used dev only: the
+0.92 to 0.88. The defect is visible on dev results alone, and the fix also used dev only: the
 fused weights were constrained to a simplex (they sum to 1), so the score scale can no longer be
 inflated. Both correctors were re-tuned on dev, and the test benchmark was run exactly once more.
 Nothing was tuned on test results. Run 2 is lower than or equal to run 1 on every corrected row.

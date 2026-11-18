@@ -2,7 +2,7 @@
 
 ## For graders
 
-Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13 (the versions tested in CI on Ubuntu and Windows).
+Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13. CI runs the tests and `verify.py` on Ubuntu and Windows with both versions without the downloaded assets, and on Ubuntu and Windows with Python 3.13 after `python scripts/download_assets.py`.
 
 1. Install (CPU build of torch first, then the pinned requirements):
 
@@ -14,7 +14,9 @@ Everything below is a plain Python command; run them from the repository root in
        python verify.py
        python -m pytest -q
 
-   Without the model weights, tests that need them are skipped with a reason; none fail.
+   Without the model weights, tests that need them are skipped with a reason; in CI no test fails.
+
+   If pytest or the app stops with `Windows fatal exception: code 0xc000001d`, set ONEDNN_MAX_CPU_ISA=AVX2 before starting Python: PowerShell `$env:ONEDNN_MAX_CPU_ISA="AVX2"`, cmd `set ONEDNN_MAX_CPU_ISA=AVX2`.
 
 3. Optional, to run the weight-dependent checks and the app (downloads about 175 MB from this repository's public releases and checks every sha256; the app also downloads bert-base-uncased from Hugging Face on first start):
 

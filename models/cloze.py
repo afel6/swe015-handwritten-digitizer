@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import re
 
+from models.errors import UserInputError
+
 MASK_TOKEN = "[MASK]"
 MAX_SENTENCE_CHARS = 500
 _UNDERSCORE_BLANK_RE = re.compile(r"_{3,}")
@@ -21,8 +23,8 @@ def normalize_masked_sentence(sentence: str) -> str:
     if not isinstance(sentence, str):
         raise TypeError("sentence must be a string.")
     if len(sentence) > MAX_SENTENCE_CHARS:
-        raise ValueError(f"sentence must be at most {MAX_SENTENCE_CHARS} characters.")
+        raise UserInputError(f"sentence must be at most {MAX_SENTENCE_CHARS} characters.")
     normalized = _ANY_CASE_MASK_RE.sub(MASK_TOKEN, _UNDERSCORE_BLANK_RE.sub(MASK_TOKEN, sentence))
     if normalized.count(MASK_TOKEN) != 1:
-        raise ValueError("sentence must contain exactly one [MASK] (or '___') blank.")
+        raise UserInputError("sentence must contain exactly one [MASK] (or '___') blank.")
     return normalized

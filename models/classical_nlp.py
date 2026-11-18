@@ -134,12 +134,27 @@ def _validate_path(path: str | os.PathLike[str]) -> Path:
     return Path(raw)
 
 
+_PICKLE_GLOBALS = frozenset({  # every global the model pickle needs (python -I -m pickletools weights/ngram_lm.pkl)
+    ("numpy", "dtype"), ("numpy._core.numeric", "_frombuffer"), ("numpy.core.numeric", "_frombuffer"),
+    ("numpy._core.multiarray", "_reconstruct"), ("numpy.core.multiarray", "_reconstruct"), ("numpy", "ndarray"),
+})
+
+
+class _RestrictedUnpickler(pickle.Unpickler):
+    """Unpickler that can only build numpy arrays and plain containers: no code runs while loading a model file."""
+
+    def find_class(self, module: str, name: str) -> Any:
+        if (module, name) not in _PICKLE_GLOBALS:
+            raise pickle.UnpicklingError(f"forbidden global {module}.{name} in model file")
+        return super().find_class(module, name)
+
+
 def _pickle_io(path: str | os.PathLike[str], mode: str, payload: dict[str, Any] | None = None) -> tuple[Path, Any]:
     target, action = _validate_path(path), "saving model" if "w" in mode else "loading model"
     try:
         with open(target, mode) as handle:
             if "w" in mode: pickle.dump(payload, handle, protocol=pickle.HIGHEST_PROTOCOL); return target, None
-            return target, pickle.load(handle)
+            return target, _RestrictedUnpickler(handle).load()
     except OSError as err:
         raise _map_os_error(err, target, action) from err
     except (pickle.UnpicklingError, EOFError, AttributeError, ValueError, TypeError) as err:

@@ -53,7 +53,8 @@ def data_lines(res: Mapping[str, Any]) -> list[str]:
         "47 -> 36 fold: lowercase letters merged into uppercase (case is not graded); probabilities summed",
         "Boxes: strip slicing -> border trim -> polarity -> tight crop -> 28x28 centring (same path in app, tuning and benchmark)",
         f"Language corpus: Gutenberg + Wikipedia, {words['train']:,} train / {words['dev']:,} dev / {words['ppl_test']:,} PPL-test words (disjoint sources)",
-        f"Worksheets: 50 dev (EMNIST val glyphs) and 300 held-out test strips (EMNIST test glyphs); lexicon {stats['lexicon_size']:,} words",
+        f"Worksheets: {res['bert_fusion_params']['dev_items']} dev (EMNIST val glyphs) and {res['benchmark_results']['ladder_n']} held-out test strips (EMNIST test glyphs); "
+        f"lexicon {stats['lexicon_size']:,} words",
         f"Test OOV rate (target not in lexicon): {100 * stats['test_oov_rate']:.1f} %",
     ]
 
@@ -80,7 +81,9 @@ def vision_fit_lines(res: Mapping[str, Any]) -> list[str]:
 
 def failure_lines(res: Mapping[str, Any], limit: int = 3) -> list[str]:
     fails = res["failure_examples"]
-    picked = [f for f in fails if f["id"] == "test_251"] + [f for f in fails if f["target"].isdigit()][:1] + [f for f in fails if f["id"] != "test_251" and not f["target"].isdigit()][:1]
+    in_pool = [f for f in fails if f["target_in_pool_int8"]]
+    numeric = [f for f in fails if f["target"].isdigit() and not f["target_in_pool_int8"]]
+    picked = in_pool[:1] + numeric[:1] + [f for f in fails if f not in in_pool[:1] + numeric[:1]]
     return [f"{f['id']}: target {f['target']}, app read {f['raw_int8']} -> {f['outputs']['quantized_app']} ({f['why']})" for f in picked[:limit]]
 
 
@@ -113,6 +116,14 @@ def conclusion_lines(res: Mapping[str, Any]) -> list[str]:
         f"{b32['size_mb'] / app['size_mb']:.1f}x smaller ({app['size_mb']:.1f} vs {b32['size_mb']:.1f} MB) for {app['word_acc_pct'] - b32['word_acc_pct']:+.2f} pp.",
         f"Limits: only {rec['int8']:.1f} % of targets reach the candidate pool; digit strings read with letters never enter it; span-PLL favours multi-piece words; {oov:.1f} % test OOV.",
     ]
+
+
+def methodology_note(res: Mapping[str, Any]) -> str:
+    """Tuning/test protocol sentence with every count read from the results."""
+    runs = 1 + sum(1 for key in ("benchmark_run1_superseded", "benchmark_run2_superseded") if key in res)
+    passes = len(res["benchmark_results"].get("retime", {}).get("passes", []))
+    retime = f"; latencies re-timed on AC power, median of {passes} passes, outputs verified identical" if passes else ""
+    return f"Tuned on dev only; the test set was evaluated {runs} times and run {runs} is reported (earlier runs superseded; reasons in results/){retime}."
 
 
 def ai_usage_lines(name: str) -> list[str]:

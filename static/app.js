@@ -3,7 +3,7 @@
 const BOX_PX = 112;
 const BRUSH_PX = 14;
 const $ = (id) => document.getElementById(id);
-const state = { strokes: [], current: null, stripB64: null, stripBoxes: null, mode: "draw" };
+const state = { strokes: [], current: null, stripB64: null, mode: "draw" };
 
 function el(tag, text, className) {
   const node = document.createElement(tag);
@@ -50,11 +50,15 @@ function redraw() {
     ctx.lineTo(i * BOX_PX + 0.5, pad.height);
     ctx.stroke();
   }
+  drawStrokes(ctx, state.strokes.concat(state.current ? [state.current] : []));
+}
+
+function drawStrokes(ctx, strokes) {
   ctx.strokeStyle = "#111";
   ctx.lineWidth = BRUSH_PX;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  for (const stroke of state.strokes.concat(state.current ? [state.current] : [])) {
+  for (const stroke of strokes) {
     ctx.beginPath();
     stroke.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
     if (stroke.length === 1) ctx.lineTo(stroke[0].x + 0.1, stroke[0].y);
@@ -112,16 +116,7 @@ function exportBoxes() {
   const sctx = strokesOnly.getContext("2d");
   sctx.fillStyle = "#fff";
   sctx.fillRect(0, 0, strokesOnly.width, BOX_PX);
-  sctx.strokeStyle = "#111";
-  sctx.lineWidth = BRUSH_PX;
-  sctx.lineCap = "round";
-  sctx.lineJoin = "round";
-  for (const stroke of state.strokes) {
-    sctx.beginPath();
-    stroke.forEach((p, i) => (i === 0 ? sctx.moveTo(p.x, p.y) : sctx.lineTo(p.x, p.y)));
-    if (stroke.length === 1) sctx.lineTo(stroke[0].x + 0.1, stroke[0].y);
-    sctx.stroke();
-  }
+  drawStrokes(sctx, state.strokes);
   for (let i = 0; i < boxCount(); i += 1) {
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, BOX_PX, BOX_PX);
@@ -143,7 +138,6 @@ function setMode(mode) {
 
 function showStrip(b64, boxes) {
   state.stripB64 = b64;
-  state.stripBoxes = boxes;
   $("strip-boxes").value = String(boxes);
   const preview = $("strip-preview");
   preview.src = "data:image/png;base64," + b64;
@@ -182,7 +176,6 @@ function initUpload() {
     reader.onload = () => showStrip(String(reader.result).split(",")[1], parseInt($("strip-boxes").value, 10) || 5);
     reader.readAsDataURL(file);
   });
-  $("strip-boxes").addEventListener("change", () => { state.stripBoxes = parseInt($("strip-boxes").value, 10); });
 }
 
 /* ---------------- results ---------------- */
@@ -243,7 +236,7 @@ function renderModels(models, primary) {
 
 function renderResult(data) {
   const primary = data.models.find((m) => m.name === data.primary_model) || data.models[data.models.length - 1];
-  $("raw-word").textContent = data.models[0].raw_word;
+  $("raw-word").textContent = primary.raw_word;
   $("final-word").textContent = primary.predicted_word;
   renderBoxes(data.boxes);
   renderModels(data.models, data.primary_model);

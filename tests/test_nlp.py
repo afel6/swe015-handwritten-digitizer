@@ -720,3 +720,24 @@ def test_prepare_data_cli_keeps_path_for_unmapped_os_error(tmp_path: Path, monke
     assert prep.main([]) == 1
     err = capsys.readouterr().err.strip().splitlines()
     assert len(err) == 1 and str(locked) in err[0]
+
+
+def test_model_file_cannot_run_code_when_loaded(tmp_path: Path) -> None:
+    import pickle
+
+    marker = tmp_path / "pwned"
+
+    class Evil:
+        def __reduce__(self) -> tuple[Any, tuple[str]]:
+            return (os.mkdir, (str(marker),))
+
+    path = tmp_path / "evil.pkl"
+    path.write_bytes(pickle.dumps({"vocab": Evil()}))
+    with pytest.raises(ValueError) as info:
+        ClassicalNLPCorrector.load(path)
+    assert not marker.exists() and "\\n" not in str(info.value) and "evil.pkl" in str(info.value)
+
+
+def test_released_model_loads_through_the_restricted_unpickler(tiny_model: ClassicalNLPCorrector, tmp_path: Path) -> None:
+    loaded = ClassicalNLPCorrector.load(tiny_model.save(tmp_path / "lm.pkl"))
+    assert loaded.vocab == tiny_model.vocab

@@ -14,7 +14,7 @@ from transformers import BertConfig, BertForMaskedLM, BertTokenizer
 from data.preprocess import CANONICAL_36_CHARS
 from models.bert_reranker import BertMLMReranker
 from models.classical_nlp import ClassicalNLPCorrector, tokenize
-from scripts import evaluate_all, train_ngram
+from scripts import bench_report, evaluate_all, train_ngram
 from scripts import tune_bert_fusion as tune_bert
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -218,13 +218,15 @@ def test_retime_updates_only_latencies_and_aborts_on_any_output_change(tmp_path:
     monkeypatch.setattr(retime_benchmark, "SUPERSEDED", superseded)
     before = json.loads(outs["json"].read_text(encoding="utf-8"))
     preds_before = json.loads(outs["predictions"].read_text(encoding="utf-8"))
-    assert evaluate_all.main(["--worksheets", str(worksheets), "--retime", "--passes", "2"]) == 0
+    assert evaluate_all.main(["--worksheets", str(worksheets), "--retime", "--passes", "3"]) == 0
     after = json.loads(outs["json"].read_text(encoding="utf-8"))
     preds_after = json.loads(outs["predictions"].read_text(encoding="utf-8"))
     for key, row in before["ladder"].items():
         assert {k: v for k, v in row.items() if k != "latency_mean_ms"} == {k: v for k, v in after["ladder"][key].items() if k != "latency_mean_ms"}
     assert before["recall_pct"] == after["recall_pct"] and before["checks"] == after["checks"]
-    assert len(after["retime"]["passes"]) == 2 and "power" in after["hardware"]
+    assert len(after["retime"]["passes"]) == 3 and after["hardware"]["power"] == bench_report.power_state()
+    app_latencies = [p["ladder_latency_mean_ms"]["quantized_app"] for p in after["retime"]["passes"]]
+    assert after["ladder"]["quantized_app"]["latency_mean_ms"] == sorted(app_latencies)[1]  # the median pass, not the fastest
     strip = {"latency_ms"}
     assert [[{k: v for k, v in r.items() if k not in strip} for r in rows] for rows in preds_before["rows"].values()] == \
            [[{k: v for k, v in r.items() if k not in strip} for r in rows] for rows in preds_after["rows"].values()]
@@ -244,7 +246,17 @@ def test_retime_updates_only_latencies_and_aborts_on_any_output_change(tmp_path:
 
 
 def test_power_state_is_recorded() -> None:
-    from scripts import bench_report
-
     power = bench_report.power_state()
-    assert {"on_ac", "power_scheme", "power_mode"} <= set(power)
+    assert set(power) == {"on_ac", "power_scheme", "power_mode"} and power["on_ac"] in (True, False, None)
+    assert all(v is None or (isinstance(v, str) and v and "\n" not in v) for v in (power["power_scheme"], power["power_mode"]))
+
+
+@needs_assets
+def test_retime_keeps_replaced_timings_under_a_chosen_name(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    worksheets, _, outs = _setup_eval(tmp_path, monkeypatch)
+    assert evaluate_all.main(["--worksheets", str(worksheets)]) == 0
+    before = json.loads(outs["json"].read_text(encoding="utf-8"))
+    kept = tmp_path / "retime1_superseded.json"
+    assert evaluate_all.main(["--worksheets", str(worksheets), "--retime", "--passes", "1", "--superseded-file", str(kept), "--superseded-reason", "memory fix"]) == 0
+    doc = json.loads(kept.read_text(encoding="utf-8"))
+    assert doc["reason"] == "memory fix" and doc["ladder_latency_mean_ms"]["classical"] == before["ladder"]["classical"]["latency_mean_ms"]
