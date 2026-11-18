@@ -174,6 +174,7 @@ the dev set without writing anything.
 - Span pseudo-log-likelihood favours multi-piece words, because the other pieces stay visible
   (`REDUCED` -> `REJOICED` in `results/failure_examples.json`).
 - 12.7 % of test targets are not in the lexicon, and only 88–89 % of targets reach the candidate pool.
+- BERT scores use at most 48 WordPieces on each side of the blank; the benchmark sentences are all shorter, so this does not affect reported results.
 - Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon.
 
 ## Security notes

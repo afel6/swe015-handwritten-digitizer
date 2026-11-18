@@ -33,6 +33,9 @@ hf_logging.set_verbosity_error()
 hf_logging.disable_progress_bar()
 
 DEFAULT_MODEL_NAME = "bert-base-uncased"
+# Memory bound: scored sequences keep at most this many WordPieces on each side of the blank (long sentences are
+# truncated, never rejected). Worst case ~60 rows x ~110 tokens x 30522 vocab x 4 B = ~0.8 GB per request.
+MAX_CONTEXT_PIECES_PER_SIDE = 48
 BERT_REVISION = "86b5e0934494bd15c9632b12f734a8a67f723594"  # exact Hugging Face commit of bert-base-uncased (reproducibility)
 DEFAULT_FUSION_PARAMS: dict[str, float] = {"alpha": 1.0, "lambda_vis": 1.0, "lambda_bert": 1.0, "gamma": 1.0}
 _PARAM_NAMES = ("alpha", "lambda_vis", "lambda_bert", "gamma")
@@ -85,9 +88,12 @@ class BertMLMReranker:
         return list(ids)
 
     def _context(self, sentence: str) -> tuple[list[int], list[int]]:
+        """WordPieces left and right of the blank, at most MAX_CONTEXT_PIECES_PER_SIDE each (nearest to the blank kept)."""
         left, right = normalize_masked_sentence(sentence).split(MASK_TOKEN)
         encode = self.tokenizer
-        return list(encode(left, add_special_tokens=False)["input_ids"]), list(encode(right, add_special_tokens=False)["input_ids"])
+        prefix, suffix = list(encode(left, add_special_tokens=False)["input_ids"]), list(encode(right, add_special_tokens=False)["input_ids"])
+        window = MAX_CONTEXT_PIECES_PER_SIDE
+        return (prefix[-window:] if window else []), suffix[:window]
 
     def _forward(self, sequences: Sequence[Sequence[int]], positions: Sequence[int]) -> torch.Tensor:
         """One (batched) forward pass; log-softmax over the vocabulary at each row's masked position, shape (B, V)."""
@@ -103,10 +109,9 @@ class BertMLMReranker:
             ids[row, : len(seq)] = torch.tensor(seq, dtype=torch.long)
             mask[row, : len(seq)] = 1
         with torch.no_grad():
-            hidden = self.model.bert(input_ids=ids.to(self.device), attention_mask=mask.to(self.device)).last_hidden_state
-            picked = hidden[torch.arange(len(sequences)), torch.tensor(list(positions), dtype=torch.long)]
-            logits = self.model.cls(picked)  # vocabulary logits only for the B masked rows, never (B, T, V)
-        return torch.log_softmax(logits.float(), dim=-1).cpu()
+            logits = self.model(input_ids=ids.to(self.device), attention_mask=mask.to(self.device)).logits
+            picked = logits[torch.arange(len(sequences)), torch.tensor(list(positions), dtype=torch.long)]
+        return torch.log_softmax(picked.float(), dim=-1).cpu()
 
     def span_log_probs(self, sentence: str, words: Sequence[str]) -> dict[str, list[float]]:
         """Per-piece log P(s_j | ...) for each word: one pass for all 1-piece words, one batched pass for the rest."""

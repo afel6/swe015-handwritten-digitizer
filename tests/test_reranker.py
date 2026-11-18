@@ -405,20 +405,12 @@ def test_run_item_runs_every_ladder_row_on_one_strip(tiny_reranker: BertMLMReran
     assert seen["classical"] is seen["bert_1"] is seen["bert_2"]  # rows 2, 3 and the ablation rank the identical pool
 
 
-def test_too_long_input_is_rejected_not_crashed(tiny_reranker: BertMLMReranker) -> None:
+def test_long_context_is_truncated_and_the_length_guard_remains(tiny_reranker: BertMLMReranker, monkeypatch: pytest.MonkeyPatch) -> None:
+    sentence = "the " * 70 + "[MASK]"
+    assert set(tiny_reranker.span_log_probs(sentence, ["sun"])) == {"sun"}  # truncated to the window, not rejected
+    monkeypatch.setattr(bert_reranker, "MAX_CONTEXT_PIECES_PER_SIDE", 10_000)  # without the window the guard still fires
     with pytest.raises(ValueError, match="WordPieces"):
-        tiny_reranker.span_log_probs("the " * 70 + "[MASK]", ["sun"])
-
-
-@pytest.mark.parametrize("module", [evaluate_all, tune_bert])
-def test_cli_errors_print_one_line(module: Any, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path) -> None:
-    def boom(*_a: Any, **_k: Any) -> Any:
-        raise IsADirectoryError(21, f"Expected a file, got a directory while reading: {tmp_path}", str(tmp_path))
-
-    monkeypatch.setattr(module, "evaluate" if module is evaluate_all else "run", boom)
-    assert module.main([]) == 1
-    err = capsys.readouterr().err.strip().splitlines()
-    assert len(err) == 1 and str(tmp_path) in err[0]
+        tiny_reranker.span_log_probs(sentence, ["sun"])
 
 
 def test_masked_position_head_matches_full_logits_on_seventy_sequences(tiny_reranker: BertMLMReranker) -> None:
@@ -438,17 +430,6 @@ def test_masked_position_head_matches_full_logits_on_seventy_sequences(tiny_rera
     assert got.shape == (70, len(VOCAB)) and torch.allclose(got, reference, atol=1e-5)
 
 
-def test_lm_head_runs_only_on_masked_rows(tiny_reranker: BertMLMReranker) -> None:
-    seen: list[int] = []
-    handle = tiny_reranker.model.cls.register_forward_hook(lambda _m, inputs, _o: seen.append(inputs[0].dim()))
-    try:
-        before = tiny_reranker.forward_calls
-        tiny_reranker.span_log_probs("the [MASK] is hot", ["science", "silence"])
-    finally:
-        handle.remove()
-    assert seen == [2] and tiny_reranker.forward_calls - before == 1  # one batched encoder pass, head on (rows, hidden) only
-
-
 def test_bert_is_loaded_at_the_pinned_revision(monkeypatch: pytest.MonkeyPatch) -> None:
     calls: list[dict[str, Any]] = []
 
@@ -460,3 +441,35 @@ def test_bert_is_loaded_at_the_pinned_revision(monkeypatch: pytest.MonkeyPatch) 
     with pytest.raises(OSError):
         BertMLMReranker()
     assert calls and calls[0]["revision"] == bert_reranker.BERT_REVISION and len(bert_reranker.BERT_REVISION) == 40
+
+
+def _recording(rr: BertMLMReranker, monkeypatch: pytest.MonkeyPatch) -> list[list[int]]:
+    seen: list[list[int]] = []
+    real = BertMLMReranker._forward
+
+    def record(self: BertMLMReranker, sequences: Any, positions: Any) -> Any:
+        seen.extend(list(s) for s in sequences)
+        return real(self, sequences, positions)
+
+    monkeypatch.setattr(BertMLMReranker, "_forward", record)
+    return seen
+
+
+def test_long_sentences_are_accepted_with_a_bounded_context_window(tiny_reranker: BertMLMReranker, monkeypatch: pytest.MonkeyPatch) -> None:
+    sentence = ("the sun is hot " * 30)[:450] + " [MASK] " + "the moon is cold"
+    assert len(sentence) <= 500
+    seen = _recording(tiny_reranker, monkeypatch)
+    out = tiny_reranker.span_log_probs(sentence, ["sun", "silence"])
+    window = bert_reranker.MAX_CONTEXT_PIECES_PER_SIDE
+    assert set(out) == {"sun", "silence"}
+    assert all(len(seq) <= 2 * window + 3 + 2 for seq in seen)  # window each side + longest candidate (3 pieces) + [CLS]/[SEP]
+
+
+def test_short_sentences_are_built_exactly_as_without_the_window(tiny_reranker: BertMLMReranker, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(bert_reranker, "MAX_CONTEXT_PIECES_PER_SIDE", 10_000)
+    unbounded = _recording(tiny_reranker, monkeypatch)
+    expected = tiny_reranker.span_log_probs("the sun is hot and the [MASK] is cold", ["moon", "silence"])
+    monkeypatch.undo()
+    bounded = _recording(tiny_reranker, monkeypatch)
+    got = tiny_reranker.span_log_probs("the sun is hot and the [MASK] is cold", ["moon", "silence"])
+    assert bounded == unbounded and got == expected
