@@ -116,20 +116,20 @@ Windows-11-10.0.26300-SP0, Python 3.13.15, torch 2.9.1+cu128, transformers 5.23.
 
 | Model | 47-class acc % | 36-folded acc % | Disk MB | CPU b1 ms | CPU b8 ms |
 |---|---|---|---|---|---|
-| dense_mlp_fp32 | 86.41 | 88.34 | 2.08 | 0.051 | 0.066 |
-| char_cnn_fp32 | 89.47 | 91.32 | 6.53 | 0.305 | 0.902 |
-| char_cnn_int8 | 89.43 | 91.29 | 1.65 | 0.296 | 0.452 |
+| dense_mlp_fp32 | 86.41 | 88.34 | 2.08 | 0.050 | 0.065 |
+| char_cnn_fp32 | 89.47 | 91.32 | 6.53 | 0.283 | 0.805 |
+| char_cnn_int8 | 89.43 | 91.29 | 1.65 | 0.254 | 0.361 |
 
 ### Table 2 - Word ladder (N=300 held-out worksheets, boxed strips)
 
 | Pipeline | Word acc % | Char acc % | Size MB | Mean ms/word |
 |---|---|---|---|---|
 | (1) Trained NN, no correction: FP32 CNN | 61.67 | 90.14 | 6.5 | 4.9 |
-| (1b) parity: INT8 CNN, no correction | 60.67 | 89.95 | 1.7 | 3.8 |
-| (2) Classical: FP32 CNN + SymSpell + n-gram fusion | 86.33 | 91.17 | 25.5 | 10.8 |
-| (3) Transformer: FP32 CNN + same pool + FP32 BERT | 88.00 | 92.46 | 443.4 | 166.7 |
-| (4) Quantized Transformer [App]: INT8 CNN pool + INT8 BERT | 87.67 | 91.43 | 216.2 | 51.3 |
-| (ablation) FP32 CNN + same pool + INT8 BERT | 87.33 | 91.37 | 221.1 | 55.8 |
+| (1b) parity: INT8 CNN, no correction | 60.67 | 89.95 | 1.7 | 3.7 |
+| (2) Classical: FP32 CNN + SymSpell + n-gram fusion | 86.33 | 91.17 | 25.5 | 10.7 |
+| (3) Transformer: FP32 CNN + same pool + FP32 BERT | 88.00 | 92.46 | 443.4 | 165.0 |
+| (4) Quantized Transformer [App]: INT8 CNN pool + INT8 BERT | 87.67 | 91.43 | 216.2 | 49.9 |
+| (ablation) FP32 CNN + same pool + INT8 BERT | 87.33 | 91.37 | 221.1 | 54.6 |
 
 Candidate recall (target in the shared pool): FP32 CNN 88.67 %, INT8 CNN 89.00 %; this is the ceiling for
 rows 2–4. Strip-path character accuracy 90.14 % vs raw EMNIST 91.32 % (gap +1.18 pp). All five checks pass
@@ -193,6 +193,16 @@ bert-base-uncased is loaded at the pinned Hugging Face revision `86b5e0934494bd1
   Language Understanding.* NAACL 2019 (`bert-base-uncased`).
 - Project Gutenberg texts (public domain) and Wikipedia articles (CC BY-SA 4.0); every source is listed in
   `results/corpus_sources.json`.
+
+## License
+
+- The code in this repository is released under the MIT License (see [LICENSE](LICENSE)).
+- The model weights in the release assets (`assets-v1`, `assets-v2`) are released under the MIT License as trained artifacts of this project.
+- Third-party terms still apply to what they cover:
+  - `bert-base-uncased` (Google): Apache License 2.0.
+  - EMNIST (NIST): cite G. Cohen, S. Afshar, J. Tapson, A. van Schaik, *EMNIST: an extension of MNIST to handwritten letters*, 2017.
+  - Project Gutenberg texts in the `assets-v1` corpus cache: public domain in the US; the Project Gutenberg license applies to their headers.
+  - Wikipedia text in the `assets-v1` corpus cache: CC BY-SA 4.0 with attribution (sources in `results/corpus_sources.json`); share-alike applies to that text, not to the code.
 
 ## AI usage
 
