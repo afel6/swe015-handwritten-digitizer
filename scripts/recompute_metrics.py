@@ -57,17 +57,25 @@ def compare(predictions: Mapping[str, Any], results: Mapping[str, Any]) -> list[
     def add(label: str, got: float, want: float) -> None:
         checks.append((label, got, float(want), abs(got - float(want)) <= TOLERANCE))
 
-    for key, records in predictions["rows"].items():
-        got = row_metrics(records)
+    rows = predictions["rows"]
+    for key, reported in results["ladder"].items():
+        if key not in rows:
+            checks.append((f"ladder {key} present in predictions", 0.0, 1.0, False))
+            continue
+        got = row_metrics(rows[key])
         for metric in ("word_acc_pct", "char_acc_pct", "latency_mean_ms"):
-            add(f"ladder {key} {metric}", got[metric], results["ladder"][key][metric])
+            add(f"ladder {key} {metric}", got[metric], reported[metric])
+        add(f"ladder {key} n", float(len(rows[key])), reported["n"])
     for pool, key in _RECALL_ROW.items():
-        add(f"candidate recall {pool}", row_metrics(predictions["rows"][key])["recall_pct"], results["recall_pct"][pool])
+        if key in rows:
+            add(f"candidate recall {pool}", row_metrics(rows[key])["recall_pct"], results["recall_pct"][pool])
+    if "raw_fp32" in rows:
+        add("strip-path char acc (raw FP32 CNN)", row_metrics(rows["raw_fp32"])["char_acc_pct"], results["strip_char_acc_pct"])
     for name in results["vision"]:
         got = vision_metrics(predictions["vision"], name)
         for metric in ("acc_47_pct", "acc_36_pct"):
             add(f"vision {name} {metric}", got[metric], results["vision"][name][metric])
-    add("ladder N", float(len(next(iter(predictions["rows"].values())))), results["ladder_n"])
+    add("ladder N", float(len(next(iter(rows.values())))), results["ladder_n"])
     add("vision N", float(predictions["vision"]["n"]), results["vision_n"])
     return checks
 

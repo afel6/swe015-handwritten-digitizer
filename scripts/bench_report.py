@@ -13,7 +13,11 @@ from typing import Any
 
 import torch
 
-from models.classical_nlp import CANDIDATE_POOL_SIZE, NUMERIC_CONF_THRESHOLD, normalize_word
+from models.classical_nlp import (
+    CANDIDATE_POOL_SIZE,
+    NUMERIC_CONF_THRESHOLD,
+    normalize_word,
+)
 
 MAX_INT8_ACC_DROP_PP = 1.5
 MIN_BERT_SIZE_REDUCTION = 2.0

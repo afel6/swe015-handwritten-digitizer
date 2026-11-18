@@ -158,7 +158,7 @@ def load_worksheet_items(path: str | Path, required: Sequence[str] = ("sentence"
         raise ValueError(f"{target.as_posix()} must hold a non-empty list of worksheet items.")
     for index, item in enumerate(payload):
         if not isinstance(item, Mapping):
-            raise ValueError(f"Worksheet item {index} in {target.as_posix()} is not an object.")
+            raise TypeError(f"Worksheet item {index} in {target.as_posix()} is not an object.")
         missing = [key for key in required if key not in item]
         if missing:
             raise ValueError(f"Worksheet item {index} in {target.as_posix()} is missing {', '.join(missing)}.")

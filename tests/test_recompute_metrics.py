@@ -22,8 +22,8 @@ def _fixture(tmp_path: Path, tamper: float = 0.0) -> tuple[Path, Path]:
     pairs = [("SUN", "sun"), ("MOON", "M00N"), ("2000", "20O0"), ("STAR", "STAR")]
     rows = {"raw_fp32": _row(pairs, None, 5.0), "classical": _row(pairs, [True, True, False, True], 15.0), "quantized_app": _row(pairs, [True, False, False, True], 20.0)}
     vision = {"n": 10, "class_totals_47": [10], "cnn": {"correct_per_class_47": [3, 4, 1], "correct_36": 9}}
-    results = {"ladder_n": 4, "vision_n": 10, "recall_pct": {"fp32": 75.0, "int8": 50.0}, "vision": {"cnn": {"acc_47_pct": 80.0 + tamper, "acc_36_pct": 90.0}},
-               "ladder": {k: {"word_acc_pct": 50.0, "char_acc_pct": 100.0 * 12 / 15, "latency_mean_ms": lat} for k, lat in (("raw_fp32", 5.0), ("classical", 15.0), ("quantized_app", 20.0))}}
+    results = {"ladder_n": 4, "vision_n": 10, "strip_char_acc_pct": 100.0 * 12 / 15, "recall_pct": {"fp32": 75.0, "int8": 50.0}, "vision": {"cnn": {"acc_47_pct": 80.0 + tamper, "acc_36_pct": 90.0}},
+               "ladder": {k: {"word_acc_pct": 50.0, "char_acc_pct": 100.0 * 12 / 15, "latency_mean_ms": lat, "n": 4} for k, lat in (("raw_fp32", 5.0), ("classical", 15.0), ("quantized_app", 20.0))}}
     pred_path, res_path = tmp_path / "p.json", tmp_path / "r.json"
     pred_path.write_text(json.dumps({"rows": rows, "vision": vision}), encoding="utf-8")
     res_path.write_text(json.dumps(results), encoding="utf-8")
@@ -34,13 +34,22 @@ def test_recomputed_numbers_match_and_exit_zero(tmp_path: Path, capsys: pytest.C
     pred, res = _fixture(tmp_path)
     assert recompute_metrics.main(["--predictions", str(pred), "--results", str(res)]) == 0
     out = capsys.readouterr().out
-    assert "FAIL" not in out and "15/15 numbers match" in out
+    assert "FAIL" not in out and "19/19 numbers match" in out
 
 
 def test_a_misreported_number_fails(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     pred, res = _fixture(tmp_path, tamper=0.02)
     assert recompute_metrics.main(["--predictions", str(pred), "--results", str(res)]) == 1
     assert "FAIL  vision cnn acc_47_pct" in capsys.readouterr().out
+
+
+def test_a_reported_row_missing_from_predictions_fails(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    pred, res = _fixture(tmp_path)
+    doc = json.loads(pred.read_text(encoding="utf-8"))
+    del doc["rows"]["classical"]
+    pred.write_text(json.dumps(doc), encoding="utf-8")
+    assert recompute_metrics.main(["--predictions", str(pred), "--results", str(res)]) == 1
+    assert "classical" in capsys.readouterr().out
 
 
 def test_char_accuracy_is_recomputed_not_copied() -> None:

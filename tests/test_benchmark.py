@@ -151,6 +151,14 @@ def test_model_download_errors_print_one_line(module: Any, target: str, monkeypa
     assert err.count("\n") == 1 and "File system error" not in err and "download" in err
 
 
+def test_errno_less_os_errors_are_not_called_downloads_unless_from_hugging_face() -> None:
+    from data._io_errors import describe_cli_os_error
+
+    assert describe_cli_os_error(OSError("handle\nclosed")) == "Error: handle closed"
+    hf = describe_cli_os_error(OSError("We couldn't connect to 'https://huggingface.co'.\nRetry."))
+    assert hf.startswith("Model download or cache error") and "\n" not in hf
+
+
 def test_evaluate_rejects_empty_worksheet_file(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     empty = tmp_path / "empty.json"
     empty.write_text("[]", encoding="utf-8")

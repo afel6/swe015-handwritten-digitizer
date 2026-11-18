@@ -241,20 +241,13 @@ def test_tune_fusion_weights_uses_given_items(tiny_model: ClassicalNLPCorrector)
         tiny_model.tune_fusion_weights(items, [_probs_for("SC1ENCE")])
 
 
-def test_candidate_pool_does_not_depend_on_fusion_weights(tiny_model: ClassicalNLPCorrector) -> None:
+def test_candidate_pool_does_not_depend_on_fusion_weights(tiny_model: ClassicalNLPCorrector, monkeypatch: pytest.MonkeyPatch) -> None:
     probs = _probs_for("SC1ENCE", top=0.55, second={2: ("L", 0.40), 4: ("M", 0.40)})
     pools = []
     for weights in ({"vis_weight": 0.9, "edit_penalty": 0.05, "lm_weight": 0.05}, {"vis_weight": 0.05, "edit_penalty": 0.9, "lm_weight": 0.05}):
-        tiny_model.fusion_weights = weights
+        monkeypatch.setattr(tiny_model, "fusion_weights", weights)
         pools.append([c["word"] for c in tiny_model.generate_candidates(probs, max_candidates=1)[0]])
-    tiny_model.fusion_weights = dict(classical_nlp_defaults())
-    assert pools[0] == pools[1] and len(pools[0]) == 1  # before the fix the single kept word differed (SILENCE vs SCIENCE)
-
-
-def classical_nlp_defaults() -> dict[str, float]:
-    from models.classical_nlp import DEFAULT_FUSION_WEIGHTS
-
-    return DEFAULT_FUSION_WEIGHTS
+    assert pools[0] == pools[1] and len(pools[0]) == 1
 
 
 def test_untrained_model_refuses_use() -> None:
@@ -615,6 +608,13 @@ def test_train_pipeline_writes_metrics_without_touching_frozen_files(tmp_path: P
     model = ClassicalNLPCorrector.load(weights)
     assert metrics["vocab_size"] == len(model.vocab) and metrics["lexicon_size"] == len(model.lexicon)
     assert metrics["model_size_mb"] == pytest.approx(weights.stat().st_size / (1024 * 1024))
+
+
+def test_non_object_worksheet_item_is_a_type_error(tmp_path: Path) -> None:
+    path = tmp_path / "ws.json"
+    path.write_text(json.dumps(["just a string"]), encoding="utf-8")
+    with pytest.raises(TypeError, match="not an object"):
+        prep.load_worksheet_items(path)
 
 
 def test_worksheet_and_corpus_inputs_are_validated(tmp_path: Path) -> None:

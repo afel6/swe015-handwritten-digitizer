@@ -61,12 +61,12 @@ _BENCHMARK_WARMUP, _BENCHMARK_RUNS, _BENCHMARK_BATCH_SIZES = 10, 100, (1, 8)
 _PCT_SCALE = 100.0
 _DEG_TO_RAD, _DATASET_NAME = math.pi / 180.0, "emnist_balanced"
 _CHAR36_TO_IDX = {ch: idx for idx, ch in enumerate(CANONICAL_36_CHARS)}
-_FOLD_TARGET_MAP = torch.tensor([_CHAR36_TO_IDX[ch.upper()] for ch in EMNIST_BALANCED_CHARS], dtype=torch.long)
+FOLD_TARGET_MAP = torch.tensor([_CHAR36_TO_IDX[ch.upper()] for ch in EMNIST_BALANCED_CHARS], dtype=torch.long)
 
 __all__ = [
     "BATCH_SIZE", "EMNIST_ROOT", "RESULTS_DIR", "SEED", "TRAIN_FRAC", "WEIGHTS_DIR",
     "apply_random_affine_batch", "build_emnist_transform", "compute_stratified_split",
-    "evaluate_vision_model", "extract_oriented_tensors", "load_emnist_datasets",
+    "FOLD_TARGET_MAP", "evaluate_vision_model", "extract_oriented_tensors", "load_emnist_datasets", "make_latency_batches",
     "main", "parse_args", "run_vision_training", "train_char_cnn", "train_dense_mlp",
 ]
 
@@ -210,7 +210,7 @@ def evaluate_vision_model(model: nn.Module, test_x: torch.Tensor, test_y: torch.
         raise ValueError("test_x and test_y must be non-empty with matching sample counts.")
     model.eval()
     total, targets_47 = int(test_x.shape[0]), test_y.detach().to(device="cpu", dtype=torch.long)
-    targets_36, correct_47, correct_36 = _FOLD_TARGET_MAP[targets_47], 0, 0
+    targets_36, correct_47, correct_36 = FOLD_TARGET_MAP[targets_47], 0, 0
     with torch.inference_mode():
         for start in range(0, total, valid_bs):
             probs_47 = torch.softmax(model(test_x[start : start + valid_bs].to(device="cpu", dtype=torch.float32)), dim=-1)
@@ -222,7 +222,7 @@ def evaluate_vision_model(model: nn.Module, test_x: torch.Tensor, test_y: torch.
     return {"test_acc_47": acc_47, "test_acc_47_pct": acc_47 * _PCT_SCALE, "test_acc_36": acc_36, "test_acc_36_pct": acc_36 * _PCT_SCALE}
 
 
-def _make_latency_batches(inputs: torch.Tensor, batch_size: int, count: int) -> list[torch.Tensor]:
+def make_latency_batches(inputs: torch.Tensor, batch_size: int, count: int) -> list[torch.Tensor]:
     total = int(inputs.shape[0])
     if total < 1:
         raise ValueError("inputs must contain at least one sample for benchmarking.")
@@ -244,7 +244,7 @@ def _benchmark_model(
     if best_val_acc is not None:
         entry["best_val_acc_47"], entry["best_val_acc_47_pct"] = float(best_val_acc), float(best_val_acc) * _PCT_SCALE
     for bsz in _BENCHMARK_BATCH_SIZES:
-        entry[f"latency_cpu_batch_{bsz}"] = benchmark_cpu_latency(model, _make_latency_batches(test_x, bsz, _BENCHMARK_WARMUP + _BENCHMARK_RUNS), warmup=_BENCHMARK_WARMUP, runs=_BENCHMARK_RUNS)
+        entry[f"latency_cpu_batch_{bsz}"] = benchmark_cpu_latency(model, make_latency_batches(test_x, bsz, _BENCHMARK_WARMUP + _BENCHMARK_RUNS), warmup=_BENCHMARK_WARMUP, runs=_BENCHMARK_RUNS)
     return entry
 
 

@@ -36,7 +36,10 @@ def describe_cli_os_error(exc: OSError) -> str:
     """One CLI line for an OSError: filesystem errors name the path; errno-less ones (e.g. a model download) are joined onto one line."""
     if exc.errno is None and not exc.filename:
         detail = " ".join(str(exc).split()) or "unknown error"
-        return f"Model download or cache error (check the internet connection or the Hugging Face cache): {detail}"
+        from_hub = "huggingface" in detail.lower() or type(exc).__module__.startswith(("huggingface_hub", "transformers"))
+        if from_hub:
+            return f"Model download or cache error (check the internet connection or the Hugging Face cache): {detail}"
+        return f"Error: {detail}"
     return f"File system error: {describe_os_error(exc)}"
 
 

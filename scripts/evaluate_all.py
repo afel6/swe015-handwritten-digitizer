@@ -48,7 +48,7 @@ from models.quantization import (
     save_quantized_state_dict,
 )
 from scripts import bench_report
-from scripts.train_vision import _FOLD_TARGET_MAP, BATCH_SIZE, _make_latency_batches
+from scripts.train_vision import BATCH_SIZE, FOLD_TARGET_MAP, make_latency_batches
 
 THREADS = 4
 WARMUP_ITEMS = 10
@@ -115,13 +115,13 @@ def _vision_predictions(model: torch.nn.Module, images: torch.Tensor) -> tuple[n
 def vision_table(models: Mapping[str, Any], emnist_root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     """EMNIST balanced test accuracy (47-class and 36-folded), disk size and CPU latency, plus per-class counts."""
     images, labels = extract_oriented_tensors(load_emnist_dataset(emnist_root, train=False))
-    y47, y36 = labels.numpy(), _FOLD_TARGET_MAP[labels].numpy()
+    y47, y36 = labels.numpy(), FOLD_TARGET_MAP[labels].numpy()
     table, counts = {}, {"n": int(labels.numel()), "class_totals_47": np.bincount(y47, minlength=NUM_CLASSES).tolist()}
     for name, key in _VISION_MODELS:
         p47, p36 = _vision_predictions(models[key], images)
         ok47, ok36 = p47 == y47, p36 == y36
         counts[name] = {"correct_per_class_47": np.bincount(y47[ok47], minlength=NUM_CLASSES).tolist(), "correct_36": int(ok36.sum())}
-        lat = {b: benchmark_cpu_latency(models[key], _make_latency_batches(images, b, LATENCY_WARMUP + LATENCY_RUNS), warmup=LATENCY_WARMUP, runs=LATENCY_RUNS)["mean_ms"] for b in LATENCY_BATCH_SIZES}
+        lat = {b: benchmark_cpu_latency(models[key], make_latency_batches(images, b, LATENCY_WARMUP + LATENCY_RUNS), warmup=LATENCY_WARMUP, runs=LATENCY_RUNS)["mean_ms"] for b in LATENCY_BATCH_SIZES}
         table[name] = {"acc_47_pct": 100.0 * float(ok47.mean()), "acc_36_pct": 100.0 * float(ok36.mean()), "disk_mb": get_model_disk_size_mb(WEIGHTS[key]), "latency_b1_ms": lat[1], "latency_b8_ms": lat[8]}
     return table, counts
 
