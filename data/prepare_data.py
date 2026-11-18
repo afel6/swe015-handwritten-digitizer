@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import errno
 import gzip
 import hashlib
@@ -9,6 +10,8 @@ import json
 import os
 import re
 import shutil
+import ssl
+import sys
 import tempfile
 import zipfile
 from collections import Counter
@@ -29,7 +32,7 @@ from data.preprocess import CANONICAL_36_CHARS, fix_emnist_orientation
 EMNIST_ROOT, EMNIST_SPLITS_PATH, RAW_GUTENBERG_DIR, RAW_WIKIPEDIA_DIR = Path("data/emnist"), Path("data/emnist_splits.json"), Path("data/raw/gutenberg"), Path("data/raw/wikipedia")
 DEV_WORKSHEETS_PATH, TEST_WORKSHEETS_PATH, SAMPLE_WORKSHEETS_DIR, CORPUS_SOURCES_PATH = Path("data/worksheets_dev_50.json"), Path("data/worksheets_test_300.json"), Path("data/sample_worksheets"), Path("results/corpus_sources.json")
 EMNIST_URL, EMNIST_MD5, USER_AGENT = "https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip", "58c8d27c78d21e728a6bc7b3cc06412e", "SWE015StudentApp/1.0 (mailto:student@university.edu)"
-DEFAULT_SEED, EMNIST_VAL_FRACTION, HTTP_TIMEOUT_S, EMNIST_TIMEOUT_S = 42, 0.1, 30.0, 120.0
+DEFAULT_SEED, HTTP_TIMEOUT_S, EMNIST_TIMEOUT_S = 42, 30.0, 120.0
 TRAIN_MIN_WORDS, DEV_MIN_WORDS, PPL_TEST_MIN_WORDS, MIN_LEXICON_TARGET, FALLBACK_LEXICON_SIZE = 500_000, 50_000, 50_000, 20_000, 22_000
 DEV_WORKSHEET_COUNT, TEST_WORKSHEET_COUNT, SAMPLE_WORKSHEET_COUNT, DEV_NUMERIC_TARGET, TEST_NUMERIC_TARGET, MAX_PER_TARGET_WORD, MIN_WORD_LEN, MAX_WORD_LEN = 50, 300, 15, 4, 20, 2, 3, 10
 MIN_SENT_WORDS, MAX_SENT_WORDS, CELL_PADDING_PX, MIN_CELL_SIZE, MAX_BYTE_VAL, STREAM_CHUNK_BYTES = 7, 22, 10, 24, 255, 65536
@@ -55,15 +58,23 @@ _WIKI_POOLS: dict[str, tuple[str, tuple[str, ...]]] = {
     "worksheet_test": ("simple", ("Planet", "Galaxy", "Universe", "Earthquake", "Desert", "Forest", "Ice", "Fire", "Heat", "Force", "Magnet", "Battery", "Computer", "Internet", "Airplane", "Train", "Bridge", "Clock", "Calendar", "Year", "Century", "History", "Geography", "Map", "Continent", "Europe", "Asia", "Africa", "Human skeleton", "Muscle", "Lung", "Stomach", "Eye", "Ear", "Skin", "Tooth", "Seed", "Leaf", "Root", "Soil", "Rock", "Gold", "Iron", "Copper", "Silver", "Carbon", "Nitrogen", "Hydrogen", "Acid", "Temperature", "Thermometer", "Compass", "Wheel", "Paper", "Book", "School", "Library", "Hospital", "Medicine", "Vaccine", "Virus", "Bacteria", "Boiling point", "Freezing point", "Triangle", "Circle", "World War I", "Apollo 11", "Steam engine", "Printing press", "Telephone", "Radio", "Television", "Bicycle", "Ship", "Pyramid", "Ancient Egypt", "Ancient Rome", "Industrial Revolution", "Renaissance", "Democracy", "Alphabet", "Dictionary", "Square", "Geometry", "Algebra", "Weather", "Lightning", "Snow", "Lake", "Island", "Valley")),
 }
 
+def describe_os_error(exc: OSError) -> str:
+    """One-line description of an OS error that always names the path when the error carries one."""
+    detail = exc.strerror or str(exc) or "I/O failure"
+    return detail if not exc.filename or str(exc.filename) in detail else f"{detail}: {exc.filename}"
+
+def _tls_context() -> ssl.SSLContext:
+    return ssl.create_default_context(cafile=certifi.where())
+
 def _map_os_error(err: OSError, path: Path, action: str) -> OSError:
     label = os.fspath(path)
     if err.errno == errno.ENOENT:
-        return FileNotFoundError(errno.ENOENT, f"Path not found while {action}: {label}")
+        return FileNotFoundError(errno.ENOENT, f"Path not found while {action}: {label}", label)
     if err.errno == errno.EISDIR or (err.errno == errno.EACCES and path.is_dir()):
-        return IsADirectoryError(errno.EISDIR, f"Expected a file, got a directory while {action}: {label}")
+        return IsADirectoryError(errno.EISDIR, f"Expected a file, got a directory while {action}: {label}", label)
     if err.errno == errno.EACCES:
-        return PermissionError(errno.EACCES, f"Permission denied while {action}: {label}")
-    return OSError(err.errno, f"Filesystem error while {action}: {label}")
+        return PermissionError(errno.EACCES, f"Permission denied while {action}: {label}", label)
+    return OSError(err.errno, f"Filesystem error while {action}: {label}", label)
 
 def _validate_int(val: Any, name: str, minimum: int = 0) -> int:
     if isinstance(val, bool) or not isinstance(val, int) or val < minimum:
@@ -100,7 +111,7 @@ def _download_emnist_balanced(root: Path) -> None:
         with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
             tmp_path = Path(tmp.name)
         md5 = hashlib.md5()
-        with httpx.Client(timeout=EMNIST_TIMEOUT_S, verify=certifi.where(), follow_redirects=True) as client, client.stream("GET", EMNIST_URL) as resp:
+        with httpx.Client(timeout=EMNIST_TIMEOUT_S, verify=_tls_context(), follow_redirects=True) as client, client.stream("GET", EMNIST_URL) as resp:
             resp.raise_for_status()
             with tmp_path.open("wb") as handle:
                 for chunk in resp.iter_bytes(chunk_size=STREAM_CHUNK_BYTES):
@@ -140,17 +151,14 @@ def _load_emnist_dataset(root: Path, train: bool) -> Any:
     return ds
 
 def build_emnist_splits(root: str | Path = "data/emnist", out_path: str | Path = "data/emnist_splits.json", seed: int = DEFAULT_SEED) -> dict[str, Any]:
-    """Build deterministic per-class 90/10 stratified train/val splits of EMNIST(train=True)."""
+    """Write the exact train/val split the vision models were trained with (scripts.train_vision.compute_stratified_split)."""
+    from scripts.train_vision import TRAIN_FRAC, compute_stratified_split  # single source of truth for the CNN split
+
     if not isinstance(root, (str, os.PathLike)) or not isinstance(out_path, (str, os.PathLike)):
         raise TypeError("root and out_path must be strings or path-like objects.")
     seed_val, ds = _validate_int(seed, "seed"), _load_emnist_dataset(Path(root), train=True)
-    targets = ds.targets.detach().cpu().numpy() if isinstance(ds.targets, torch.Tensor) else np.asarray(ds.targets)
-    rng, train_parts, val_parts = np.random.default_rng(seed_val), [], []
-    for cls_id in sorted({int(v) for v in targets.tolist()}):
-        perm = rng.permutation(np.flatnonzero(targets == cls_id))
-        n_val = max(1, round(len(perm) * EMNIST_VAL_FRACTION)) if len(perm) > 1 else 0
-        val_parts.extend(int(i) for i in perm[:n_val].tolist()); train_parts.extend(int(i) for i in perm[n_val:].tolist())
-    payload = {"seed": seed_val, "train_indices": sorted(train_parts), "val_indices": sorted(val_parts)}
+    train_idx, val_idx = compute_stratified_split(ds.targets, train_frac=TRAIN_FRAC, seed=seed_val)
+    payload = {"seed": seed_val, "train_indices": sorted(int(i) for i in train_idx), "val_indices": sorted(int(i) for i in val_idx)}
     _write_data(Path(out_path), payload, as_json=True)
     return {"seed": payload["seed"], "train_indices": list(payload["train_indices"]), "val_indices": list(payload["val_indices"])}
 
@@ -197,7 +205,7 @@ def _fetch_wiki_article(client: httpx.Client, lang: str, title: str, cache_dir: 
     if not force_download:
         try:
             cached = _read_data(cache_path, as_json=True)
-            if isinstance(cached, Mapping) and str(cached.get("text", "")).strip():
+            if isinstance(cached, Mapping) and str(cached.get("text", "")).strip() and cached.get("title") and cached.get("url"):
                 return {"title": str(cached["title"]), "url": str(cached["url"]), "text": _WIKI_HEADING_RE.sub("", str(cached["text"])).strip()}
         except FileNotFoundError:
             pass
@@ -216,7 +224,7 @@ def _fetch_wiki_article(client: httpx.Client, lang: str, title: str, cache_dir: 
     return {"title": resolved, "url": page_url, "text": _WIKI_HEADING_RE.sub("", raw_extract).strip()}
 
 def prepare_corpus(force_download: bool = False) -> dict[str, Any]:
-    """Download/cache Gutenberg + Wikipedia corpus, enforce disjoint splits, and save citations."""
+    """Download/cache Gutenberg + Wikipedia corpus and enforce disjoint splits; writes only the raw-text cache."""
     if not isinstance(force_download, bool):
         raise TypeError("force_download must be a bool.")
     seen_req: dict[str, str] = {}
@@ -227,7 +235,7 @@ def prepare_corpus(force_download: bool = False) -> dict[str, Any]:
             seen_req[k] = pool
     buckets: dict[str, list[Any]] = {k: [] for k in ("train", "dev", "ppl_test", "worksheet_dev", "worksheet_test")}
     word_counts, sources, seen_res = dict.fromkeys(buckets, 0), [], {}
-    with httpx.Client(timeout=HTTP_TIMEOUT_S, headers={"User-Agent": USER_AGENT}, verify=certifi.where(), follow_redirects=True) as client:
+    with httpx.Client(timeout=HTTP_TIMEOUT_S, headers={"User-Agent": USER_AGENT}, verify=_tls_context(), follow_redirects=True) as client:
         for split, bid, title in _GUTENBERG_BOOKS:
             text, url = _fetch_gutenberg_book(client, bid, RAW_GUTENBERG_DIR, force_download)
             wc = len(_TOKEN_RE.findall(text.upper())); buckets[split].append(text); word_counts[split] += wc
@@ -243,7 +251,6 @@ def prepare_corpus(force_download: bool = False) -> dict[str, Any]:
     if word_counts["train"] < TRAIN_MIN_WORDS or word_counts["dev"] < DEV_MIN_WORDS or word_counts["ppl_test"] < PPL_TEST_MIN_WORDS:
         raise RuntimeError(f"Corpus word counts below minimum thresholds: {word_counts}.")
     stats = {"word_counts": word_counts, "doc_counts": {k: len(v) for k, v in buckets.items()}}
-    _write_data(CORPUS_SOURCES_PATH, {"sources": sources, "stats": stats}, as_json=True)
     return {"train_texts": buckets["train"], "dev_texts": buckets["dev"], "ppl_test_texts": buckets["ppl_test"], "worksheet_dev_docs": buckets["worksheet_dev"], "worksheet_test_docs": buckets["worksheet_test"], "sources": sources, "stats": stats}
 
 def build_lexicon(train_tokens: Sequence[str], max_words: int = 24000, min_count: int = 2) -> dict[str, int]:
@@ -330,7 +337,7 @@ def render_emnist_word_strip(raw_emnist_chars: Sequence[torch.Tensor | np.ndarra
         if np.issubdtype(arr2d.dtype, np.floating) and float(arr2d.max()) <= 1.0 and float(arr2d.min()) >= 0.0:
             arr2d = np.rint(arr2d * MAX_BYTE_VAL)
         dark = (MAX_BYTE_VAL - np.clip(arr2d, 0, MAX_BYTE_VAL).astype(np.uint8)).astype(np.uint8)
-        with Image.fromarray(dark, mode="L").resize((inner, inner), Image.Resampling.BILINEAR) as glyph:
+        with Image.fromarray(dark).resize((inner, inner), Image.Resampling.BILINEAR) as glyph:
             strip.paste(glyph, (idx * csize + CELL_PADDING_PX, CELL_PADDING_PX))
     draw = ImageDraw.Draw(strip)
     draw.rectangle([0, 0, width - 1, csize - 1], outline=0, width=bwidth)
@@ -395,5 +402,21 @@ def prepare_all(force_download: bool = False) -> dict[str, Any]:
     _write_data(CORPUS_SOURCES_PATH, {"sources": corpus["sources"], "stats": stats}, as_json=True)
     return {"corpus": corpus, "splits": splits, "lexicon": lexicon, "dev_items": dev_items, "test_items": test_items, "samples": samples, "test_oov_rate": test_oov_rate, "sources": corpus["sources"], "stats": stats}
 
+def main(argv: Sequence[str] | None = None) -> int:
+    """CLI entry point: regenerate splits, worksheets, samples, and corpus citations; friendly one-line errors."""
+    parser = argparse.ArgumentParser(description="Prepare EMNIST splits, corpus citations, and worksheet datasets.")
+    parser.add_argument("--force-download", action="store_true", help="Re-download corpus sources instead of using the cache.")
+    args = parser.parse_args(argv)
+    try:
+        prepare_all(force_download=args.force_download)
+    except OSError as exc:
+        sys.stderr.write(f"File system error: {describe_os_error(exc)}\n")
+        return 1
+    except (RuntimeError, ValueError, TypeError) as exc:
+        sys.stderr.write(f"Error: {' '.join(str(exc).splitlines()).strip() or 'data preparation failed.'}\n")
+        return 1
+    sys.stdout.write("Data preparation complete.\n")
+    return 0
+
 if __name__ == "__main__":
-    prepare_all()
+    raise SystemExit(main())

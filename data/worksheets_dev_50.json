@@ -6,10 +6,10 @@
     "difficulty": "numeric",
     "emnist_split": "val",
     "emnist_indices": [
-      109175,
-      40644,
-      47588,
-      98290
+      105704,
+      39219,
+      45880,
+      96409
     ],
     "char_labels": [
       "3",
@@ -28,9 +28,9 @@
     "difficulty": "numeric",
     "emnist_split": "val",
     "emnist_indices": [
-      76101,
-      32249,
-      74313
+      84046,
+      33434,
+      72406
     ],
     "char_labels": [
       "6",
@@ -48,9 +48,9 @@
     "difficulty": "numeric",
     "emnist_split": "val",
     "emnist_indices": [
-      18133,
-      51360,
-      36102
+      20256,
+      50059,
+      36654
     ],
     "char_labels": [
       "0",
@@ -68,9 +68,9 @@
     "difficulty": "numeric",
     "emnist_split": "val",
     "emnist_indices": [
-      111079,
-      2570,
-      97190
+      112154,
+      5152,
+      93835
     ],
     "char_labels": [
       "2",
@@ -88,12 +88,12 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      34363,
-      3363,
-      67861,
-      77795,
-      15622,
-      3350
+      35608,
+      4905,
+      74352,
+      83310,
+      14532,
+      5715
     ],
     "char_labels": [
       "P",
@@ -114,14 +114,14 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      12687,
-      44029,
-      16745,
-      77220,
-      7651,
-      86407,
-      100633,
-      82739
+      14555,
+      54752,
+      9816,
+      77807,
+      8344,
+      89685,
+      99400,
+      77482
     ],
     "char_labels": [
       "A",
@@ -144,11 +144,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      107114,
-      107220,
-      4676,
-      35916,
-      82271
+      106590,
+      106079,
+      3524,
+      44818,
+      91154
     ],
     "char_labels": [
       "H",
@@ -168,9 +168,9 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      37506,
-      78706,
-      83764
+      31863,
+      84097,
+      92345
     ],
     "char_labels": [
       "I",
@@ -188,16 +188,16 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      112784,
-      40470,
-      39626,
-      3702,
-      33080,
-      32651,
-      50317,
-      48055,
-      95237,
-      89163
+      112483,
+      34927,
+      36990,
+      2323,
+      36416,
+      24886,
+      43871,
+      41200,
+      97509,
+      88649
     ],
     "char_labels": [
       "O",
@@ -222,11 +222,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      81905,
-      594,
-      54499,
-      83159,
-      25076
+      84006,
+      1112,
+      48276,
+      81609,
+      33479
     ],
     "char_labels": [
       "B",
@@ -246,12 +246,12 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      46681,
-      84230,
-      89543,
-      96454,
-      52204,
-      44746
+      51414,
+      86345,
+      88146,
+      99086,
+      45149,
+      48801
     ],
     "char_labels": [
       "E",
@@ -272,11 +272,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      41789,
-      77496,
-      46528,
-      43863,
-      16382
+      48097,
+      72302,
+      50870,
+      49431,
+      24480
     ],
     "char_labels": [
       "T",
@@ -296,10 +296,10 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      54954,
-      28083,
-      62834,
-      98043
+      53447,
+      22166,
+      58665,
+      101125
     ],
     "char_labels": [
       "W",
@@ -318,9 +318,9 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      90105,
-      49699,
-      110253
+      84805,
+      54322,
+      110037
     ],
     "char_labels": [
       "C",
@@ -338,11 +338,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      111980,
-      48447,
-      87193,
-      33792,
-      95847
+      109357,
+      45333,
+      84450,
+      43353,
+      99162
     ],
     "char_labels": [
       "F",
@@ -362,11 +362,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      37450,
-      32273,
-      14569,
-      96125,
-      29524
+      42692,
+      25635,
+      12489,
+      96622,
+      39487
     ],
     "char_labels": [
       "F",
@@ -386,12 +386,12 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      93696,
-      9392,
-      51543,
-      49520,
-      50033,
-      16382
+      92094,
+      7277,
+      55724,
+      49355,
+      53079,
+      24480
     ],
     "char_labels": [
       "P",
@@ -412,11 +412,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      6719,
-      37992,
-      52470,
-      84202,
-      55374
+      9620,
+      42008,
+      47300,
+      90724,
+      51890
     ],
     "char_labels": [
       "E",
@@ -436,11 +436,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      34240,
-      30685,
-      68159,
-      48099,
-      100671
+      24344,
+      26846,
+      69133,
+      47518,
+      102691
     ],
     "char_labels": [
       "G",
@@ -460,10 +460,10 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      54045,
-      61777,
-      7193,
-      22375
+      49794,
+      67919,
+      8062,
+      22217
     ],
     "char_labels": [
       "Y",
@@ -482,11 +482,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      91092,
-      31339,
-      52289,
-      70286,
-      7433
+      98086,
+      33744,
+      45155,
+      60321,
+      3832
     ],
     "char_labels": [
       "F",
@@ -506,11 +506,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      57607,
-      40932,
-      15018,
-      46528,
-      53531
+      55562,
+      36788,
+      17998,
+      50870,
+      51849
     ],
     "char_labels": [
       "G",
@@ -530,12 +530,12 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      19641,
-      63796,
-      81282,
-      30028,
-      108975,
-      61491
+      25018,
+      63805,
+      82824,
+      24634,
+      110103,
+      73355
     ],
     "char_labels": [
       "S",
@@ -556,11 +556,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      83764,
-      7096,
-      83874,
-      38388,
-      79384
+      92345,
+      11127,
+      86918,
+      44188,
+      81690
     ],
     "char_labels": [
       "S",
@@ -580,12 +580,12 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      92499,
-      25777,
-      27557,
-      6687,
-      63067,
-      83764
+      93448,
+      34192,
+      37531,
+      7273,
+      69068,
+      92345
     ],
     "char_labels": [
       "M",
@@ -606,11 +606,11 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      49112,
-      19589,
-      37808,
-      43252,
-      103276
+      49943,
+      16939,
+      33890,
+      43437,
+      104805
     ],
     "char_labels": [
       "B",
@@ -630,13 +630,13 @@
     "difficulty": "confusable",
     "emnist_split": "val",
     "emnist_indices": [
-      10876,
-      37694,
-      63573,
-      24561,
-      98628,
-      104399,
-      36959
+      21172,
+      31976,
+      75959,
+      32537,
+      101818,
+      106712,
+      47828
     ],
     "char_labels": [
       "T",
@@ -658,11 +658,11 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      86784,
-      84460,
-      79115,
-      17572,
-      8494
+      88079,
+      92847,
+      83719,
+      24376,
+      2224
     ],
     "char_labels": [
       "N",
@@ -682,10 +682,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      44013,
-      14289,
-      28834,
-      73137
+      46334,
+      12298,
+      38041,
+      72588
     ],
     "char_labels": [
       "P",
@@ -704,9 +704,9 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      61503,
-      20984,
-      2325
+      69932,
+      18531,
+      2573
     ],
     "char_labels": [
       "F",
@@ -724,11 +724,11 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      23078,
-      49503,
-      92430,
-      37802,
-      27910
+      34282,
+      53951,
+      88784,
+      45746,
+      37257
     ],
     "char_labels": [
       "T",
@@ -748,10 +748,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      65261,
-      10474,
-      24927,
-      4836
+      65619,
+      7226,
+      21995,
+      3954
     ],
     "char_labels": [
       "M",
@@ -770,15 +770,15 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      56960,
-      53955,
-      65561,
-      74120,
-      41677,
-      98224,
-      104660,
-      11225,
-      102164
+      63524,
+      47754,
+      66648,
+      64484,
+      49369,
+      98355,
+      107393,
+      10197,
+      105644
     ],
     "char_labels": [
       "E",
@@ -802,10 +802,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      20481,
-      25704,
-      56996,
-      4600
+      22061,
+      33573,
+      64261,
+      4228
     ],
     "char_labels": [
       "F",
@@ -824,11 +824,11 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      40476,
-      22375,
-      54341,
-      92905,
-      101627
+      47784,
+      22217,
+      51214,
+      94567,
+      104692
     ],
     "char_labels": [
       "T",
@@ -848,10 +848,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      22313,
-      61241,
-      52954,
-      45830
+      31282,
+      57477,
+      55939,
+      50422
     ],
     "char_labels": [
       "T",
@@ -870,11 +870,11 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      70756,
-      111154,
-      44752,
-      8796,
-      99615
+      75272,
+      112667,
+      49835,
+      9864,
+      103159
     ],
     "char_labels": [
       "E",
@@ -894,10 +894,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      104630,
-      32629,
-      54401,
-      94656
+      106958,
+      42642,
+      60650,
+      96259
     ],
     "char_labels": [
       "L",
@@ -916,10 +916,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      49923,
-      54412,
-      105195,
-      92274
+      51749,
+      56889,
+      102344,
+      91057
     ],
     "char_labels": [
       "L",
@@ -938,14 +938,14 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      56883,
-      16179,
-      48772,
-      75337,
-      32070,
-      62673,
-      67861,
-      8716
+      53562,
+      20707,
+      41479,
+      80775,
+      32024,
+      60898,
+      74352,
+      11439
     ],
     "char_labels": [
       "R",
@@ -968,11 +968,11 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      67461,
-      81385,
-      22339,
-      59171,
-      83626
+      66985,
+      89935,
+      32346,
+      67360,
+      81254
     ],
     "char_labels": [
       "M",
@@ -992,10 +992,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      6916,
-      72314,
-      31203,
-      46086
+      3208,
+      76110,
+      33226,
+      48405
     ],
     "char_labels": [
       "K",
@@ -1014,12 +1014,12 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      73185,
-      722,
-      1535,
-      49075,
-      106621,
-      1914
+      76721,
+      1544,
+      3129,
+      52720,
+      107132,
+      2287
     ],
     "char_labels": [
       "E",
@@ -1040,10 +1040,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      82746,
-      6719,
-      54735,
-      44807
+      90765,
+      9620,
+      57959,
+      45516
     ],
     "char_labels": [
       "F",
@@ -1062,10 +1062,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      53453,
-      10004,
-      82848,
-      27610
+      55963,
+      6353,
+      91542,
+      35810
     ],
     "char_labels": [
       "T",
@@ -1084,10 +1084,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      89881,
-      74520,
-      53249,
-      35979
+      85422,
+      76937,
+      59432,
+      39558
     ],
     "char_labels": [
       "H",
@@ -1106,9 +1106,9 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      75608,
-      112717,
-      102521
+      72532,
+      112339,
+      105815
     ],
     "char_labels": [
       "D",
@@ -1126,9 +1126,9 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      104601,
-      23460,
-      67248
+      102282,
+      29062,
+      63651
     ],
     "char_labels": [
       "R",
@@ -1146,10 +1146,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      46584,
-      110156,
-      106673,
-      98567
+      47171,
+      109451,
+      107739,
+      94929
     ],
     "char_labels": [
       "M",
@@ -1168,10 +1168,10 @@
     "difficulty": "easy",
     "emnist_split": "val",
     "emnist_indices": [
-      17778,
-      37445,
-      77978,
-      86784
+      24721,
+      37086,
+      85626,
+      88079
     ],
     "char_labels": [
       "T",

@@ -1,0 +1,33 @@
+{
+  "ppl_unigram": 887.7201925832904,
+  "ppl_bigram": 501.0708927867363,
+  "ppl_trigram": 478.6185983722332,
+  "lambdas": [
+    0.1425,
+    0.38,
+    0.4275,
+    0.05
+  ],
+  "bigram_lambdas": [
+    0.0,
+    0.5225,
+    0.4275,
+    0.05
+  ],
+  "fusion_weights": {
+    "vis_weight": 1.0,
+    "edit_penalty": 2.0,
+    "lm_weight": 1.0
+  },
+  "lexicon_size": 22000,
+  "vocab_size": 28000,
+  "test_oov_rate": 0.12666666666666668,
+  "dev_word_acc_tuned": 0.92,
+  "model_size_mb": 18.99095630645752,
+  "corpus_word_counts": {
+    "train": 846207,
+    "dev": 105910,
+    "ppl_test": 139337,
+    "total": 1091454
+  }
+}

@@ -1,4 +1,4 @@
-"""Classical NLP: tokenization, SymSpell, smoothed n-gram LM, and lattice fusion."""
+"""Classical NLP: tokenization, SymSpell, interpolated (Jelinek-Mercer) n-gram LM, and lattice fusion."""
 
 from __future__ import annotations
 
@@ -24,6 +24,7 @@ START_TOKEN, END_TOKEN, UNK_TOKEN, MASK_TOKEN = "<s>", "</s>", "<UNK>", "[MASK]"
 _START_ID, _NUM_CHARS, _BYTES_PER_MB = -1, len(CANONICAL_36_CHARS), 1024.0 * 1024.0
 _CHAR_TO_IDX = {ch: idx for idx, ch in enumerate(CANONICAL_36_CHARS)}
 _TOKEN_RE, _UNDERSCORE_MASK_RE, _CANONICAL_LEX_RE = re.compile(r"[A-Z0-9]+"), re.compile(r"_{3,}"), re.compile(r"^(?:[A-Z]{2,}|A|I)$")
+_ANY_CASE_MASK_RE, MAX_SENTENCE_CHARS = re.compile(re.escape(MASK_TOKEN), re.IGNORECASE), 500
 _MAX_SYMSPELL_ED, _SYMSPELL_PREFIX_LEN, _MAX_LATTICE_BOXES, _MAX_BEAM_SEEDS = 2, 10, 6, 64
 _DEFAULT_MAX_CANDIDATES, _CANDIDATE_POOL_MIN, _GRID_STEPS = 20, 60, 20
 _PROB_EPS, _CONFUSION_PENALTY, _INDEL_VIS_PENALTY = 1e-12, 1.5, 4.0
@@ -49,9 +50,10 @@ def normalize_word(word: str) -> str:
 
 
 def extract_cloze_context(sentence: str) -> tuple[list[str], list[str]]:
-    """Normalize underscore blanks to [MASK], require one, and tokenize both sides."""
+    """Normalize '___' and any-case '[mask]' blanks to [MASK], require exactly one, and tokenize both sides."""
     if not isinstance(sentence, str): raise TypeError("sentence must be a string.")
-    parts = _UNDERSCORE_MASK_RE.sub(MASK_TOKEN, sentence).split(MASK_TOKEN)
+    if len(sentence) > MAX_SENTENCE_CHARS: raise ValueError(f"sentence must be at most {MAX_SENTENCE_CHARS} characters.")
+    parts = _ANY_CASE_MASK_RE.sub(MASK_TOKEN, _UNDERSCORE_MASK_RE.sub(MASK_TOKEN, sentence)).split(MASK_TOKEN)
     if len(parts) != 2: raise ValueError("sentence must contain exactly one [MASK] (or '___') blank.")
     return tokenize(parts[0]), tokenize(parts[1])
 
@@ -121,10 +123,10 @@ def _validate_sentences(sentences: Any, name: str) -> list[list[str]]:
 
 def _map_os_error(err: OSError, target: Path, action: str) -> OSError:
     label = os.fspath(target)
-    if err.errno == errno.ENOENT: return FileNotFoundError(errno.ENOENT, f"File not found while {action}: {label}")
-    if err.errno == errno.EISDIR or (err.errno == errno.EACCES and target.is_dir()): return IsADirectoryError(errno.EISDIR, f"Expected a file path, got a directory: {label}")
-    if err.errno == errno.EACCES: return PermissionError(errno.EACCES, f"Permission denied while {action}: {label}")
-    return OSError(err.errno, f"Failed {action} {label}: {err.strerror or 'OS error'}")
+    if err.errno == errno.ENOENT: return FileNotFoundError(errno.ENOENT, f"File not found while {action}: {label}", label)
+    if err.errno == errno.EISDIR or (err.errno == errno.EACCES and target.is_dir()): return IsADirectoryError(errno.EISDIR, f"Expected a file path, got a directory: {label}", label)
+    if err.errno == errno.EACCES: return PermissionError(errno.EACCES, f"Permission denied while {action}: {label}", label)
+    return OSError(err.errno, f"Failed {action} {label}: {err.strerror or 'OS error'}", label)
 
 
 def _validate_path(path: str | os.PathLike[str]) -> Path:
@@ -168,11 +170,11 @@ class ClassicalNLPCorrector:
         return tuple(_START_ID if h == START_TOKEN else self.word_to_id.get(h, self._unk_id) for h in history)  # type: ignore[return-value]
 
     def _order_probs(self, uid: int, vid: int, wid: int) -> tuple[float, float, float]:
-        v_size, k = len(self.vocab), self.smoothing_k
+        """Jelinek-Mercer components: add-k unigram, MLE bigram/trigram backing off to the lower order for unseen contexts."""
         tri_tot, bi_tot = self.trigram_totals.get((uid, vid), 0), self.bigram_totals.get(vid, 0)
-        tri_cnt = self.trigram_counts.get((uid, vid), {}).get(wid, 0) if tri_tot else 0
-        bi_cnt = self.bigram_counts.get(vid, {}).get(wid, 0) if bi_tot else 0
-        return (tri_cnt + k) / (tri_tot + k * v_size), (bi_cnt + k) / (bi_tot + k * v_size), float(self._p_uni[wid])
+        p1 = float(self._p_uni[wid])
+        p2 = self.bigram_counts[vid].get(wid, 0) / bi_tot if bi_tot else p1
+        return (self.trigram_counts[(uid, vid)].get(wid, 0) / tri_tot if tri_tot else p2), p2, p1
 
     def _build_symspell_index(self, lexicon: Mapping[str, int]) -> None:
         if not isinstance(lexicon, Mapping): raise TypeError("lexicon must be a mapping of word -> count.")
@@ -196,7 +198,7 @@ class ClassicalNLPCorrector:
         return [self.lexicon_words[i] for i in found]
 
     def train(self, train_sentences: Sequence[Sequence[str]], lexicon: Mapping[str, int], k: float = DEFAULT_SMOOTHING_K, max_vocab_size: int = 28000) -> ClassicalNLPCorrector:
-        """Train SymSpell index and add-k smoothed unigram/bigram/trigram counts."""
+        """Train SymSpell index, an add-k smoothed unigram, and bigram/trigram counts for interpolation."""
         if isinstance(k, bool) or not isinstance(k, (int, float)) or not math.isfinite(float(k)) or float(k) <= 0.0:
             raise ValueError("k must be a finite positive float.")
         if isinstance(max_vocab_size, bool) or not isinstance(max_vocab_size, int) or max_vocab_size < 2:
@@ -220,18 +222,20 @@ class ClassicalNLPCorrector:
         self._p_uni = (uni.astype(np.float64) + k_val) / (self.total_tokens + k_val * v_size)
         return self
 
-    def _sparse_dist(self, counts: Mapping[int, int] | None, total: int, v_size: int) -> np.ndarray:
-        k, denom = self.smoothing_k, total + self.smoothing_k * v_size
-        dist = np.full((v_size,), k / denom, dtype=np.float64)
-        for wid, cnt in (counts or {}).items(): dist[wid] = (cnt + k) / denom
+    @staticmethod
+    def _mle_dist(counts: Mapping[int, int] | None, total: int, fallback: np.ndarray) -> np.ndarray:
+        if not total: return fallback.copy()
+        dist = np.zeros_like(fallback)
+        for wid, cnt in (counts or {}).items(): dist[wid] = cnt / total
         return dist
 
     def next_word_distribution(self, history: tuple[str, str], lambdas: tuple[float, float, float, float] | None = None) -> np.ndarray:
         """Return normalized float64 distribution over V for history (u, v)."""
         self._require_trained(); uid, vid = self._parse_history(history)
         l3, l2, l1, l0 = self.lambdas if lambdas is None else _validate_lambdas(lambdas)
-        v_size = len(self.vocab)
-        return l3 * self._sparse_dist(self.trigram_counts.get((uid, vid)), self.trigram_totals.get((uid, vid), 0), v_size) + l2 * self._sparse_dist(self.bigram_counts.get(vid), self.bigram_totals.get(vid, 0), v_size) + l1 * self._p_uni + (l0 / v_size)
+        d2 = self._mle_dist(self.bigram_counts.get(vid), self.bigram_totals.get(vid, 0), self._p_uni)
+        d3 = self._mle_dist(self.trigram_counts.get((uid, vid)), self.trigram_totals.get((uid, vid), 0), d2)
+        return l3 * d3 + l2 * d2 + l1 * self._p_uni + (l0 / len(self.vocab))
 
     def cond_prob(self, word: str, history: tuple[str, str], lambdas: tuple[float, float, float, float] | None = None) -> float:
         """Compute O(1) interpolated P(word | u, v) matching next_word_distribution."""
@@ -388,7 +392,7 @@ class ClassicalNLPCorrector:
         """Return serialized model size in megabytes."""
         target = _validate_path(path) if path is not None else self._model_path
         if target is not None and (path is not None or target.exists()):
-            if target.is_dir(): raise IsADirectoryError(errno.EISDIR, f"Expected a file path, got a directory: {target}")
+            if target.is_dir(): raise IsADirectoryError(errno.EISDIR, f"Expected a file path, got a directory: {target}", os.fspath(target))
             try: return float(target.stat().st_size) / _BYTES_PER_MB
             except OSError as err: raise _map_os_error(err, target, "checking model size") from err
         self._require_trained()
