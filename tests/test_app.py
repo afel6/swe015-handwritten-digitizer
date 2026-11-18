@@ -26,7 +26,7 @@ def client() -> Any:
 
     from app import app
 
-    with TestClient(app) as test_client:
+    with TestClient(app, base_url="http://127.0.0.1:8000") as test_client:
         yield test_client
 
 
@@ -180,6 +180,25 @@ def test_sentence_errors_keep_the_mask_token_spelling(client: Any) -> None:
 def test_malformed_json_and_oversized_body_return_400(client: Any) -> None:
     _assert_one_line_400(client.post("/api/recognize", content=b"{not json", headers={"content-type": "application/json"}))
     _assert_one_line_400(client.post("/api/recognize", content=b"x" * (8 * 1024 * 1024 + 1), headers={"content-type": "application/json"}))
+
+
+@pytest.mark.parametrize("host", ["evil.example", "127.0.0.1.evil.example", "attacker.localhost.example"])
+def test_foreign_host_headers_are_rejected(client: Any, host: str) -> None:
+    resp = client.get("/api/health", headers={"host": host})
+    assert resp.status_code == 400 and resp.json() == {"detail": "Unknown host; open the app at http://127.0.0.1:8000."}
+
+
+@pytest.mark.parametrize("host", ["127.0.0.1:8000", "localhost:8000", "localhost", "127.0.0.1"])
+def test_local_host_headers_are_accepted(client: Any, host: str) -> None:
+    assert client.get("/api/health", headers={"host": host}).status_code == 200
+
+
+@pytest.mark.parametrize("ctype", ["text/plain", "application/x-www-form-urlencoded", "multipart/form-data; boundary=x"])
+def test_recognize_accepts_only_json_bodies(client: Any, ctype: str) -> None:
+    sample, boxes = _boxes_b64(0)
+    body = json.dumps({"sentence": sample["sentence"], "boxes_base64": boxes}).encode()
+    detail = _assert_one_line_400(client.post("/api/recognize", content=body, headers={"content-type": ctype}))
+    assert "application/json" in detail
 
 
 def test_int8_bert_loaded_from_file_matches_fresh_quantization(client: Any) -> None:

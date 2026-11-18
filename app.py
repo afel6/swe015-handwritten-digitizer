@@ -45,6 +45,7 @@ from models.recognizer import RecognitionService  # noqa: E402
 HOST, PORT = "127.0.0.1", 8000
 STATIC_DIR, SAMPLES_DIR = ROOT / "static", ROOT / "data" / "sample_worksheets"
 MAX_BODY_BYTES = 8 * 1024 * 1024
+ALLOWED_HOSTS = frozenset({"127.0.0.1", "localhost"})  # blocks DNS rebinding: other sites' names never reach the API
 MIN_BOXES, MAX_BOXES = 1, 16
 MAX_B64_CHARS = math.ceil(MAX_IMAGE_BYTES / 3) * 4
 _SAMPLE_NAME_RE = re.compile(r"^sample_\d{2}\.png$")
@@ -94,7 +95,12 @@ app = FastAPI(title="Handwritten Answer Digitizer", lifespan=lifespan, docs_url=
 
 @app.middleware("http")
 async def guard_and_headers(request: Request, call_next: Any) -> Any:
+    host = request.headers.get("host", "").rsplit(":", 1)[0].strip("[]").lower()
+    if host not in ALLOWED_HOSTS:
+        return _secure(JSONResponse({"detail": f"Unknown host; open the app at http://{HOST}:{PORT}."}, status_code=400))
     if request.method == "POST":
+        if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json":
+            return _secure(JSONResponse({"detail": "Send the request body as application/json."}, status_code=400))
         length = request.headers.get("content-length")
         if length is None or not length.isdigit() or int(length) > MAX_BODY_BYTES:
             return _secure(JSONResponse({"detail": f"Request body must declare its size and be at most {MAX_BODY_BYTES // (1024 * 1024)} MB."}, status_code=400))
