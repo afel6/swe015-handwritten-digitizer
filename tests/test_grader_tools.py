@@ -6,7 +6,6 @@ import hashlib
 import io
 import zipfile
 from pathlib import Path
-from typing import Any
 
 import pytest
 
@@ -103,3 +102,19 @@ def test_main_exit_code_reflects_failures(monkeypatch: pytest.MonkeyPatch, capsy
     assert verify.main([]) == 1
     out = capsys.readouterr().out
     assert "FAIL" in out and "boom" in out
+
+
+def test_readme_grader_section_matches_agents_md() -> None:
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    section = readme.split("<!-- grader section: keep identical to AGENTS.md -->\n", 1)[1].split("<!-- end grader section -->", 1)[0]
+    agents = (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    assert section.strip() in agents and "python verify.py" in section
+    for command in ("python scripts/recompute_metrics.py", "python scripts/download_assets.py", "python app.py", "python -m pytest -q"):
+        assert command in section
+
+
+def test_readme_tables_match_the_reported_results() -> None:
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    report = (REPO_ROOT / "results" / "benchmark_results.md").read_text(encoding="utf-8")
+    rows = [line for line in report.splitlines() if line.startswith("| (") or line.startswith("| char_") or line.startswith("| dense_")]
+    assert rows and all(row in readme for row in rows)

@@ -869,6 +869,7 @@ def test_build_emnist_transform_orientation_and_affine_order() -> None:
     assert torch.allclose(pre_affine_out, expected, atol=1e-6)
 
 
+@pytest.mark.skipif(not (Path("data/emnist/EMNIST/raw") / "emnist-balanced-test-labels-idx1-ubyte").is_file(), reason="EMNIST balanced files not downloaded")
 def test_extract_oriented_tensors_and_apply_random_affine_batch() -> None:
     _, _, test_ds = load_emnist_datasets()
     subset_idx = np.arange(8, dtype=np.int64)
@@ -933,6 +934,7 @@ def test_evaluate_vision_model_folds_47_to_36_before_argmax() -> None:
     assert metrics["test_acc_36_pct"] == pytest.approx(100.0, abs=1e-4)
 
 
+@pytest.mark.skipif(not (Path("weights") / "char_cnn_int8.pt").is_file(), reason="trained vision weights not downloaded (python scripts/download_assets.py)")
 def test_trained_vision_artifacts_meet_spec_targets_and_reload() -> None:
     mlp_ckpt = WEIGHTS_DIR / "dense_mlp.pt"
     cnn_fp32_ckpt = WEIGHTS_DIR / "char_cnn_fp32.pt"
