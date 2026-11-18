@@ -14,6 +14,7 @@ from scripts import generate_slides
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESULTS = REPO_ROOT / "results"
+pytestmark = pytest.mark.skipif(not (REPO_ROOT / "weights" / "char_cnn_fp32.pt").is_file(), reason="slides render Grad-CAM from the CNN weights (python scripts/download_assets.py)")
 META = {"name": "Test Student", "student_id": "S-123", "repo_url": generate_slides.DEFAULT_REPO, "video_url": "https://example.org/video"}
 
 
