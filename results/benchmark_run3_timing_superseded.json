@@ -1,0 +1,30 @@
+{
+  "reason": "Run 3 timings were measured in a throttled power state (INT8 CNN batch-1 slower than FP32, app model 177 ms/word vs 110 ms in run 2). The benchmark was re-timed on AC power in Windows 'Best performance' mode with nothing else running. Accuracy is unchanged: every per-item output of every re-timing pass was verified identical to run 3.",
+  "power_state": "not recorded in run 3",
+  "ladder_latency_mean_ms": {
+    "raw_fp32": 13.38044133342919,
+    "raw_int8": 11.62989566665298,
+    "classical": 26.39790600000803,
+    "bert_fp32": 385.27778033327195,
+    "quantized_app": 176.87895499960482,
+    "ablation_fp32cnn_int8bert": 182.8772283331394
+  },
+  "vision_latency_ms": {
+    "dense_mlp_fp32": {
+      "b1": 0.1316660009615589,
+      "b8": 0.17711499982397072
+    },
+    "char_cnn_fp32": {
+      "b1": 1.8276690007769503,
+      "b8": 4.265570999414194
+    },
+    "char_cnn_int8": {
+      "b1": 6.269913000433007,
+      "b8": 5.45153599960031
+    }
+  },
+  "bert_latency_ms": {
+    "fp32": 70.6433350010775,
+    "int8": 23.980976999737322
+  }
+}

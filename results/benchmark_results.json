@@ -9,7 +9,12 @@
     "torch": "2.9.1+cu128",
     "transformers": "5.23.0",
     "torch_threads": 4,
-    "timing_device": "cpu"
+    "timing_device": "cpu",
+    "power": {
+      "on_ac": true,
+      "power_scheme": "Turbo",
+      "power_mode": "Best performance"
+    }
   },
   "worksheets": "data/worksheets_test_300.json",
   "vision": {
@@ -17,22 +22,22 @@
       "acc_47_pct": 86.40957446808511,
       "acc_36_pct": 88.33510638297872,
       "disk_mb": 2.0827836990356445,
-      "latency_b1_ms": 0.1316660009615589,
-      "latency_b8_ms": 0.17711499982397072
+      "latency_b1_ms": 0.0510559999383986,
+      "latency_b8_ms": 0.06555100029800087
     },
     "char_cnn_fp32": {
       "acc_47_pct": 89.47340425531914,
       "acc_36_pct": 91.31914893617021,
       "disk_mb": 6.534577369689941,
-      "latency_b1_ms": 1.8276690007769503,
-      "latency_b8_ms": 4.265570999414194
+      "latency_b1_ms": 0.3048000001581386,
+      "latency_b8_ms": 0.9021529996243771
     },
     "char_cnn_int8": {
       "acc_47_pct": 89.42553191489363,
       "acc_36_pct": 91.2872340425532,
       "disk_mb": 1.6510038375854492,
-      "latency_b1_ms": 6.269913000433007,
-      "latency_b8_ms": 5.45153599960031
+      "latency_b1_ms": 0.29561300078057684,
+      "latency_b8_ms": 0.4515770002035424
     }
   },
   "vision_n": 18800,
@@ -42,7 +47,7 @@
       "word_acc_pct": 61.666666666666664,
       "char_acc_pct": 90.1417525773196,
       "size_mb": 6.534577369689941,
-      "latency_mean_ms": 13.38044133342919,
+      "latency_mean_ms": 4.888877667011305,
       "n": 300
     },
     "raw_int8": {
@@ -50,7 +55,7 @@
       "word_acc_pct": 60.666666666666664,
       "char_acc_pct": 89.94845360824742,
       "size_mb": 1.6510038375854492,
-      "latency_mean_ms": 11.62989566665298,
+      "latency_mean_ms": 3.7516506659934143,
       "n": 300
     },
     "classical": {
@@ -58,7 +63,7 @@
       "word_acc_pct": 86.33333333333333,
       "char_acc_pct": 91.17268041237114,
       "size_mb": 25.52553367614746,
-      "latency_mean_ms": 26.39790600000803,
+      "latency_mean_ms": 10.788451333307117,
       "n": 300
     },
     "bert_fp32": {
@@ -66,7 +71,7 @@
       "word_acc_pct": 88.0,
       "char_acc_pct": 92.46134020618557,
       "size_mb": 443.3651132583618,
-      "latency_mean_ms": 385.27778033327195,
+      "latency_mean_ms": 166.66368466666123,
       "n": 300
     },
     "quantized_app": {
@@ -74,7 +79,7 @@
       "word_acc_pct": 87.66666666666667,
       "char_acc_pct": 91.43041237113403,
       "size_mb": 216.20446109771729,
-      "latency_mean_ms": 176.87895499960482,
+      "latency_mean_ms": 51.32258933260649,
       "n": 300
     },
     "ablation_fp32cnn_int8bert": {
@@ -82,7 +87,7 @@
       "word_acc_pct": 87.33333333333333,
       "char_acc_pct": 91.3659793814433,
       "size_mb": 221.08803462982178,
-      "latency_mean_ms": 182.8772283331394,
+      "latency_mean_ms": 55.7672433325691,
       "n": 300
     }
   },
@@ -98,8 +103,8 @@
     "int8_mb": 195.56250095367432
   },
   "bert_latency_ms": {
-    "fp32": 70.6433350010775,
-    "int8": 23.980976999737322
+    "fp32": 26.012960999651114,
+    "int8": 8.404046999057755
   },
   "fusion_params": {
     "alpha": 0.0,
@@ -133,5 +138,95 @@
       "result": "PASS",
       "value": "+0.03 pp"
     }
-  ]
+  ],
+  "retime": {
+    "passes": [
+      {
+        "ladder_latency_mean_ms": {
+          "raw_fp32": 4.888877667011305,
+          "raw_int8": 3.7516506659934143,
+          "classical": 10.788451333307117,
+          "bert_fp32": 166.66368466666123,
+          "quantized_app": 51.32258933260649,
+          "ablation_fp32cnn_int8bert": 55.7672433325691
+        },
+        "vision_latency_ms": {
+          "dense_mlp_fp32": {
+            "b1": 0.0510559999383986,
+            "b8": 0.06555100029800087
+          },
+          "char_cnn_fp32": {
+            "b1": 0.3048000001581386,
+            "b8": 0.9021529996243771
+          },
+          "char_cnn_int8": {
+            "b1": 0.29561300078057684,
+            "b8": 0.4515770002035424
+          }
+        },
+        "bert_latency_ms": {
+          "fp32": 26.012960999651114,
+          "int8": 8.404046999057755
+        }
+      },
+      {
+        "ladder_latency_mean_ms": {
+          "raw_fp32": 4.87835566639357,
+          "raw_int8": 3.69167833312531,
+          "classical": 10.719696333010992,
+          "bert_fp32": 167.19613499939442,
+          "quantized_app": 50.41432966657643,
+          "ablation_fp32cnn_int8bert": 55.509053332886346
+        },
+        "vision_latency_ms": {
+          "dense_mlp_fp32": {
+            "b1": 0.052095999562880024,
+            "b8": 0.06610600015847012
+          },
+          "char_cnn_fp32": {
+            "b1": 0.2849819991388358,
+            "b8": 0.8553009993920568
+          },
+          "char_cnn_int8": {
+            "b1": 0.38534300023457035,
+            "b8": 0.3453299999819137
+          }
+        },
+        "bert_latency_ms": {
+          "fp32": 26.767803999682656,
+          "int8": 8.560986999655142
+        }
+      },
+      {
+        "ladder_latency_mean_ms": {
+          "raw_fp32": 4.996754666693353,
+          "raw_int8": 3.8053556665060264,
+          "classical": 10.914058666870309,
+          "bert_fp32": 168.99334300047485,
+          "quantized_app": 51.433925332773164,
+          "ablation_fp32cnn_int8bert": 57.17413333317381
+        },
+        "vision_latency_ms": {
+          "dense_mlp_fp32": {
+            "b1": 0.07547699904534966,
+            "b8": 0.09688699996331707
+          },
+          "char_cnn_fp32": {
+            "b1": 0.3218500001821667,
+            "b8": 0.9112369993817993
+          },
+          "char_cnn_int8": {
+            "b1": 0.2982949996658135,
+            "b8": 0.42359500061138533
+          }
+        },
+        "bert_latency_ms": {
+          "fp32": 25.9935940001742,
+          "int8": 8.375033001066186
+        }
+      }
+    ],
+    "reported_pass": 0,
+    "rule": "pass with the median app-model (row 4) mean latency"
+  }
 }
