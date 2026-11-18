@@ -85,34 +85,35 @@ All of it runs on the CPU on 127.0.0.1. The app and the benchmark call the same 
 ## Results (R4)
 
 CPU timing only: AMD Ryzen AI 9 HX 370 w/ Radeon 890M, 4 torch threads, 24 logical cores, 31.1 GB RAM; GPU present but unused for timing: NVIDIA GeForce RTX 5070 Ti Laptop GPU.
-Windows-11-10.0.26300-SP0, Python 3.13.15, torch 2.9.1+cu128, transformers 5.23.0.
+Windows-11-10.0.26300-SP0, Python 3.13.15, torch 2.9.1+cu128, transformers 5.23.0. Timing on AC power, power scheme Turbo, power mode Best performance.
 
 ### Table 1 - Vision (EMNIST balanced test, N=18800)
 
 | Model | 47-class acc % | 36-folded acc % | Disk MB | CPU b1 ms | CPU b8 ms |
 |---|---|---|---|---|---|
-| dense_mlp_fp32 | 86.41 | 88.34 | 2.08 | 0.132 | 0.177 |
-| char_cnn_fp32 | 89.47 | 91.32 | 6.53 | 1.828 | 4.266 |
-| char_cnn_int8 | 89.43 | 91.29 | 1.65 | 6.270 | 5.452 |
+| dense_mlp_fp32 | 86.41 | 88.34 | 2.08 | 0.051 | 0.066 |
+| char_cnn_fp32 | 89.47 | 91.32 | 6.53 | 0.305 | 0.902 |
+| char_cnn_int8 | 89.43 | 91.29 | 1.65 | 0.296 | 0.452 |
 
 ### Table 2 - Word ladder (N=300 held-out worksheets, boxed strips)
 
 | Pipeline | Word acc % | Char acc % | Size MB | Mean ms/word |
 |---|---|---|---|---|
-| (1) Trained NN, no correction: FP32 CNN | 61.67 | 90.14 | 6.5 | 13.4 |
-| (1b) parity: INT8 CNN, no correction | 60.67 | 89.95 | 1.7 | 11.6 |
-| (2) Classical: FP32 CNN + SymSpell + n-gram fusion | 86.33 | 91.17 | 25.5 | 26.4 |
-| (3) Transformer: FP32 CNN + same pool + FP32 BERT | 88.00 | 92.46 | 443.4 | 385.3 |
-| (4) Quantized Transformer [App]: INT8 CNN pool + INT8 BERT | 87.67 | 91.43 | 216.2 | 176.9 |
-| (ablation) FP32 CNN + same pool + INT8 BERT | 87.33 | 91.37 | 221.1 | 182.9 |
+| (1) Trained NN, no correction: FP32 CNN | 61.67 | 90.14 | 6.5 | 4.9 |
+| (1b) parity: INT8 CNN, no correction | 60.67 | 89.95 | 1.7 | 3.8 |
+| (2) Classical: FP32 CNN + SymSpell + n-gram fusion | 86.33 | 91.17 | 25.5 | 10.8 |
+| (3) Transformer: FP32 CNN + same pool + FP32 BERT | 88.00 | 92.46 | 443.4 | 166.7 |
+| (4) Quantized Transformer [App]: INT8 CNN pool + INT8 BERT | 87.67 | 91.43 | 216.2 | 51.3 |
+| (ablation) FP32 CNN + same pool + INT8 BERT | 87.33 | 91.37 | 221.1 | 55.8 |
 
 Candidate recall (target in the shared pool): FP32 CNN 88.67 %, INT8 CNN 89.00 %; this is the ceiling for
 rows 2–4. Strip-path character accuracy 90.14 % vs raw EMNIST 91.32 % (gap +1.18 pp). All five checks pass
 (`results/benchmark_results.md`). Test OOV rate (target not in the lexicon): 12.7 %
 (`results/corpus_sources.json`).
 
-Latency varies between runs on this laptop: in run 2 the CNN took 0.84 ms (FP32) and 0.62 ms (INT8) at
-batch 1 and the app model 110 ms per word; run 3 measured the higher values above with nothing else running.
+Latencies above were re-timed on AC power in Windows "Best performance" mode (three timing passes, median
+reported; every prediction verified identical to the accuracy run). The first timing of run 3 was taken in a
+throttled power state; it is kept in `results/benchmark_run3_timing_superseded.json`.
 
 ### Methodology
 

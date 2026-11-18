@@ -198,7 +198,7 @@ def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Area D: quantization and R4 results", 8)
     _table(fig, (0.04, 0.47, 0.92, 0.37), ["Pipeline (N=300)", "Word %", "Char %", "MB", "ms/word"], sc.ladder_rows(res), highlight=4, first_col=0.36)
     y = _bullets(ax, ["Static INT8 CNN (observers on train data) and dynamic INT8 BERT; sizes are serialized state_dicts; CPU, 4 threads, perf_counter.", *sc.checks_lines(res)], top=0.45, size=11)
-    note = sc.hardware_line(res) + ". Tuned on dev only; the test set was evaluated 3 times and run 3 is reported (runs 1-2 superseded; reasons in results/)."
+    note = sc.hardware_line(res) + ". Tuned on dev only; the test set was evaluated 3 times and run 3 is reported (runs 1-2 superseded; reasons in results/); latencies re-timed on AC power, median of 3 passes, outputs verified identical."
     ax.text(0.05, y - 0.01, "\n".join(textwrap.wrap(note, 150)), fontsize=9.5, color=MUTED, va="top")
     return fig
 
