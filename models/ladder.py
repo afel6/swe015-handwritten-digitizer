@@ -63,4 +63,4 @@ def run_ladder(sentence: str, p32: np.ndarray, p8: np.ndarray, models: Mapping[s
         "quantized_app": _ranked_row(app, t8 + tp8 + tapp), "ablation_fp32cnn_int8bert": _ranked_row(ablation, t32 + tp32 + tab),
     }
     pools = {"fp32": {c["word"] for c in pool32}, "int8": {c["word"] for c in pool8}}
-    return {"rows": rows, "pools": pools, "numeric_preserved_int8": bool(meta8["numeric_preserved"])}
+    return {"rows": rows, "pools": pools, "numeric_preserved_int8": bool(meta8["numeric_preserved"]), "mean_conf_int8": float(meta8["mean_top1_conf"])}

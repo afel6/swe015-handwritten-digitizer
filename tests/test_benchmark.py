@@ -106,6 +106,32 @@ def test_evaluate_rejects_bad_fusion_params_file(doc: dict[str, Any], fragment: 
     assert err.count("\n") == 1 and fragment in err and "Error: 'params'" not in err
 
 
+def _write_items(path: Path, split: str) -> Path:
+    items = [{**it, "emnist_split": split} for it in _dev_items(2)]
+    path.write_text(json.dumps(items), encoding="utf-8")
+    return path
+
+
+@pytest.mark.parametrize("split", ["train", "val"])
+def test_test_file_must_use_emnist_test_images(split: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    test_file = _write_items(tmp_path / "worksheets_test_300.json", split)
+    monkeypatch.setattr(evaluate_all, "TEST_WORKSHEETS_PATH", test_file)
+    monkeypatch.setattr(evaluate_all, "load_models", lambda *_a, **_k: pytest.fail("models must not load before validation"))
+    assert evaluate_all.main(["--worksheets", str(test_file), "--no-save"]) == 1
+    err = capsys.readouterr().err
+    assert err.count("\n") == 1 and "emnist_split" in err and "'test'" in err
+
+
+def test_unknown_split_and_bad_warmup_file_fail_before_models(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    monkeypatch.setattr(evaluate_all, "load_models", lambda *_a, **_k: pytest.fail("models must not load before validation"))
+    assert evaluate_all.main(["--worksheets", str(_write_items(tmp_path / "custom.json", "train")), "--no-save"]) == 1
+    assert "emnist_split" in capsys.readouterr().err
+    monkeypatch.setattr(evaluate_all, "DEV_WORKSHEETS_PATH", _write_items(tmp_path / "dev.json", "test"))
+    assert evaluate_all.main(["--worksheets", str(_write_items(tmp_path / "ok.json", "test")), "--no-save"]) == 1
+    err = capsys.readouterr().err
+    assert err.count("\n") == 1 and "'val'" in err
+
+
 def test_evaluate_rejects_items_without_id_or_split(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     bad = tmp_path / "ws.json"
     bad.write_text(json.dumps([{"sentence": "The [MASK] is hot.", "target_word": "SUN"}]), encoding="utf-8")

@@ -303,6 +303,21 @@ def test_numeric_failures_name_the_real_cause() -> None:
     assert "digit" in why and "lexicon" in why and "edit-distance" not in why
 
 
+def _numeric_record(raw: str, in_pool: bool, guard: bool, conf: float) -> dict[str, Any]:
+    return {"id": "t", "target": "1985", "raw_int8": raw, "outputs": {"quantized_app": raw}, "target_in_pool_int8": in_pool, "numeric_preserved_int8": guard, "mean_conf_int8": conf}
+
+
+def test_all_digit_misread_names_the_lexicon_not_letters() -> None:
+    why = bench_report.explain_failure(_numeric_record("1965", in_pool=False, guard=False, conf=0.5))
+    assert why == "CNN misread the digits as '1965' and the digit string is not in the word lexicon"
+
+
+@pytest.mark.parametrize(("conf", "confident"), [(0.40, False), (0.69, False), (0.70, True), (0.95, True)])
+def test_guard_reason_says_confident_only_above_the_threshold(conf: float, confident: bool) -> None:
+    why = bench_report.explain_failure(_numeric_record("1965", in_pool=True, guard=True, conf=conf))
+    assert "kept the" in why and "'1965'" in why and ("confident" in why) is confident
+
+
 def test_ram_falls_back_when_the_os_call_fails() -> None:
     class FailingKernel:
         @staticmethod

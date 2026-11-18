@@ -78,6 +78,24 @@ def load_fusion_params(path: Path = PARAMS_PATH) -> dict[str, float]:
     return {k: float(params[k]) for k in PARAM_KEYS}
 
 
+def expected_split(path: Path) -> str | None:
+    """EMNIST split a worksheet file must use: 'test' for the held-out file, 'val' for dev, else either."""
+    if Path(path).resolve() == Path(TEST_WORKSHEETS_PATH).resolve():
+        return "test"
+    if Path(path).resolve() == Path(DEV_WORKSHEETS_PATH).resolve():
+        return "val"
+    return None
+
+
+def check_splits(items: Sequence[Mapping[str, Any]], path: Path, expected: str | None) -> None:
+    """Fail before any model loads if an item would draw glyphs from the wrong EMNIST split."""
+    allowed = {expected} if expected else {"test", "val"}
+    bad = next((it for it in items if it.get("emnist_split") not in allowed), None)
+    if bad is not None:
+        wanted = " or ".join(repr(s) for s in sorted(allowed))
+        raise ValueError(f"Item {bad.get('id')} in {Path(path).as_posix()} has emnist_split {bad.get('emnist_split')!r}; every item must use {wanted}.")
+
+
 def load_models(params: Mapping[str, float], save_int8: bool) -> dict[str, Any]:
     """Load every artifact once; the INT8 BERT file is written only when results are saved."""
     bert_fp32 = BertMLMReranker()
@@ -118,7 +136,8 @@ def run_item(item: Mapping[str, Any], strip: Any, models: Mapping[str, Any]) -> 
     target = normalize_word(str(item["target_word"]))
     return {"id": item["id"], "sentence": sentence, "target": target, "outputs": outputs, "latency_ms": {k: row["latency_ms"] for k, row in ladder["rows"].items()},
             "raw_fp32": outputs["raw_fp32"], "raw_int8": outputs["raw_int8"], "target_in_pool_fp32": target in ladder["pools"]["fp32"],
-            "target_in_pool_int8": target in ladder["pools"]["int8"], "numeric_preserved_int8": ladder["numeric_preserved_int8"]}
+            "target_in_pool_int8": target in ladder["pools"]["int8"], "numeric_preserved_int8": ladder["numeric_preserved_int8"],
+            "mean_conf_int8": ladder["mean_conf_int8"]}
 
 
 def row_sizes(models: Mapping[str, Any]) -> dict[str, float]:
@@ -159,10 +178,13 @@ def bert_standalone(models: Mapping[str, Any]) -> tuple[dict[str, float], dict[s
 def evaluate(worksheets: Path, emnist_root: Path = EMNIST_ROOT, save: bool = True) -> dict[str, Any]:
     torch.set_num_threads(THREADS)
     test_items = load_worksheet_items(worksheets, required=REQUIRED_ITEM_KEYS)
+    check_splits(test_items, worksheets, expected_split(worksheets))
+    warmup_items = load_worksheet_items(DEV_WORKSHEETS_PATH, required=REQUIRED_ITEM_KEYS)[:WARMUP_ITEMS]
+    check_splits(warmup_items, DEV_WORKSHEETS_PATH, "val")
     params = load_fusion_params(PARAMS_PATH)
     models = load_models(params, save_int8=save)
     train_ds, test_ds = load_emnist_dataset(emnist_root, train=True), load_emnist_dataset(emnist_root, train=False)
-    for item in load_worksheet_items(DEV_WORKSHEETS_PATH, required=REQUIRED_ITEM_KEYS)[:WARMUP_ITEMS]:
+    for item in warmup_items:
         run_item(item, item_to_strip(item, train_ds), models)
     strips = [item_to_strip(it, test_ds if it["emnist_split"] == "test" else train_ds) for it in test_items]
     ladder, records = word_ladder(test_items, strips, models)

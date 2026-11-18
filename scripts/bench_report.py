@@ -13,7 +13,7 @@ from typing import Any
 
 import torch
 
-from models.classical_nlp import CANDIDATE_POOL_SIZE, normalize_word
+from models.classical_nlp import CANDIDATE_POOL_SIZE, NUMERIC_CONF_THRESHOLD, normalize_word
 
 MAX_INT8_ACC_DROP_PP = 1.5
 MIN_BERT_SIZE_REDUCTION = 2.0
@@ -115,7 +115,10 @@ def explain_failure(record: Mapping[str, Any]) -> str:
     """Plain-language reason for a failure, from the recorded pipeline state."""
     target, raw = normalize_word(record["target"]), normalize_word(record["raw_int8"])
     if record.get("numeric_preserved_int8"):
-        return f"numeric guard kept the confident CNN digits {raw!r}"
+        confident = float(record.get("mean_conf_int8", 0.0)) >= NUMERIC_CONF_THRESHOLD
+        return f"numeric guard kept the {'confident ' if confident else ''}CNN digits {raw!r} instead of a lexicon word"
+    if not record["target_in_pool_int8"] and target.isdigit() and raw.isdigit():
+        return f"CNN misread the digits as {raw!r} and the digit string is not in the word lexicon"
     if not record["target_in_pool_int8"] and target.isdigit():
         return (f"CNN read {raw!r} with letters among the digits; the SymSpell lexicon holds words only, and a digit string enters the pool only as the raw read "
                 f"when every box reads as a digit, so {target!r} could not be a candidate")
@@ -141,7 +144,7 @@ def render_markdown(result: Mapping[str, Any]) -> str:
              *_table(["Pipeline", "Word acc %", "Char acc %", "Size MB", "Mean ms/word"], lad_rows), "",
              f"Candidate recall (target in the shared pool): FP32 CNN {result['recall_pct']['fp32']:.2f} %, INT8 CNN {result['recall_pct']['int8']:.2f} % (ceiling for rows 2-4).",
              f"Strip-path char accuracy {result['strip_char_acc_pct']:.2f} % vs raw EMNIST 36-folded {result['vision']['char_cnn_fp32']['acc_36_pct']:.2f} %: {result['strip_gap_note']}",
-             "Sizes sum the weight files each pipeline loads (FP32 BERT: serialized state_dict; INT8 BERT: saved state_dict file; the ~0.2 MB tokenizer vocab is not counted). Row (4) is the app pipeline measured offline: its pool uses the same fixed rule on the INT8 CNN's own read, so it can differ from the FP32-CNN pool of rows 2, 3 and the ablation.",
+             "Sizes sum the weight files each pipeline loads (both BERTs: serialized state_dict of the model loaded for the run; the ~0.2 MB tokenizer vocab is not counted). Row (4) is the app pipeline measured offline: its pool uses the same fixed rule on the INT8 CNN's own read, so it can differ from the FP32-CNN pool of rows 2, 3 and the ablation.",
              f"Standalone BERT: FP32 {result['bert_sizes']['fp32_mb']:.1f} MB, {result['bert_latency_ms']['fp32']:.1f} ms; INT8 {result['bert_sizes']['int8_mb']:.1f} MB, {result['bert_latency_ms']['int8']:.1f} ms (one masked sentence, batch 1).", "",
              "## Checks (reported, not enforced)", "", *_table(["Check", "Result", "Value"], [[c["check"], c["result"], c["value"]] for c in result["checks"]]), ""]
     return "\n".join(lines)
