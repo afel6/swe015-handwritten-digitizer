@@ -1,15 +1,26 @@
-torch>=2.5,<2.10
-torchvision>=0.20,<0.25
-transformers
-fastapi
-uvicorn
-pillow
-numpy
-scipy
-scikit-learn
-matplotlib
-python-pptx
-pymupdf
-pytest
-pytest-cov
-httpx
+# Exact versions tested with Python 3.12 and 3.13 (Windows and Linux, CPU).
+# Install the CPU build of torch first (the app, benchmark and tests run on CPU; a GPU build is optional):
+#   pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu
+# torch 2.9.x is required: 2.10+ removes the eager torch.ao.quantization PTQ API used by the INT8 CNN.
+torch==2.9.1
+torchvision==0.24.1
+transformers==5.23.0
+tokenizers==0.23.3
+safetensors==0.8.0
+huggingface_hub==2.4.0
+fastapi==0.135.2
+starlette==1.10.0
+pydantic==2.14.3
+uvicorn==0.42.0
+pillow==11.3.0
+numpy==2.4.3
+scipy==1.17.1
+scikit-learn==1.8.0
+matplotlib==3.10.8
+python-pptx==1.0.2
+PyMuPDF==1.26.7
+httpx==0.28.1
+requests==2.33.0
+certifi==2026.10.23
+pytest==9.0.3
+pytest-cov==7.1.0

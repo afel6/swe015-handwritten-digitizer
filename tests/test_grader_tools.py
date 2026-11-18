@@ -1,0 +1,105 @@
+"""Tests for the grader-facing tools: scripts/download_assets.py and verify.py."""
+
+from __future__ import annotations
+
+import hashlib
+import io
+import zipfile
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+import verify
+from scripts import download_assets
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+WEIGHTS = REPO_ROOT / "weights"
+
+
+def _zip_bytes(files: dict[str, bytes]) -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        for name, data in files.items():
+            zf.writestr(name, data)
+    return buf.getvalue()
+
+
+def _asset(tmp_path: Path, files: dict[str, bytes]) -> download_assets.Asset:
+    payload = _zip_bytes(files)
+    return download_assets.Asset("test", "https://example.invalid/a.zip", hashlib.sha256(payload).hexdigest(),
+                                 {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}), payload
+
+
+def test_download_extracts_and_verifies_every_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    asset, payload = _asset(tmp_path, {"weights/a.pt": b"alpha", "weights/b.pkl": b"beta"})
+    monkeypatch.setattr(download_assets, "_fetch", lambda url: payload)
+    download_assets.install(asset, tmp_path)
+    assert (tmp_path / "weights" / "a.pt").read_bytes() == b"alpha"
+    monkeypatch.setattr(download_assets, "_fetch", lambda url: pytest.fail("files already present must not be downloaded again"))
+    download_assets.install(asset, tmp_path)
+
+
+def test_checksum_mismatch_is_rejected_and_nothing_is_written(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    asset, _ = _asset(tmp_path, {"weights/a.pt": b"alpha"})
+    monkeypatch.setattr(download_assets, "_fetch", lambda url: _zip_bytes({"weights/a.pt": b"tampered"}))
+    with pytest.raises(ValueError, match="sha256"):
+        download_assets.install(asset, tmp_path)
+    assert not (tmp_path / "weights").exists()
+
+
+@pytest.mark.parametrize("name", ["../evil.txt", "/abs/evil.txt", "weights/../../evil.txt", "C:/evil.txt"])
+def test_unsafe_zip_paths_are_rejected(name: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    payload = _zip_bytes({name: b"x"})
+    asset = download_assets.Asset("bad", "https://example.invalid/b.zip", hashlib.sha256(payload).hexdigest(), {name: hashlib.sha256(b"x").hexdigest()})
+    monkeypatch.setattr(download_assets, "_fetch", lambda url: payload)
+    with pytest.raises(ValueError, match="unsafe"):
+        download_assets.install(asset, tmp_path / "root")
+
+
+def test_cli_reports_failures_in_one_line(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    def offline(url: str) -> bytes:
+        raise OSError("network unreachable")
+
+    monkeypatch.setattr(download_assets, "_fetch", offline)
+    monkeypatch.setattr(download_assets, "ASSETS", [download_assets.Asset("v9", "https://example.invalid/v9.zip", "0" * 64, {"weights/x.pt": "0" * 64})])
+    assert download_assets.main(["--root", str(tmp_path)]) == 1
+    err = capsys.readouterr().err
+    assert err.count("\n") == 1 and "v9" in err
+
+
+def test_release_assets_pin_every_required_file() -> None:
+    names = {n for a in download_assets.ASSETS for n in a.files}
+    assert {"weights/dense_mlp.pt", "weights/char_cnn_fp32.pt", "weights/char_cnn_int8.pt", "weights/ngram_lm.pkl", "weights/bert_int8_dynamic.pt"} <= names
+    assert all(a.url.startswith("https://github.com/afel6/swe015-handwritten-digitizer/releases/download/") for a in download_assets.ASSETS)
+
+
+def test_recompute_check_passes_on_committed_results() -> None:
+    assert verify.check_recompute().status == "PASS"
+
+
+def test_weight_checks_skip_with_the_download_command_when_weights_are_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(verify, "WEIGHTS_DIR", tmp_path)
+    for check in (verify.check_vision_models(), verify.check_int8_cnn_portability()):
+        assert check.status == "SKIP" and "python scripts/download_assets.py" in check.detail
+
+
+@pytest.mark.skipif(not (WEIGHTS / "char_cnn_int8.pt").is_file(), reason="vision weights not downloaded")
+def test_weight_checks_pass_with_real_weights() -> None:
+    assert verify.check_vision_models().status == "PASS"
+    assert verify.check_int8_cnn_portability().status == "PASS"
+
+
+def test_app_validation_check_runs_without_models() -> None:
+    result = verify.check_app_validation()
+    assert result.status == "PASS", result.detail
+
+
+def test_main_exit_code_reflects_failures(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    ok, skip, bad = verify.CheckResult("a", "PASS", ""), verify.CheckResult("b", "SKIP", "why"), verify.CheckResult("c", "FAIL", "boom")
+    monkeypatch.setattr(verify, "CHECKS", [lambda: ok, lambda: skip])
+    assert verify.main([]) == 0
+    monkeypatch.setattr(verify, "CHECKS", [lambda: ok, lambda: bad])
+    assert verify.main([]) == 1
+    out = capsys.readouterr().out
+    assert "FAIL" in out and "boom" in out
