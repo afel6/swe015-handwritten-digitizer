@@ -12,6 +12,10 @@ jobs:
     name: ${{ matrix.os }} / Python ${{ matrix.python }}${{ matrix.assets && ' / with assets' || '' }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
+    env:
+      # Some hosted Windows runners advertise CPU features that fault inside oneDNN's dynamic INT8 kernels
+      # (exit 0xc000001d, illegal instruction); capping oneDNN at AVX2 avoids those code paths.
+      ONEDNN_MAX_CPU_ISA: ${{ startsWith(matrix.os, 'windows') && 'AVX2' || '' }}
     strategy:
       fail-fast: false
       matrix:
