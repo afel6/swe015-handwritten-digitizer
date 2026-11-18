@@ -157,6 +157,49 @@ def test_tune_lambdas_returns_valid_weights(tiny_model: ClassicalNLPCorrector) -
     assert model.bigram_lambdas[0] == 0.0 and abs(sum(model.bigram_lambdas) - 1.0) < 1e-5
 
 
+def _markov_sentences(rng: np.random.Generator, table: dict[tuple[str, str], list[str]], words: list[str], count: int) -> list[list[str]]:
+    sents = []
+    for _ in range(count):
+        a, b = words[int(rng.integers(len(words)))], words[int(rng.integers(len(words)))]
+        sent = [a, b]
+        for _ in range(8):
+            options = table[(sent[-2], sent[-1])]
+            sent.append(options[int(rng.integers(len(options)))])
+        sents.append(sent)
+    return sents
+
+
+def test_perplexity_decreases_with_order_on_synthetic_second_order_text() -> None:
+    rng = np.random.default_rng(7)
+    words = [a + b for a in "ABCDEF" for b in "GHIJ"]  # 24 two-letter words, all canonical lexicon entries
+    table = {(a, b): [words[int(i)] for i in rng.choice(len(words), size=2, replace=False)] for a in words for b in words}
+    train, dev, held_out = (_markov_sentences(rng, table, words, n) for n in (6000, 300, 300))
+    model = ClassicalNLPCorrector().train(train, build_lexicon([t for s in train for t in s], min_count=1))
+    model.tune_lambdas(dev)
+    ppl = [model.perplexity(held_out, order=o) for o in (1, 2, 3)]
+    assert ppl[0] > ppl[1] > ppl[2], ppl
+
+
+@pytest.mark.parametrize("field", ["lambdas", "bigram_lambdas", "unigram_lambdas"])
+@pytest.mark.parametrize("bad", [(0.5, 0.5, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)])
+def test_lambdas_without_unigram_or_uniform_mass_are_rejected(tiny_model: ClassicalNLPCorrector, bad: tuple[float, ...], field: str, tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="l1"):
+        tiny_model.next_word_distribution(("IN", "THE"), lambdas=bad)
+    path = tiny_model.save(tmp_path / "lm.pkl")
+    import pickle
+
+    payload = pickle.loads(path.read_bytes())
+    path.write_bytes(pickle.dumps({**payload, field: bad}))
+    with pytest.raises(ValueError, match="l1"):
+        ClassicalNLPCorrector.load(path)
+
+
+@pytest.mark.parametrize("ok", [(0.5, 0.0, 0.5, 0.0), (0.5, 0.5, 0.0, 1e-9), (0.0, 0.0, 0.0, 1.0)])
+def test_lambdas_with_some_unigram_or_uniform_mass_are_accepted(tiny_model: ClassicalNLPCorrector, ok: tuple[float, ...]) -> None:
+    dist = tiny_model.next_word_distribution(("IN", "THE"), lambdas=ok)
+    assert abs(float(dist.sum()) - 1.0) < 1e-6 and np.all(dist > 0.0)
+
+
 # ---------------------------------------------------------------- correction
 
 
@@ -201,6 +244,28 @@ def test_untrained_model_refuses_use() -> None:
         ClassicalNLPCorrector().predict("A [MASK] b", _probs_for("AB"))
 
 
+def test_numeric_guard_keeps_confident_digits_near_a_lexicon_word(tiny_model: ClassicalNLPCorrector) -> None:
+    probs = _probs_for("200", top=0.95, second={0: ("Z", 0.03), 1: ("O", 0.03), 2: ("O", 0.03)})
+    out = tiny_model.predict("Animals live in the [MASK].", probs)
+    assert out["numeric_preserved"] is True
+    assert out["predicted_word"] == "200"
+
+
+def test_fusion_tuning_changes_weights_when_defaults_pick_the_wrong_word() -> None:
+    sents = [tokenize(s) for s in TINY_SENTENCES]
+    model = ClassicalNLPCorrector().train(sents, build_lexicon([t for s in sents for t in s], min_count=1))
+    probs = _probs_for("SILENCE", top=0.9)
+    for pos, (read, alt) in {1: ("I", "C"), 2: ("L", "I")}.items():  # clear SILENCE read, SCIENCE letters as runners-up
+        probs[pos, :] = 0.05 / 34
+        probs[pos, _C2I[read]] = 0.6
+        probs[pos, _C2I[alt]] = 0.35
+    sentence = "Students learn [MASK] at school."
+    assert model.predict(sentence, probs)["predicted_word"] == "SCIENCE"  # the context outweighs the clear SILENCE glyphs
+    tuned = model.tune_fusion_weights([{"sentence": sentence, "target_word": "SILENCE"}], [probs])
+    assert tuned != {"vis_weight": 1.0, "edit_penalty": 2.0, "lm_weight": 1.0}
+    assert model.predict(sentence, probs)["predicted_word"] == "SILENCE"
+
+
 # ---------------------------------------------------------------- cloze parsing
 
 
@@ -226,6 +291,11 @@ def test_cloze_sentence_length_limit() -> None:
 
 def test_cloze_mixed_case_mask_splits_context_correctly() -> None:
     assert extract_cloze_context("Paris is in [mAsK] today") == (["PARIS", "IS", "IN"], ["TODAY"])
+
+
+def test_cloze_two_underscores_are_not_a_blank() -> None:
+    with pytest.raises(ValueError):
+        extract_cloze_context("The __ is hot.")
 
 
 # ---------------------------------------------------------------- edit distance
@@ -291,6 +361,26 @@ def test_save_load_round_trip_gives_identical_predictions(tiny_model: ClassicalN
     assert loaded.get_model_size_mb() == pytest.approx(saved.stat().st_size / (1024 * 1024))
 
 
+def test_worksheet_and_metrics_io_report_directories_with_the_path(tmp_path: Path) -> None:
+    with pytest.raises(IsADirectoryError) as read_err:
+        train_ngram._load_worksheet_items(tmp_path)
+    assert read_err.value.filename == str(tmp_path)
+    with pytest.raises(IsADirectoryError) as write_err:
+        train_ngram._write_metrics(tmp_path, {"ppl_unigram": 1.0})
+    assert write_err.value.filename == str(tmp_path)
+
+
+def test_checkpoint_loaders_name_the_missing_path(tmp_path: Path) -> None:
+    from models.char_models import load_char_cnn_fp32
+    from models.quantization import load_quantized_cnn
+
+    missing = tmp_path / "missing.pt"
+    for loader in (load_char_cnn_fp32, load_quantized_cnn):
+        with pytest.raises(FileNotFoundError) as info:
+            loader(missing)
+        assert info.value.filename == str(missing) and str(missing) in str(info.value)
+
+
 # ---------------------------------------------------------------- split leak guards
 
 
@@ -343,6 +433,27 @@ def test_test_worksheets_use_emnist_test_set_and_are_disjoint_from_dev() -> None
     assert not {it["id"] for it in dev} & {it["id"] for it in test}
     assert not {it["sentence"] for it in dev} & {it["sentence"] for it in test}
     assert all(it["sentence"].count(MASK_TOKEN) == 1 for it in dev + test)
+
+
+def test_split_helpers_live_in_data_and_are_shared() -> None:
+    from data import emnist_data
+    from scripts import train_vision
+
+    assert train_vision.compute_stratified_split is emnist_data.compute_stratified_split
+    assert train_vision.extract_oriented_tensors is emnist_data.extract_oriented_tensors
+    proc = subprocess.run([sys.executable, "-c", "import sys, data.prepare_data, scripts.train_ngram; print('scripts.train_vision' in sys.modules)"],
+                          cwd=REPO_ROOT, capture_output=True, text=True, timeout=300, check=True)
+    assert proc.stdout.strip() == "False"  # data/ must not depend on the training script
+
+
+def test_split_constants_match_the_cnn_training_script() -> None:
+    import inspect
+
+    from data.emnist_data import SPLIT_SEED, TRAIN_FRAC
+    from scripts.train_vision import SEED
+
+    assert SEED == SPLIT_SEED and TRAIN_FRAC == pytest.approx(0.9)
+    assert "seed" not in inspect.signature(prep.build_emnist_splits).parameters  # the split is fixed, not configurable
 
 
 # ---------------------------------------------------------------- frozen data and corpus
@@ -424,6 +535,14 @@ def test_build_lexicon_counts_only_canonical_words() -> None:
         build_lexicon("THE CAT")  # type: ignore[arg-type]
 
 
+def test_wiki_cache_missing_fields_is_refetched(tmp_path: Path) -> None:
+    (tmp_path / "simple__moon.json").write_text(json.dumps({"text": "Old text."}), encoding="utf-8")
+    page = {"query": {"pages": {"1": {"title": "Moon", "extract": "The Moon orbits Earth."}}}}
+    with _mock_client(lambda req: httpx.Response(200, json=page)) as client:
+        doc = prep._fetch_wiki_article(client, "simple", "Moon", tmp_path, force_download=False)
+    assert doc["title"] == "Moon" and doc["text"] == "The Moon orbits Earth."
+
+
 # ---------------------------------------------------------------- training pipeline
 
 
@@ -462,6 +581,53 @@ def test_train_pipeline_writes_metrics_without_touching_frozen_files(tmp_path: P
     assert metrics["vocab_size"] == len(model.vocab) and metrics["lexicon_size"] == len(model.lexicon)
     assert metrics["test_oov_rate"] == json.loads(CORPUS_SOURCES.read_text(encoding="utf-8"))["stats"]["test_oov_rate"]
     assert metrics["model_size_mb"] == pytest.approx(weights.stat().st_size / (1024 * 1024))
+
+
+def test_worksheet_and_corpus_inputs_are_validated(tmp_path: Path) -> None:
+    bad_json, empty = tmp_path / "bad.json", tmp_path / "empty.json"
+    bad_json.write_text("{", encoding="utf-8")
+    empty.write_text("[]", encoding="utf-8")
+    with pytest.raises(ValueError, match="Invalid JSON"):
+        train_ngram._load_worksheet_items(bad_json)
+    with pytest.raises(ValueError, match="non-empty list"):
+        train_ngram._load_worksheet_items(empty)
+    with pytest.raises(TypeError):
+        train_ngram._texts_to_sentences(["ok", 3])  # type: ignore[list-item]
+    assert train_ngram._texts_to_sentences(["One two. Three!\nFour"]) == [["ONE", "TWO"], ["THREE"], ["FOUR"]]
+
+
+@needs_emnist
+@needs_cnn
+def test_dev_probs_reject_glyph_count_mismatch() -> None:
+    item = json.loads(DEV_PATH.read_text(encoding="utf-8"))[0]
+    with pytest.raises(ValueError, match="glyphs"):
+        train_ngram.compute_dev_cnn_probs([{**item, "emnist_indices": item["emnist_indices"][:-1]}], cnn_weights=CNN_WEIGHTS, emnist_root=REPO_ROOT / "data" / "emnist")
+
+
+@needs_emnist
+@needs_cnn
+def test_dev_probs_reject_out_of_range_index(tmp_path: Path) -> None:
+    item = json.loads(DEV_PATH.read_text(encoding="utf-8"))[0]
+    splits = load_emnist_splits(SPLITS_PATH)
+    bad_index = 10**9
+    fake_splits = tmp_path / "splits.json"
+    fake_splits.write_text(json.dumps({**splits, "val_indices": [*splits["val_indices"], bad_index]}), encoding="utf-8")
+    bad = {**item, "emnist_indices": [*item["emnist_indices"][:-1], bad_index]}
+    with pytest.raises(ValueError, match="dataset bounds"):
+        train_ngram.compute_dev_cnn_probs([bad], cnn_weights=CNN_WEIGHTS, emnist_root=REPO_ROOT / "data" / "emnist", splits_path=fake_splits)
+
+
+# ---------------------------------------------------------------- command-line interfaces
+
+
+def test_prepare_data_script_run_by_path_reports_errors_in_one_line(tmp_path: Path) -> None:
+    not_a_dir = tmp_path / "emnist_root_is_a_file"
+    not_a_dir.write_text("x", encoding="utf-8")
+    proc = subprocess.run([sys.executable, "-W", "error", str(REPO_ROOT / "data" / "prepare_data.py"), "--emnist-root", str(not_a_dir)],
+                          cwd=tmp_path, capture_output=True, text=True, timeout=300, check=False)
+    assert proc.returncode == 1, proc.stderr
+    lines = proc.stderr.strip().splitlines()
+    assert len(lines) == 1 and "Traceback" not in proc.stderr and str(not_a_dir) in lines[0]
 
 
 def test_train_ngram_cli_reports_missing_file_in_one_line(tmp_path: Path) -> None:
@@ -510,27 +676,6 @@ def test_train_ngram_main_prints_summary_and_maps_errors(monkeypatch: pytest.Mon
     assert capsys.readouterr().err == "Error: bad worksheet\n"
 
 
-def test_worksheet_and_corpus_inputs_are_validated(tmp_path: Path) -> None:
-    bad_json, empty = tmp_path / "bad.json", tmp_path / "empty.json"
-    bad_json.write_text("{", encoding="utf-8")
-    empty.write_text("[]", encoding="utf-8")
-    with pytest.raises(ValueError, match="Invalid JSON"):
-        train_ngram._load_worksheet_items(bad_json)
-    with pytest.raises(ValueError, match="non-empty list"):
-        train_ngram._load_worksheet_items(empty)
-    with pytest.raises(TypeError):
-        train_ngram._texts_to_sentences(["ok", 3])  # type: ignore[list-item]
-    assert train_ngram._texts_to_sentences(["One two. Three!\nFour"]) == [["ONE", "TWO"], ["THREE"], ["FOUR"]]
-
-
-@needs_emnist
-@needs_cnn
-def test_dev_probs_reject_glyph_count_mismatch() -> None:
-    item = json.loads(DEV_PATH.read_text(encoding="utf-8"))[0]
-    with pytest.raises(ValueError, match="glyphs"):
-        train_ngram.compute_dev_cnn_probs([{**item, "emnist_indices": item["emnist_indices"][:-1]}], cnn_weights=CNN_WEIGHTS, emnist_root=REPO_ROOT / "data" / "emnist")
-
-
 def test_prepare_data_cli_keeps_path_for_unmapped_os_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
     locked = tmp_path / "emnist-balanced-train-images-idx3-ubyte"
 
@@ -541,148 +686,3 @@ def test_prepare_data_cli_keeps_path_for_unmapped_os_error(tmp_path: Path, monke
     assert prep.main([]) == 1
     err = capsys.readouterr().err.strip().splitlines()
     assert len(err) == 1 and str(locked) in err[0]
-
-
-@needs_emnist
-@needs_cnn
-def test_dev_probs_reject_out_of_range_index(tmp_path: Path) -> None:
-    item = json.loads(DEV_PATH.read_text(encoding="utf-8"))[0]
-    splits = load_emnist_splits(SPLITS_PATH)
-    bad_index = 10**9
-    fake_splits = tmp_path / "splits.json"
-    fake_splits.write_text(json.dumps({**splits, "val_indices": [*splits["val_indices"], bad_index]}), encoding="utf-8")
-    bad = {**item, "emnist_indices": [*item["emnist_indices"][:-1], bad_index]}
-    with pytest.raises(ValueError, match="dataset bounds"):
-        train_ngram.compute_dev_cnn_probs([bad], cnn_weights=CNN_WEIGHTS, emnist_root=REPO_ROOT / "data" / "emnist", splits_path=fake_splits)
-
-
-def test_wiki_cache_missing_fields_is_refetched(tmp_path: Path) -> None:
-    (tmp_path / "simple__moon.json").write_text(json.dumps({"text": "Old text."}), encoding="utf-8")
-    page = {"query": {"pages": {"1": {"title": "Moon", "extract": "The Moon orbits Earth."}}}}
-    with _mock_client(lambda req: httpx.Response(200, json=page)) as client:
-        doc = prep._fetch_wiki_article(client, "simple", "Moon", tmp_path, force_download=False)
-    assert doc["title"] == "Moon" and doc["text"] == "The Moon orbits Earth."
-
-
-def test_split_constants_match_the_cnn_training_script() -> None:
-    import inspect
-
-    from data.emnist_data import SPLIT_SEED, TRAIN_FRAC
-    from scripts.train_vision import SEED
-
-    assert SEED == SPLIT_SEED and TRAIN_FRAC == pytest.approx(0.9)
-    assert "seed" not in inspect.signature(prep.build_emnist_splits).parameters  # the split is fixed, not configurable
-
-
-# ---------------------------------------------------------------- review round 1
-
-
-def _markov_sentences(rng: np.random.Generator, table: dict[tuple[str, str], list[str]], words: list[str], count: int) -> list[list[str]]:
-    sents = []
-    for _ in range(count):
-        a, b = words[int(rng.integers(len(words)))], words[int(rng.integers(len(words)))]
-        sent = [a, b]
-        for _ in range(8):
-            options = table[(sent[-2], sent[-1])]
-            sent.append(options[int(rng.integers(len(options)))])
-        sents.append(sent)
-    return sents
-
-
-def test_perplexity_decreases_with_order_on_synthetic_second_order_text() -> None:
-    rng = np.random.default_rng(7)
-    words = [a + b for a in "ABCDEF" for b in "GHIJ"]  # 24 two-letter words, all canonical lexicon entries
-    table = {(a, b): [words[int(i)] for i in rng.choice(len(words), size=2, replace=False)] for a in words for b in words}
-    train, dev, held_out = (_markov_sentences(rng, table, words, n) for n in (6000, 300, 300))
-    model = ClassicalNLPCorrector().train(train, build_lexicon([t for s in train for t in s], min_count=1))
-    model.tune_lambdas(dev)
-    ppl = [model.perplexity(held_out, order=o) for o in (1, 2, 3)]
-    assert ppl[0] > ppl[1] > ppl[2], ppl
-
-
-def test_numeric_guard_keeps_confident_digits_near_a_lexicon_word(tiny_model: ClassicalNLPCorrector) -> None:
-    probs = _probs_for("200", top=0.95, second={0: ("Z", 0.03), 1: ("O", 0.03), 2: ("O", 0.03)})
-    out = tiny_model.predict("Animals live in the [MASK].", probs)
-    assert out["numeric_preserved"] is True
-    assert out["predicted_word"] == "200"
-
-
-def test_cloze_two_underscores_are_not_a_blank() -> None:
-    with pytest.raises(ValueError):
-        extract_cloze_context("The __ is hot.")
-
-
-def test_fusion_tuning_changes_weights_when_defaults_pick_the_wrong_word() -> None:
-    sents = [tokenize(s) for s in TINY_SENTENCES]
-    model = ClassicalNLPCorrector().train(sents, build_lexicon([t for s in sents for t in s], min_count=1))
-    probs = _probs_for("SILENCE", top=0.9)
-    for pos, (read, alt) in {1: ("I", "C"), 2: ("L", "I")}.items():  # clear SILENCE read, SCIENCE letters as runners-up
-        probs[pos, :] = 0.05 / 34
-        probs[pos, _C2I[read]] = 0.6
-        probs[pos, _C2I[alt]] = 0.35
-    sentence = "Students learn [MASK] at school."
-    assert model.predict(sentence, probs)["predicted_word"] == "SCIENCE"  # the context outweighs the clear SILENCE glyphs
-    tuned = model.tune_fusion_weights([{"sentence": sentence, "target_word": "SILENCE"}], [probs])
-    assert tuned != {"vis_weight": 1.0, "edit_penalty": 2.0, "lm_weight": 1.0}
-    assert model.predict(sentence, probs)["predicted_word"] == "SILENCE"
-
-
-@pytest.mark.parametrize("field", ["lambdas", "bigram_lambdas", "unigram_lambdas"])
-@pytest.mark.parametrize("bad", [(0.5, 0.5, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)])
-def test_lambdas_without_unigram_or_uniform_mass_are_rejected(tiny_model: ClassicalNLPCorrector, bad: tuple[float, ...], field: str, tmp_path: Path) -> None:
-    with pytest.raises(ValueError, match="l1"):
-        tiny_model.next_word_distribution(("IN", "THE"), lambdas=bad)
-    path = tiny_model.save(tmp_path / "lm.pkl")
-    import pickle
-
-    payload = pickle.loads(path.read_bytes())
-    path.write_bytes(pickle.dumps({**payload, field: bad}))
-    with pytest.raises(ValueError, match="l1"):
-        ClassicalNLPCorrector.load(path)
-
-
-@pytest.mark.parametrize("ok", [(0.5, 0.0, 0.5, 0.0), (0.5, 0.5, 0.0, 1e-9), (0.0, 0.0, 0.0, 1.0)])
-def test_lambdas_with_some_unigram_or_uniform_mass_are_accepted(tiny_model: ClassicalNLPCorrector, ok: tuple[float, ...]) -> None:
-    dist = tiny_model.next_word_distribution(("IN", "THE"), lambdas=ok)
-    assert abs(float(dist.sum()) - 1.0) < 1e-6 and np.all(dist > 0.0)
-
-
-def test_prepare_data_script_run_by_path_reports_errors_in_one_line(tmp_path: Path) -> None:
-    not_a_dir = tmp_path / "emnist_root_is_a_file"
-    not_a_dir.write_text("x", encoding="utf-8")
-    proc = subprocess.run([sys.executable, "-W", "error", str(REPO_ROOT / "data" / "prepare_data.py"), "--emnist-root", str(not_a_dir)],
-                          cwd=tmp_path, capture_output=True, text=True, timeout=300, check=False)
-    assert proc.returncode == 1, proc.stderr
-    lines = proc.stderr.strip().splitlines()
-    assert len(lines) == 1 and "Traceback" not in proc.stderr and str(not_a_dir) in lines[0]
-
-
-def test_worksheet_and_metrics_io_report_directories_with_the_path(tmp_path: Path) -> None:
-    with pytest.raises(IsADirectoryError) as read_err:
-        train_ngram._load_worksheet_items(tmp_path)
-    assert read_err.value.filename == str(tmp_path)
-    with pytest.raises(IsADirectoryError) as write_err:
-        train_ngram._write_metrics(tmp_path, {"ppl_unigram": 1.0})
-    assert write_err.value.filename == str(tmp_path)
-
-
-def test_split_helpers_live_in_data_and_are_shared() -> None:
-    from data import emnist_data
-    from scripts import train_vision
-
-    assert train_vision.compute_stratified_split is emnist_data.compute_stratified_split
-    assert train_vision.extract_oriented_tensors is emnist_data.extract_oriented_tensors
-    proc = subprocess.run([sys.executable, "-c", "import sys, data.prepare_data, scripts.train_ngram; print('scripts.train_vision' in sys.modules)"],
-                          cwd=REPO_ROOT, capture_output=True, text=True, timeout=300, check=True)
-    assert proc.stdout.strip() == "False"  # data/ must not depend on the training script
-
-
-def test_checkpoint_loaders_name_the_missing_path(tmp_path: Path) -> None:
-    from models.char_models import load_char_cnn_fp32
-    from models.quantization import load_quantized_cnn
-
-    missing = tmp_path / "missing.pt"
-    for loader in (load_char_cnn_fp32, load_quantized_cnn):
-        with pytest.raises(FileNotFoundError) as info:
-            loader(missing)
-        assert info.value.filename == str(missing) and str(missing) in str(info.value)

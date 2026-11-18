@@ -18,7 +18,8 @@ _MIN_SPLIT_PER_CLASS = 2
 __all__ = ["SPLIT_SEED", "TRAIN_FRAC", "compute_stratified_split", "extract_oriented_tensors"]
 
 
-def _is_real(val: Any) -> bool:
+def is_finite_real(val: Any) -> bool:
+    """True for finite int/float values (bools excluded)."""
     return not isinstance(val, bool) and isinstance(val, (int, float)) and math.isfinite(float(val))
 
 
@@ -29,7 +30,7 @@ def compute_stratified_split(targets: np.ndarray | torch.Tensor, train_frac: flo
         raise TypeError("targets must be a numpy.ndarray or torch.Tensor.")
     if arr.ndim != 1 or arr.size < _MIN_SPLIT_PER_CLASS or not np.issubdtype(arr.dtype, np.integer) or np.issubdtype(arr.dtype, np.bool_):
         raise ValueError("targets must be a 1D integer array or tensor with at least 2 samples.")
-    if not _is_real(train_frac) or not (0.0 < float(train_frac) < 1.0):
+    if not is_finite_real(train_frac) or not (0.0 < float(train_frac) < 1.0):
         raise ValueError("train_frac must be a finite number strictly between 0 and 1.")
     if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
         raise ValueError("seed must be a non-negative integer.")

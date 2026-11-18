@@ -35,6 +35,7 @@ from data.emnist_data import (
     compute_stratified_split,
     extract_oriented_tensors,
 )
+from data.emnist_data import is_finite_real as _is_real
 from data.preprocess import (
     CANONICAL_36_CHARS,
     EMNIST_BALANCED_CHARS,
@@ -68,10 +69,6 @@ __all__ = [
     "evaluate_vision_model", "extract_oriented_tensors", "load_emnist_datasets",
     "main", "parse_args", "run_vision_training", "train_char_cnn", "train_dense_mlp",
 ]
-
-
-def _is_real(val: Any) -> bool:
-    return not isinstance(val, bool) and isinstance(val, (int, float)) and math.isfinite(float(val))
 
 
 def _pos_int(value: Any, name: str) -> int:

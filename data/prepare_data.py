@@ -26,7 +26,7 @@ import torch
 from PIL import Image, ImageDraw
 from torchvision.datasets import EMNIST
 
-if str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:
+if not __package__ and str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:  # only when run as a script
     sys.path.insert(0, str(_ROOT))
 
 from data._io_errors import describe_os_error
@@ -141,7 +141,7 @@ def load_emnist_dataset(root: Path, train: bool) -> Any:
     return ds
 
 def build_emnist_splits(root: str | Path = "data/emnist", out_path: str | Path = "data/emnist_splits.json") -> dict[str, Any]:
-    """Write the exact train/val split the vision models were trained with (scripts.train_vision.compute_stratified_split)."""
+    """Write the exact train/val split the vision models were trained with (data.emnist_data.compute_stratified_split)."""
     if not isinstance(root, (str, os.PathLike)) or not isinstance(out_path, (str, os.PathLike)):
         raise TypeError("root and out_path must be strings or path-like objects.")
     ds = load_emnist_dataset(Path(root), train=True)
@@ -180,7 +180,10 @@ def _fetch_gutenberg_book(client: httpx.Client, bid: int, cache_dir: Path, force
             try:
                 resp = client.get(url); resp.raise_for_status()
                 if (body := resp.content.decode("utf-8-sig", errors="replace")).strip():
-                    raw, used_url = body, url; write_data(cache_path, raw); write_data(url_path, url); break
+                    raw, used_url = body, url
+                    write_data(cache_path, raw)
+                    write_data(url_path, url)
+                    break
             except httpx.HTTPError:
                 continue
     if not raw.strip():
@@ -383,7 +386,8 @@ def prepare_all(force_download: bool = False, emnist_root: str | Path = EMNIST_R
     train_ds, test_ds = load_emnist_dataset(Path(emnist_root), train=True), load_emnist_dataset(Path(emnist_root), train=False)
     dev_items = _select_worksheet_items(corpus["worksheet_dev_docs"], DEV_WORKSHEET_COUNT, DEV_NUMERIC_TARGET, "dev", "val", splits["val_indices"], train_ds.targets, lexicon, DEFAULT_SEED)
     test_items = _select_worksheet_items(corpus["worksheet_test_docs"], TEST_WORKSHEET_COUNT, TEST_NUMERIC_TARGET, "test", "test", range(len(test_ds)), test_ds.targets, lexicon, DEFAULT_SEED)
-    write_data(DEV_WORKSHEETS_PATH, dev_items, as_json=True); write_data(TEST_WORKSHEETS_PATH, test_items, as_json=True)
+    write_data(DEV_WORKSHEETS_PATH, dev_items, as_json=True)
+    write_data(TEST_WORKSHEETS_PATH, test_items, as_json=True)
     samples = _export_sample_worksheets(test_items, test_ds, SAMPLE_WORKSHEETS_DIR)
     test_oov_rate, dev_oov_rate = sum(1 for it in test_items if not it["in_lexicon"]) / len(test_items), sum(1 for it in dev_items if not it["in_lexicon"]) / len(dev_items)
     stats = {**corpus["stats"], "lexicon_size": len(lexicon), "dev_oov_rate": dev_oov_rate, "test_oov_rate": test_oov_rate}
