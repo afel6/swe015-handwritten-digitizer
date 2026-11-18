@@ -64,6 +64,44 @@ def _ram_gb() -> float | None:
         return None
 
 
+_POWER_MODES = {"ded574b5-45a0-4f42-8737-46345c09c238": "Best performance", "00000000-0000-0000-0000-000000000000": "Balanced",
+                "3af9b8d9-7c97-431d-ad78-34a8bfea439f": "Better battery", "961cc777-2547-4f9d-8174-7d86181b8a7a": "Best power efficiency"}
+
+
+class _PowerStatus(ctypes.Structure):
+    _fields_ = [("ACLineStatus", ctypes.c_ubyte), ("BatteryFlag", ctypes.c_ubyte), ("BatteryLifePercent", ctypes.c_ubyte),
+                ("SystemStatusFlag", ctypes.c_ubyte), ("BatteryLifeTime", ctypes.c_ulong), ("BatteryFullLifeTime", ctypes.c_ulong)]
+
+
+def _windows_power() -> dict[str, Any]:
+    import subprocess
+    import winreg
+
+    status = _PowerStatus()
+    on_ac = bool(status.ACLineStatus == 1) if ctypes.windll.kernel32.GetSystemPowerStatus(ctypes.byref(status)) else None
+    try:
+        scheme = subprocess.run(["powercfg", "/getactivescheme"], capture_output=True, text=True, timeout=10, check=False).stdout.strip()
+        scheme = scheme.split("(")[-1].rstrip(")") if "(" in scheme else (scheme or None)
+    except (OSError, subprocess.SubprocessError):
+        scheme = None
+    try:
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Control\Power\User\PowerSchemes") as key:
+            overlay = str(winreg.QueryValueEx(key, "ActiveOverlayAcPowerScheme" if on_ac else "ActiveOverlayDcPowerScheme")[0]).lower()
+        mode = _POWER_MODES.get(overlay, overlay)
+    except OSError:
+        mode = None
+    return {"on_ac": on_ac, "power_scheme": scheme, "power_mode": mode}
+
+
+def power_state() -> dict[str, Any]:
+    """AC/battery, power scheme and Windows power mode at measurement time (None when unknown)."""
+    if sys.platform == "win32":
+        return _windows_power()
+    online = [p for p in Path("/sys/class/power_supply").glob("*/online")] if Path("/sys/class/power_supply").is_dir() else []
+    on_ac = any(p.read_text(encoding="utf-8").strip() == "1" for p in online) if online else None
+    return {"on_ac": on_ac, "power_scheme": None, "power_mode": None}
+
+
 def hardware_metadata() -> dict[str, Any]:
     """Machine and library facts captured at run time (the GPU is listed but never used for timing)."""
     return {
@@ -71,6 +109,7 @@ def hardware_metadata() -> dict[str, Any]:
         "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "none",
         "os": platform.platform(), "python": platform.python_version(), "torch": torch.__version__,
         "transformers": importlib.metadata.version("transformers"), "torch_threads": torch.get_num_threads(), "timing_device": "cpu",
+        "power": power_state(),
     }
 
 
@@ -131,6 +170,13 @@ def explain_failure(record: Mapping[str, Any]) -> str:
     return f"{target!r} was in the candidate pool, but the fused visual + BERT + edit score ranked {normalize_word(record['outputs']['quantized_app'])!r} higher"
 
 
+def _power_text(power: Mapping[str, Any] | None) -> str:
+    if not power:
+        return ""
+    source = {True: "on AC power", False: "on battery"}.get(power.get("on_ac"), "power source unknown")
+    return f" Timing {source}, power scheme {power.get('power_scheme') or 'unknown'}, power mode {power.get('power_mode') or 'unknown'}."
+
+
 def _table(header: Sequence[str], rows: Sequence[Sequence[str]]) -> list[str]:
     return ["| " + " | ".join(header) + " |", "|" + "---|" * len(header), *("| " + " | ".join(r) + " |" for r in rows)]
 
@@ -141,7 +187,7 @@ def render_markdown(result: Mapping[str, Any]) -> str:
     lad_rows = [[v["label"], f"{v['word_acc_pct']:.2f}", f"{v['char_acc_pct']:.2f}", f"{v['size_mb']:.1f}", f"{v['latency_mean_ms']:.1f}"] for v in result["ladder"].values()]
     hw = result["hardware"]
     lines = ["# Benchmark results", "", f"CPU timing only: {hw['cpu_model']}, {hw['torch_threads']} torch threads, {hw['logical_cores']} logical cores, {'unknown' if hw['ram_gb'] is None else hw['ram_gb']} GB RAM; GPU present but unused for timing: {hw['gpu']}.",
-             f"{hw['os']}, Python {hw['python']}, torch {hw['torch']}, transformers {hw['transformers']}.", "",
+             f"{hw['os']}, Python {hw['python']}, torch {hw['torch']}, transformers {hw['transformers']}.{_power_text(hw.get('power'))}", "",
              f"## Table 1 - Vision (EMNIST balanced test, N={result['vision_n']})", "",
              *_table(["Model", "47-class acc %", "36-folded acc %", "Disk MB", "CPU b1 ms", "CPU b8 ms"], vis_rows), "",
              f"## Table 2 - Word ladder (N={result['ladder_n']} worksheets from {Path(str(result.get('worksheets', '?'))).name}, boxed strips)", "",

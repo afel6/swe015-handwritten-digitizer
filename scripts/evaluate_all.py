@@ -213,8 +213,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="CPU benchmark of the vision models and the word-correction ladder.")
     parser.add_argument("--worksheets", type=Path, default=TEST_WORKSHEETS_PATH, help="Worksheet JSON to evaluate (debug on the dev file).")
     parser.add_argument("--no-save", action="store_true", help="Print the Markdown summary without writing any file.")
+    parser.add_argument("--retime", action="store_true", help="Timing-only re-measure: outputs must match the committed predictions exactly.")
+    parser.add_argument("--passes", type=int, default=3, help="Timing passes for --retime (the median pass is reported).")
     args = parser.parse_args(argv)
     try:
+        if args.retime:
+            from scripts.retime_benchmark import retime
+
+            summary = retime(args.worksheets, args.passes)
+            sys.stdout.write(bench_report.render_markdown(summary) + "\n")
+            return 0
         result = evaluate(args.worksheets, save=not args.no_save)
         if not args.no_save:
             save_outputs(result)

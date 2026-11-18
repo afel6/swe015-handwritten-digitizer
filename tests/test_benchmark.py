@@ -206,3 +206,45 @@ def test_tune_bert_main_reports_value_errors_in_one_line(monkeypatch: pytest.Mon
     monkeypatch.setattr(tune_bert, "run", bad)
     assert tune_bert.main([]) == 1
     assert capsys.readouterr().err == "Error: no dev items\n"
+
+
+@needs_assets
+def test_retime_updates_only_latencies_and_aborts_on_any_output_change(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    from scripts import recompute_metrics, retime_benchmark
+
+    worksheets, _, outs = _setup_eval(tmp_path, monkeypatch)
+    assert evaluate_all.main(["--worksheets", str(worksheets)]) == 0
+    superseded = tmp_path / "timing_superseded.json"
+    monkeypatch.setattr(retime_benchmark, "SUPERSEDED", superseded)
+    before = json.loads(outs["json"].read_text(encoding="utf-8"))
+    preds_before = json.loads(outs["predictions"].read_text(encoding="utf-8"))
+    assert evaluate_all.main(["--worksheets", str(worksheets), "--retime", "--passes", "2"]) == 0
+    after = json.loads(outs["json"].read_text(encoding="utf-8"))
+    preds_after = json.loads(outs["predictions"].read_text(encoding="utf-8"))
+    for key, row in before["ladder"].items():
+        assert {k: v for k, v in row.items() if k != "latency_mean_ms"} == {k: v for k, v in after["ladder"][key].items() if k != "latency_mean_ms"}
+    assert before["recall_pct"] == after["recall_pct"] and before["checks"] == after["checks"]
+    assert len(after["retime"]["passes"]) == 2 and "power" in after["hardware"]
+    strip = {"latency_ms"}
+    assert [[{k: v for k, v in r.items() if k not in strip} for r in rows] for rows in preds_before["rows"].values()] == \
+           [[{k: v for k, v in r.items() if k not in strip} for r in rows] for rows in preds_after["rows"].values()]
+    old = json.loads(superseded.read_text(encoding="utf-8"))
+    assert old["ladder_latency_mean_ms"]["quantized_app"] == before["ladder"]["quantized_app"]["latency_mean_ms"] and old["reason"]
+    assert recompute_metrics.main(["--predictions", str(outs["predictions"]), "--results", str(outs["json"])]) == 0
+    capsys.readouterr()
+
+    tampered = json.loads(outs["predictions"].read_text(encoding="utf-8"))
+    tampered["rows"]["classical"][0]["predicted_word"] = "XXXX"
+    outs["predictions"].write_text(json.dumps(tampered), encoding="utf-8")
+    snapshot = {p: p.read_bytes() for p in (outs["json"], outs["md"], outs["predictions"], superseded)}
+    assert evaluate_all.main(["--worksheets", str(worksheets), "--retime", "--passes", "1"]) == 1
+    err = capsys.readouterr().err
+    assert err.count("\n") == 1 and "classical" in err
+    assert {p: p.read_bytes() for p in snapshot} == snapshot  # nothing written on a mismatch
+
+
+def test_power_state_is_recorded() -> None:
+    from scripts import bench_report
+
+    power = bench_report.power_state()
+    assert {"on_ac", "power_scheme", "power_mode"} <= set(power)
