@@ -25,12 +25,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 from PIL import Image
 from pptx import Presentation
 from pptx.util import Emu
 
 from data._io_errors import describe_cli_os_error
+from scripts import architecture
 from scripts import slide_content as sc
 
 DEFAULT_REPO = "https://github.com/afel6/swe015-handwritten-digitizer"
@@ -120,42 +120,16 @@ def slide_data(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     return fig
 
 
-ARCH_STEPS = (
-    ("UI: canvas / upload\n(localhost browser)", 0.11, 0.70), ("FastAPI\nvalidation", 0.305, 0.70), ("slice_strip_image\npreprocess_box (28x28)", 0.50, 0.70),
-    ("Dense MLP FP32\nCharCNN FP32 (+Grad-CAM)\nCharCNN INT8 static", 0.695, 0.70), ("47 -> 36 fold", 0.89, 0.70),
-    ("candidate pool: SymSpell\n(weighted ED) vs lexicon", 0.89, 0.38), ("n-gram (MLE tri/bi + add-k uni)\n| BERT FP32 span-PLL\n| BERT INT8 dynamic span-PLL", 0.63, 0.38),
-    ("fusion (simplex-tuned)\n+ numeric guard", 0.37, 0.38), ("JSON -> UI\n4 models side by side", 0.11, 0.38),
-)
-
-
-def draw_architecture(ax: Any) -> None:
-    for i, (label, x, y) in enumerate(ARCH_STEPS):
-        ax.add_patch(FancyBboxPatch((x - 0.085, y - 0.08), 0.17, 0.16, boxstyle="round,pad=0.01", fc="#ffffff", ec=ACCENT, lw=1.6))
-        ax.text(x, y, label, ha="center", va="center", fontsize=10, color=INK)
-        if i + 1 < len(ARCH_STEPS):
-            _, nx, ny = ARCH_STEPS[i + 1]
-            start, end = ((x + 0.087, y), (nx - 0.087, ny)) if ny == y and nx > x else ((x - 0.087, y), (nx + 0.087, ny)) if ny == y else ((x, y - 0.082), (nx, ny + 0.082))
-            ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=14, color=ACCENT, lw=1.4))
-    ax.text(0.5, 0.14, "Everything runs on the CPU on 127.0.0.1; the benchmark and the app call the same functions (data/word_pipeline.py, models/ladder.py).", ha="center", fontsize=12, color=MUTED)
-
-
 def slide_architecture(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
-    fig, ax = _slide("R6 architecture", 4)
-    draw_architecture(ax)
+    fig, ax = _slide("R6 architecture (data flow as implemented)", 4)
+    architecture.draw(ax)
     return fig
 
 
 def slide_technique_map(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, _ = _slide("R2 technique map", 5)
-    rows = [
-        ["A - Neural networks", "Dense MLP (784-512-256-47) vs CharCNN (3 conv blocks); affine augmentation, dropout, AdamW/SGD; Grad-CAM"],
-        ["B - Classical NLP", "Weighted Levenshtein (OCR confusions), SymSpell candidates, interpolated trigram LM (Jelinek-Mercer)"],
-        ["C - Transformers", "bert-base-uncased masked LM: batched span pseudo-log-likelihood re-ranking of the same candidate pool"],
-        ["D - Optimisation", "Static INT8 PTQ of the CNN (onednn), dynamic INT8 BERT (Linear layers); CPU latency and size measured"],
-        ["Method", "Dev-only tuning (continuous log-softmax objective on a simplex), single held-out test evaluation, recomputable results"],
-    ]
-    wrapped = [[area, "\n".join(textwrap.wrap(text, 92))] for area, text in rows]
-    _table(fig, (0.04, 0.10, 0.92, 0.70), ["Area", "Exactly what is used"], wrapped, first_col=0.2, row_scale=3.2, align="left")
+    wrapped = [[area, "\n".join(textwrap.wrap(text, 98))] for area, text in sc.technique_rows(res)]
+    _table(fig, (0.04, 0.10, 0.92, 0.70), ["Area", "Exactly what is used"], wrapped, first_col=0.2, row_scale=3.6, align="left")
     return fig
 
 
@@ -205,26 +179,14 @@ def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 
 def slide_conclusion(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Conclusion", 9)
-    br = res["benchmark_results"]
-    _bullets(ax, [
-        f"Win: context correction lifts word accuracy from {br['ladder']['raw_fp32']['word_acc_pct']:.1f} % to {br['ladder']['bert_fp32']['word_acc_pct']:.1f} %; INT8 keeps it within "
-        f"{br['ladder']['bert_fp32']['word_acc_pct'] - br['ladder']['quantized_app']['word_acc_pct']:.2f} pp with a {br['bert_sizes']['fp32_mb'] / br['bert_sizes']['int8_mb']:.2f}x smaller BERT.",
-        f"Ceiling: only {br['recall_pct']['int8']:.1f} % of targets reach the candidate pool; BERT and n-gram can only choose among those.",
-        f"Limitations: digit strings read with letters (20O0) never enter the pool; span-PLL favours multi-piece words; {100 * res['corpus_sources']['stats']['test_oov_rate']:.1f} % test OOV; CPU latencies vary between runs.",
-        *("Failure - " + line for line in sc.failure_lines(res, limit=2)),
-        "Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon.",
-    ], size=12, width=128)
+    _bullets(ax, [*sc.conclusion_lines(res), *("Failure - " + line for line in sc.failure_lines(res, limit=2)),
+                  "Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon."], top=0.81, size=11, width=140)
     return fig
 
 
 def slide_ai_usage(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("R8 AI usage", 10)
-    _bullets(ax, [
-        "Claude (Anthropic) was used as a coding assistant: planning the slices, writing and reviewing code and tests, and drafting the README, slides and demo script.",
-        "Every number in this deck comes from scripts run on this repository (results/*.json); scripts/recompute_metrics.py re-derives them without the models.",
-        "Design decisions, the dataset protocol (dev-only tuning, one held-out test set) and the final review are the student's responsibility.",
-        "Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).",
-    ], size=14)
+    _bullets(ax, sc.ai_usage_lines(meta["name"]), size=14)
     return fig
 
 

@@ -1,5 +1,7 @@
 # Handwritten Answer Digitizer
 
+Author: Abdalraouf Alkabir (2309015482)
+
 SWE015 Use Case 1. A student writes the missing word of a cloze sentence into boxes. The app reads every
 box with a character CNN, then uses the sentence to correct misreads (0/O, 1/I, 5/S, ...) with an
 interpolated n-gram model or a BERT re-ranker. It runs as one local web app on a laptop CPU, with an
@@ -60,27 +62,48 @@ the tests run on the CPU.
 
 ```mermaid
 flowchart LR
-  UI["UI: canvas / upload<br/>(localhost browser)"] --> API["FastAPI<br/>validation"]
-  API --> SLICE["slice_strip_image<br/>preprocess_box 28x28"]
-  SLICE --> MLP["Dense MLP FP32"]
-  SLICE --> CNN["CharCNN FP32<br/>+ Grad-CAM"]
-  SLICE --> Q["CharCNN INT8<br/>static PTQ"]
-  MLP --> FOLD["47 -> 36 fold"]
-  CNN --> FOLD
-  Q --> FOLD
-  FOLD --> POOL["candidate pool<br/>SymSpell, weighted edit distance<br/>vs 22k lexicon"]
-  POOL --> NG["interpolated n-gram<br/>MLE tri/bi + add-k uni"]
-  POOL --> B32["BERT FP32<br/>span-PLL"]
-  POOL --> B8["BERT INT8 dynamic<br/>span-PLL"]
-  NG --> FUSE["fusion<br/>simplex-tuned weights"]
-  B32 --> FUSE
-  B8 --> FUSE
-  FUSE --> GUARD["numeric guard"]
-  GUARD --> JSON["JSON response"] --> UI
+  UI["Browser UI<br/>canvas boxes or<br/>strip upload"]
+  API["FastAPI on 127.0.0.1<br/>Host allow-list, JSON only,<br/>size / base64 / image checks"]
+  SLICE["slice_strip_image<br/>(strip uploads)"]
+  PRE["preprocess_box<br/>28x28 per box;<br/>empty boxes left out"]
+  MLP["Dense MLP · FP32<br/>(display only)"]
+  CNN32["CharCNN · FP32<br/>+ Grad-CAM"]
+  CNN8["CharCNN · INT8<br/>static PTQ"]
+  FOLD32["47 -> 36 fold<br/>FP32 lattice"]
+  FOLD8["47 -> 36 fold<br/>INT8 lattice"]
+  R1["Row 1: raw FP32 read"]
+  POOL32["Candidate pool (FP32 read)<br/>SymSpell vs 22k lexicon,<br/>top 20 by vis - 2.0 x wED"]
+  POOL8["Candidate pool (INT8 read)<br/>same fixed rule"]
+  NG["Row 2: interpolated<br/>n-gram fusion"]
+  B32["Row 3: BERT · FP32<br/>span-PLL fusion"]
+  B8["Row 4: BERT · INT8 dynamic<br/>span-PLL fusion<br/>PRIMARY app output (R5)"]
+  OUT["Numeric guard (rows 2-4)<br/>-> JSON -> UI:<br/>4-model table,<br/>Grad-CAM, top-2 badges"]
+  UI --> API
+  API -->|strip| SLICE
+  API -->|boxes| PRE
+  SLICE --> PRE
+  PRE --> MLP
+  PRE --> CNN32
+  PRE --> CNN8
+  CNN32 --> FOLD32
+  CNN8 --> FOLD8
+  FOLD32 --> R1
+  FOLD32 --> POOL32
+  FOLD8 --> POOL8
+  POOL32 --> NG
+  POOL32 --> B32
+  POOL8 --> B8
+  MLP -->|top-2 badges| OUT
+  R1 --> OUT
+  NG --> OUT
+  B32 --> OUT
+  B8 --> OUT
+  style B8 stroke-width:3px
 ```
 
-All of it runs on the CPU on 127.0.0.1. The app and the benchmark call the same functions
-(`data/word_pipeline.py` for strip -> probabilities, `models/ladder.py` for the correction rows).
+Everything runs on the CPU on 127.0.0.1. Models load once at startup from weights/*.pt, weights/ngram_lm.pkl, weights/bert_int8_dynamic.pt and the Hugging Face cache (bert-base-uncased).
+The app and the benchmark call the same functions (`data/word_pipeline.py` for strip -> probabilities,
+`models/ladder.py` for the correction rows); the diagram and slide 4 are generated from `scripts/architecture.py`.
 
 ## Results (R4)
 
@@ -135,7 +158,7 @@ python scripts/train_vision.py              # Dense MLP, CharCNN FP32, CharCNN I
 python scripts/train_ngram.py               # n-gram LM, dev fusion tuning -> results/ngram_metrics.json
 python scripts/tune_bert_fusion.py          # BERT fusion weights on dev -> results/bert_fusion_params.json
 python scripts/evaluate_all.py              # Tables 1 and 2 (CPU; run alone) -> results/benchmark_results.*
-python scripts/generate_slides.py --name "..." --student-id "..." --video-url "..."
+python scripts/generate_slides.py --name "Abdalraouf Alkabir" --student-id 2309015482 --video-url "..."
 ```
 
 `python scripts/evaluate_all.py --worksheets data/worksheets_dev_50.json --no-save` runs the benchmark on
@@ -168,6 +191,8 @@ source.
 
 ## AI usage
 
-Claude (Anthropic) was used as a coding assistant: planning the work, writing and reviewing code and tests,
-and drafting this README, the slides and the demo script. Every reported number comes from the scripts in
-this repository and can be recomputed with `python scripts/recompute_metrics.py`.
+Built by Abdalraouf Alkabir with Claude (Anthropic) as the AI coding assistant.
+Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.
+Claude: generated and reviewed code and tests, drafted the README and slides.
+All numbers come from the student's own runs (results/*.json); scripts/recompute_metrics.py re-derives them without the models.
+Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).

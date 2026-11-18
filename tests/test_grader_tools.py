@@ -118,3 +118,27 @@ def test_readme_tables_match_the_reported_results() -> None:
     report = (REPO_ROOT / "results" / "benchmark_results.md").read_text(encoding="utf-8")
     rows = [line for line in report.splitlines() if line.startswith("| (") or line.startswith("| char_") or line.startswith("| dense_")]
     assert rows and all(row in readme for row in rows)
+
+
+def test_readme_architecture_is_generated_from_the_shared_spec() -> None:
+    from scripts import architecture
+
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "```mermaid\n" + architecture.mermaid() + "\n```" in readme
+    keys = {n.key for n in architecture.NODES}
+    assert all(e.src in keys and e.dst in keys for e in architecture.EDGES)
+    assert [n.key for n in architecture.NODES if n.primary] == ["B8"]
+
+
+def test_readme_ai_usage_matches_the_slide_text() -> None:
+    from scripts import slide_content
+
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert all(line in readme for line in slide_content.ai_usage_lines("Abdalraouf Alkabir"))
+
+
+def test_pyproject_declares_the_tested_python_range() -> None:
+    import tomllib
+
+    project = tomllib.loads((REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+    assert project["requires-python"] == ">=3.12,<3.14"

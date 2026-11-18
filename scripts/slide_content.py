@@ -82,3 +82,45 @@ def failure_lines(res: Mapping[str, Any], limit: int = 3) -> list[str]:
     fails = res["failure_examples"]
     picked = [f for f in fails if f["id"] == "test_251"] + [f for f in fails if f["target"].isdigit()][:1] + [f for f in fails if f["id"] != "test_251" and not f["target"].isdigit()][:1]
     return [f"{f['id']}: target {f['target']}, app read {f['raw_int8']} -> {f['outputs']['quantized_app']} ({f['why']})" for f in picked[:limit]]
+
+
+def technique_rows(res: Mapping[str, Any]) -> list[list[str]]:
+    """R2 map in the rubric's terms, each with the file that implements it."""
+    ng = res["ngram_metrics"]
+    return [
+        ["A - Neural networks", "Feedforward net trained with SGD + backprop (models/char_models.py, scripts/train_vision.py); CNN with convolution + pooling; "
+                                "data augmentation (random affine) + dropout; Grad-CAM explanations (models/gradcam.py)"],
+        ["B - Classical NLP", "Regex tokenisation + text normalisation (models/classical_nlp.py, models/cloze.py); minimum weighted edit distance for spelling "
+                              "candidates (SymSpell); n-gram LM with smoothing (add-k unigram + Jelinek-Mercer interpolation); perplexity "
+                              f"{ng['ppl_unigram']:.1f} / {ng['ppl_bigram']:.1f} / {ng['ppl_trigram']:.1f} (uni / bi / tri)"],
+        ["C - Transformers", "BERT masked-LM (attention-based Transformer) re-ranking with span pseudo-log-likelihood; WordPiece subword tokenizer "
+                             "(models/bert_reranker.py)"],
+        ["D - Optimisation", "Static INT8 post-training quantization of the CNN + dynamic INT8 BERT (models/quantization.py); benchmarking of size, latency "
+                             "and accuracy (scripts/evaluate_all.py)"],
+    ]
+
+
+def conclusion_lines(res: Mapping[str, Any]) -> list[str]:
+    """Wins and losses, every number read from the benchmark results."""
+    lad, rec = res["benchmark_results"]["ladder"], res["benchmark_results"]["recall_pct"]
+    raw, ng, b32, app = (lad[k] for k in ("raw_fp32", "classical", "bert_fp32", "quantized_app"))
+    oov = 100 * res["corpus_sources"]["stats"]["test_oov_rate"]
+    return [
+        f"Win: context correction lifts word accuracy from {raw['word_acc_pct']:.2f} % (CNN alone) to {ng['word_acc_pct']:.2f} % (n-gram) and {b32['word_acc_pct']:.2f} % (BERT FP32).",
+        f"Loss: FP32 BERT costs {b32['latency_mean_ms'] / ng['latency_mean_ms']:.1f}x the n-gram latency ({b32['latency_mean_ms']:.1f} vs {ng['latency_mean_ms']:.1f} ms/word) and "
+        f"{b32['size_mb'] / ng['size_mb']:.1f}x the size ({b32['size_mb']:.1f} vs {ng['size_mb']:.1f} MB) for {b32['word_acc_pct'] - ng['word_acc_pct']:+.2f} pp word accuracy.",
+        f"Win: the INT8 app model is {b32['latency_mean_ms'] / app['latency_mean_ms']:.1f}x faster than FP32 BERT ({app['latency_mean_ms']:.1f} vs {b32['latency_mean_ms']:.1f} ms) and "
+        f"{b32['size_mb'] / app['size_mb']:.1f}x smaller ({app['size_mb']:.1f} vs {b32['size_mb']:.1f} MB) for {app['word_acc_pct'] - b32['word_acc_pct']:+.2f} pp.",
+        f"Limits: only {rec['int8']:.1f} % of targets reach the candidate pool; digit strings read with letters never enter it; span-PLL favours multi-piece words; {oov:.1f} % test OOV.",
+    ]
+
+
+def ai_usage_lines(name: str) -> list[str]:
+    """R8 statement (wording approved by the student)."""
+    return [
+        f"Built by {name} with Claude (Anthropic) as the AI coding assistant.",
+        "Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.",
+        "Claude: generated and reviewed code and tests, drafted the README and slides.",
+        "All numbers come from the student's own runs (results/*.json); scripts/recompute_metrics.py re-derives them without the models.",
+        "Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).",
+    ]
