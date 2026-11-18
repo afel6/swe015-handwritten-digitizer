@@ -11,28 +11,28 @@
     "torch_threads": 4,
     "timing_device": "cpu"
   },
-  "worksheets": "data\\worksheets_test_300.json",
+  "worksheets": "data/worksheets_test_300.json",
   "vision": {
     "dense_mlp_fp32": {
-      "acc_47_pct": 86.40957474708557,
-      "acc_36_pct": 88.33510875701904,
+      "acc_47_pct": 86.40957446808511,
+      "acc_36_pct": 88.33510638297872,
       "disk_mb": 2.0827836990356445,
-      "latency_b1_ms": 0.06710100118652917,
-      "latency_b8_ms": 0.12067499978002161
+      "latency_b1_ms": 0.1316660009615589,
+      "latency_b8_ms": 0.17711499982397072
     },
     "char_cnn_fp32": {
-      "acc_47_pct": 89.47340250015259,
-      "acc_36_pct": 91.31914973258972,
+      "acc_47_pct": 89.47340425531914,
+      "acc_36_pct": 91.31914893617021,
       "disk_mb": 6.534577369689941,
-      "latency_b1_ms": 0.8345809997990727,
-      "latency_b8_ms": 2.0927970013872255
+      "latency_b1_ms": 1.8276690007769503,
+      "latency_b8_ms": 4.265570999414194
     },
     "char_cnn_int8": {
-      "acc_47_pct": 89.42553400993347,
-      "acc_36_pct": 91.2872314453125,
+      "acc_47_pct": 89.42553191489363,
+      "acc_36_pct": 91.2872340425532,
       "disk_mb": 1.6510038375854492,
-      "latency_b1_ms": 0.6146069998794701,
-      "latency_b8_ms": 0.8775030000833794
+      "latency_b1_ms": 6.269913000433007,
+      "latency_b8_ms": 5.45153599960031
     }
   },
   "vision_n": 18800,
@@ -42,7 +42,7 @@
       "word_acc_pct": 61.666666666666664,
       "char_acc_pct": 90.1417525773196,
       "size_mb": 6.534577369689941,
-      "latency_mean_ms": 8.099531666472709,
+      "latency_mean_ms": 13.38044133342919,
       "n": 300
     },
     "raw_int8": {
@@ -50,7 +50,7 @@
       "word_acc_pct": 60.666666666666664,
       "char_acc_pct": 89.94845360824742,
       "size_mb": 1.6510038375854492,
-      "latency_mean_ms": 6.536919667317609,
+      "latency_mean_ms": 11.62989566665298,
       "n": 300
     },
     "classical": {
@@ -58,58 +58,63 @@
       "word_acc_pct": 86.33333333333333,
       "char_acc_pct": 91.17268041237114,
       "size_mb": 25.52553367614746,
-      "latency_mean_ms": 18.465934666552737,
+      "latency_mean_ms": 26.39790600000803,
       "n": 300
     },
     "bert_fp32": {
       "label": "(3) Transformer: FP32 CNN + same pool + FP32 BERT",
-      "word_acc_pct": 87.66666666666667,
-      "char_acc_pct": 92.33247422680412,
+      "word_acc_pct": 88.0,
+      "char_acc_pct": 92.46134020618557,
       "size_mb": 443.3651132583618,
-      "latency_mean_ms": 301.260584667131,
+      "latency_mean_ms": 385.27778033327195,
       "n": 300
     },
     "quantized_app": {
-      "label": "(4) Quantized Transformer [App]: INT8 CNN + INT8 BERT",
-      "word_acc_pct": 88.0,
-      "char_acc_pct": 92.20360824742268,
-      "size_mb": 216.20458316802979,
-      "latency_mean_ms": 109.94735966742155,
+      "label": "(4) Quantized Transformer [App]: INT8 CNN pool + INT8 BERT",
+      "word_acc_pct": 87.66666666666667,
+      "char_acc_pct": 91.43041237113403,
+      "size_mb": 216.20446109771729,
+      "latency_mean_ms": 176.87895499960482,
       "n": 300
     },
     "ablation_fp32cnn_int8bert": {
       "label": "(ablation) FP32 CNN + same pool + INT8 BERT",
-      "word_acc_pct": 87.66666666666667,
-      "char_acc_pct": 92.07474226804123,
-      "size_mb": 221.08815670013428,
-      "latency_mean_ms": 115.13602066702636,
+      "word_acc_pct": 87.33333333333333,
+      "char_acc_pct": 91.3659793814433,
+      "size_mb": 221.08803462982178,
+      "latency_mean_ms": 182.8772283331394,
       "n": 300
     }
   },
   "ladder_n": 300,
   "recall_pct": {
-    "fp32": 88.0,
-    "int8": 88.33333333333333
+    "fp32": 88.66666666666667,
+    "int8": 89.0
   },
   "strip_char_acc_pct": 90.1417525773196,
   "strip_gap_note": "gap +1.18 pp (within 5.0 pp)",
   "bert_sizes": {
     "fp32_mb": 417.83957958221436,
-    "int8_mb": 195.56262302398682
+    "int8_mb": 195.56250095367432
   },
   "bert_latency_ms": {
-    "fp32": 46.08456000016304,
-    "int8": 16.446567000093637
+    "fp32": 70.6433350010775,
+    "int8": 23.980976999737322
   },
   "fusion_params": {
     "alpha": 0.0,
-    "lambda_vis": 0.65,
-    "lambda_bert": 0.3,
+    "lambda_vis": 0.6,
+    "lambda_bert": 0.35,
     "gamma": 0.05
   },
   "checks": [
     {
-      "check": "Raw < N-gram < BERT (word acc)",
+      "check": "Raw < N-gram < BERT FP32 (word acc)",
+      "result": "PASS",
+      "value": "61.67 / 86.33 / 88.00 %"
+    },
+    {
+      "check": "Raw < N-gram < quantized app (word acc)",
       "result": "PASS",
       "value": "61.67 / 86.33 / 87.67 %"
     },
@@ -121,7 +126,7 @@
     {
       "check": "INT8 BERT word-acc drop <= 1.5 pp",
       "result": "PASS",
-      "value": "+0.00 pp"
+      "value": "+0.67 pp"
     },
     {
       "check": "INT8 CNN 36-class acc drop <= 1.5 pp",

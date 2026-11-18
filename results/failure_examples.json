@@ -1,5 +1,61 @@
 [
   {
+    "id": "test_167",
+    "sentence": "Later in the 19th century came machines which speeded up typesetting, which was previously done by hand, [MASK] by letter.",
+    "target": "LETTER",
+    "outputs": {
+      "raw_fp32": "LETTER",
+      "raw_int8": "LETTER",
+      "classical": "LETTER",
+      "bert_fp32": "LATER",
+      "quantized_app": "CLUTTER",
+      "ablation_fp32cnn_int8bert": "CLUTTER"
+    },
+    "latency_ms": {
+      "raw_fp32": 11.645699996734038,
+      "raw_int8": 14.245099999243394,
+      "classical": 29.515800008084625,
+      "bert_fp32": 521.0994999943068,
+      "quantized_app": 212.34369998273905,
+      "ablation_fp32cnn_int8bert": 227.9771999892546
+    },
+    "raw_fp32": "LETTER",
+    "raw_int8": "LETTER",
+    "target_in_pool_fp32": true,
+    "target_in_pool_int8": true,
+    "numeric_preserved_int8": false,
+    "mean_conf_int8": 0.909170688343787,
+    "why": "'LETTER' was in the candidate pool, but the fused visual + BERT + edit score ranked 'CLUTTER' higher"
+  },
+  {
+    "id": "test_247",
+    "sentence": "The image can then be [MASK] to focus at a central point.",
+    "target": "REFLECTED",
+    "outputs": {
+      "raw_fp32": "REFIECTED",
+      "raw_int8": "REFIECTED",
+      "classical": "REFLECTED",
+      "bert_fp32": "REFLECTED",
+      "quantized_app": "EFFECTED",
+      "ablation_fp32cnn_int8bert": "EFFECTED"
+    },
+    "latency_ms": {
+      "raw_fp32": 16.36119998875074,
+      "raw_int8": 18.942900002002716,
+      "classical": 23.149299988290295,
+      "bert_fp32": 245.18739999621175,
+      "quantized_app": 101.55740000482183,
+      "ablation_fp32cnn_int8bert": 107.56159998709336
+    },
+    "raw_fp32": "REFIECTED",
+    "raw_int8": "REFIECTED",
+    "target_in_pool_fp32": true,
+    "target_in_pool_int8": true,
+    "numeric_preserved_int8": false,
+    "mean_conf_int8": 0.9268369958402624,
+    "why": "'REFLECTED' was in the candidate pool, but the fused visual + BERT + edit score ranked 'EFFECTED' higher"
+  },
+  {
     "id": "test_251",
     "sentence": "Several Roman states took pieces of the [MASK] empire.",
     "target": "REDUCED",
@@ -12,18 +68,48 @@
       "ablation_fp32cnn_int8bert": "REJOICED"
     },
     "latency_ms": {
-      "raw_fp32": 8.593700011260808,
-      "raw_int8": 5.660999988322146,
-      "classical": 12.492600013501942,
-      "bert_fp32": 248.17730001814198,
-      "quantized_app": 101.75579998758622,
-      "ablation_fp32cnn_int8bert": 112.4930000223685
+      "raw_fp32": 9.277100005419925,
+      "raw_int8": 10.07349998690188,
+      "classical": 15.286299996660091,
+      "bert_fp32": 284.0749000024516,
+      "quantized_app": 106.23799997847527,
+      "ablation_fp32cnn_int8bert": 118.08859999291599
     },
+    "raw_fp32": "REDKCED",
     "raw_int8": "REDKCED",
     "target_in_pool_fp32": true,
     "target_in_pool_int8": true,
     "numeric_preserved_int8": false,
+    "mean_conf_int8": 0.908446008642969,
     "why": "'REDUCED' was in the candidate pool, but the fused visual + BERT + edit score ranked 'REJOICED' higher"
+  },
+  {
+    "id": "test_274",
+    "sentence": "For example, when choosing a [MASK] for a trial.",
+    "target": "JURY",
+    "outputs": {
+      "raw_fp32": "JUAY",
+      "raw_int8": "JUAY",
+      "classical": "DAY",
+      "bert_fp32": "JURY",
+      "quantized_app": "DAY",
+      "ablation_fp32cnn_int8bert": "DAY"
+    },
+    "latency_ms": {
+      "raw_fp32": 21.314699988579378,
+      "raw_int8": 46.369800009415485,
+      "classical": 36.65829998499248,
+      "bert_fp32": 364.31909998646006,
+      "quantized_app": 324.80700001178775,
+      "ablation_fp32cnn_int8bert": 332.4482000025455
+    },
+    "raw_fp32": "JUAY",
+    "raw_int8": "JUAY",
+    "target_in_pool_fp32": true,
+    "target_in_pool_int8": true,
+    "numeric_preserved_int8": false,
+    "mean_conf_int8": 0.8571853320934673,
+    "why": "'JURY' was in the candidate pool, but the fused visual + BERT + edit score ranked 'DAY' higher"
   },
   {
     "id": "test_001",
@@ -38,18 +124,20 @@
       "ablation_fp32cnn_int8bert": "COO"
     },
     "latency_ms": {
-      "raw_fp32": 5.96709999081213,
-      "raw_int8": 3.9373000035993755,
-      "classical": 8.622599998489022,
-      "bert_fp32": 221.8371000053594,
-      "quantized_app": 80.16570001200307,
-      "ablation_fp32cnn_int8bert": 72.3193000012543
+      "raw_fp32": 8.879800006980076,
+      "raw_int8": 11.275199998635799,
+      "classical": 12.919000000692904,
+      "bert_fp32": 304.74110001523513,
+      "quantized_app": 216.0200999933295,
+      "ablation_fp32cnn_int8bert": 144.67890000378247
     },
+    "raw_fp32": "20O0",
     "raw_int8": "20O0",
     "target_in_pool_fp32": false,
     "target_in_pool_int8": false,
     "numeric_preserved_int8": false,
-    "why": "CNN read '20O0'; '2000' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+    "mean_conf_int8": 0.7347223341905145,
+    "why": "CNN read '20O0' with letters among the digits; the SymSpell lexicon holds words only, and a digit string enters the pool only as the raw read when every box reads as a digit, so '2000' could not be a candidate"
   },
   {
     "id": "test_002",
@@ -64,18 +152,20 @@
       "ablation_fp32cnn_int8bert": "LEG"
     },
     "latency_ms": {
-      "raw_fp32": 5.432000005384907,
-      "raw_int8": 4.561599998851307,
-      "classical": 14.402100001461804,
-      "bert_fp32": 315.9295000077691,
-      "quantized_app": 106.50429999805056,
-      "ablation_fp32cnn_int8bert": 106.27000000386033
+      "raw_fp32": 8.984100000816397,
+      "raw_int8": 5.295599999953993,
+      "classical": 19.659600002341904,
+      "bert_fp32": 410.2786000003107,
+      "quantized_app": 159.81049998663366,
+      "ablation_fp32cnn_int8bert": 176.25330000009853
     },
+    "raw_fp32": "1G76",
     "raw_int8": "1G76",
     "target_in_pool_fp32": false,
     "target_in_pool_int8": false,
     "numeric_preserved_int8": false,
-    "why": "CNN read '1G76'; '1876' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+    "mean_conf_int8": 0.7377950841630598,
+    "why": "CNN read '1G76' with letters among the digits; the SymSpell lexicon holds words only, and a digit string enters the pool only as the raw read when every box reads as a digit, so '1876' could not be a candidate"
   },
   {
     "id": "test_003",
@@ -90,18 +180,20 @@
       "ablation_fp32cnn_int8bert": "II"
     },
     "latency_ms": {
-      "raw_fp32": 6.798200003686361,
-      "raw_int8": 6.283000009716488,
-      "classical": 16.27770000777673,
-      "bert_fp32": 118.99069999344647,
-      "quantized_app": 47.670700019807555,
-      "ablation_fp32cnn_int8bert": 62.719099994865246
+      "raw_fp32": 8.14290001289919,
+      "raw_int8": 9.40670000272803,
+      "classical": 22.92040002066642,
+      "bert_fp32": 176.06340000929777,
+      "quantized_app": 80.83390000683721,
+      "ablation_fp32cnn_int8bert": 96.7160000000149
     },
+    "raw_fp32": "SI0",
     "raw_int8": "SI0",
     "target_in_pool_fp32": false,
     "target_in_pool_int8": false,
     "numeric_preserved_int8": false,
-    "why": "CNN read 'SI0'; '510' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+    "mean_conf_int8": 0.6235439370164791,
+    "why": "CNN read 'SI0' with letters among the digits; the SymSpell lexicon holds words only, and a digit string enters the pool only as the raw read when every box reads as a digit, so '510' could not be a candidate"
   },
   {
     "id": "test_005",
@@ -116,95 +208,19 @@
       "ablation_fp32cnn_int8bert": "LVI"
     },
     "latency_ms": {
-      "raw_fp32": 5.612199995084666,
-      "raw_int8": 4.131099994992837,
-      "classical": 13.69729998987168,
-      "bert_fp32": 205.6099999899743,
-      "quantized_app": 68.98419999924954,
-      "ablation_fp32cnn_int8bert": 81.53749999473803
+      "raw_fp32": 7.029000000329688,
+      "raw_int8": 7.545400003436953,
+      "classical": 18.44009998603724,
+      "bert_fp32": 273.9751999761211,
+      "quantized_app": 120.2843000064604,
+      "ablation_fp32cnn_int8bert": 114.042299988796
     },
+    "raw_fp32": "LQI7",
     "raw_int8": "LQI7",
     "target_in_pool_fp32": false,
     "target_in_pool_int8": false,
     "numeric_preserved_int8": false,
-    "why": "CNN read 'LQI7'; '1917' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
-  },
-  {
-    "id": "test_006",
-    "sentence": "The longest freshwater lake is Lake Tanganyika, with a length of about [MASK] km.",
-    "target": "660",
-    "outputs": {
-      "raw_fp32": "66O",
-      "raw_int8": "66O",
-      "classical": "TO",
-      "bert_fp32": "NO",
-      "quantized_app": "XO",
-      "ablation_fp32cnn_int8bert": "XO"
-    },
-    "latency_ms": {
-      "raw_fp32": 4.415299990796484,
-      "raw_int8": 3.2485999981872737,
-      "classical": 14.229999971576035,
-      "bert_fp32": 261.61799997498747,
-      "quantized_app": 78.99209999595769,
-      "ablation_fp32cnn_int8bert": 101.54339998553041
-    },
-    "raw_int8": "66O",
-    "target_in_pool_fp32": false,
-    "target_in_pool_int8": false,
-    "numeric_preserved_int8": false,
-    "why": "CNN read '66O'; '660' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
-  },
-  {
-    "id": "test_007",
-    "sentence": "There are over [MASK] pyramids in Egypt.",
-    "target": "100",
-    "outputs": {
-      "raw_fp32": "1O0",
-      "raw_int8": "1O0",
-      "classical": "LOO",
-      "bert_fp32": "LOO",
-      "quantized_app": "LOO",
-      "ablation_fp32cnn_int8bert": "LOO"
-    },
-    "latency_ms": {
-      "raw_fp32": 4.553199993097223,
-      "raw_int8": 3.079800007981248,
-      "classical": 14.409499985049479,
-      "bert_fp32": 160.61639999679755,
-      "quantized_app": 54.83590000949334,
-      "ablation_fp32cnn_int8bert": 61.303599999519065
-    },
-    "raw_int8": "1O0",
-    "target_in_pool_fp32": false,
-    "target_in_pool_int8": false,
-    "numeric_preserved_int8": false,
-    "why": "CNN read '1O0'; '100' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
-  },
-  {
-    "id": "test_008",
-    "sentence": "A centenarian is someone who is [MASK] years old or more.",
-    "target": "100",
-    "outputs": {
-      "raw_fp32": "I00",
-      "raw_int8": "I00",
-      "classical": "LOO",
-      "bert_fp32": "LOO",
-      "quantized_app": "LOO",
-      "ablation_fp32cnn_int8bert": "LOO"
-    },
-    "latency_ms": {
-      "raw_fp32": 6.967399996938184,
-      "raw_int8": 5.062399999587797,
-      "classical": 22.40110001002904,
-      "bert_fp32": 245.01100000634324,
-      "quantized_app": 78.2271999923978,
-      "ablation_fp32cnn_int8bert": 85.79520000785124
-    },
-    "raw_int8": "I00",
-    "target_in_pool_fp32": false,
-    "target_in_pool_int8": false,
-    "numeric_preserved_int8": false,
-    "why": "CNN read 'I00'; '100' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+    "mean_conf_int8": 0.7018067586679674,
+    "why": "CNN read 'LQI7' with letters among the digits; the SymSpell lexicon holds words only, and a digit string enters the pool only as the raw read when every box reads as a digit, so '1917' could not be a candidate"
   }
 ]
