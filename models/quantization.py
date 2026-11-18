@@ -21,6 +21,7 @@ import numpy as np
 import torch
 from torch import nn
 
+from data._io_errors import map_os_error as _map_os_error
 from models.char_models import NUM_CLASSES, CharCNN
 
 __all__ = [
@@ -91,18 +92,6 @@ def _validate_path(path: Any) -> Path:
     return Path(raw)
 
 
-def _map_os_error(err: OSError, path: Path, action: str) -> OSError:
-    if err.errno == errno.ENOENT:
-        return FileNotFoundError(errno.ENOENT, f"Checkpoint file not found: {path}")
-    if err.errno == errno.EISDIR or (err.errno == errno.EACCES and path.is_dir()):
-        return IsADirectoryError(
-            errno.EISDIR, f"Expected a checkpoint file, got a directory: {path}"
-        )
-    if err.errno == errno.EACCES:
-        return PermissionError(errno.EACCES, f"Permission denied to {action} file: {path}")
-    return OSError(err.errno, f"Unable to {action} checkpoint file: {path}")
-
-
 def _save_checkpoint(payload: dict[str, Any], path: str | os.PathLike[str]) -> Path:
     out_path = _validate_path(path)
     try:
@@ -110,7 +99,7 @@ def _save_checkpoint(payload: dict[str, Any], path: str | os.PathLike[str]) -> P
         with open(out_path, "wb") as handle:
             torch.save(payload, handle)
     except OSError as err:
-        raise _map_os_error(err, out_path, action="write") from err
+        raise _map_os_error(err, out_path, action="writing") from err
     return out_path
 
 
@@ -120,7 +109,7 @@ def _load_checkpoint(path: str | os.PathLike[str]) -> Mapping[str, Any]:
         with open(in_path, "rb") as handle, _suppress_torch_quant_warnings():
             ckpt = torch.load(handle, map_location="cpu", weights_only=True)
     except OSError as err:
-        raise _map_os_error(err, in_path, action="read") from err
+        raise _map_os_error(err, in_path, action="reading") from err
     except (
         EOFError,
         RuntimeError,
@@ -330,7 +319,7 @@ def get_model_disk_size_mb(
         try:
             st = os.stat(target)
         except OSError as err:
-            raise _map_os_error(err, target, action="stat") from err
+            raise _map_os_error(err, target, action="checking") from err
         if stat.S_ISDIR(st.st_mode):
             raise IsADirectoryError(
                 errno.EISDIR, f"Expected a checkpoint file, got a directory: {target}"

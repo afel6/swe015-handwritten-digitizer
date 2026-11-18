@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 import math
 import re
 import sys
@@ -17,16 +16,31 @@ import torch
 if str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
+from data._io_errors import describe_os_error
+from data.emnist_data import extract_oriented_tensors
 from data.prepare_data import (
-    EMNIST_ROOT, EMNIST_SPLITS_PATH, _load_emnist_dataset, build_lexicon, describe_os_error, load_emnist_splits, prepare_corpus,
+    EMNIST_ROOT,
+    EMNIST_SPLITS_PATH,
+    build_lexicon,
+    load_emnist_dataset,
+    load_emnist_splits,
+    prepare_corpus,
+    read_data,
+    write_data,
 )
-from data.preprocess import fix_emnist_orientation, fold_47_to_36_probs
+from data.preprocess import fold_47_to_36_probs
 from models.char_models import load_char_cnn_fp32
-from models.classical_nlp import DEFAULT_SMOOTHING_K, DEFAULT_WEIGHTS_PATH, ClassicalNLPCorrector, normalize_word, tokenize
+from models.classical_nlp import (
+    DEFAULT_SMOOTHING_K,
+    DEFAULT_WEIGHTS_PATH,
+    ClassicalNLPCorrector,
+    normalize_word,
+    tokenize,
+)
 
 _METRICS_PATH, _CNN_WEIGHTS = Path("results/ngram_metrics.json"), Path("weights/char_cnn_fp32.pt")
 _DEV_PATH, _TEST_PATH = Path("data/worksheets_dev_50.json"), Path("data/worksheets_test_300.json")
-_SPLIT_RE, _PIXEL_MAX = re.compile(r"[.!?\n]+"), 255.0
+_SPLIT_RE = re.compile(r"[.!?\n]+")
 
 
 def _texts_to_sentences(texts: Sequence[str]) -> list[list[str]]:
@@ -38,10 +52,7 @@ def _texts_to_sentences(texts: Sequence[str]) -> list[list[str]]:
 
 def _load_worksheet_items(path: Path) -> list[dict[str, Any]]:
     """Load and validate worksheet records from a JSON file."""
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"Invalid JSON in {path}: {exc.msg}.") from exc
+    payload = read_data(Path(path), as_json=True)
     if not isinstance(payload, list) or not payload or any(
         not isinstance(it, Mapping) or "sentence" not in it or "target_word" not in it for it in payload
     ):
@@ -56,7 +67,7 @@ def compute_dev_cnn_probs(
     """Run the FP32 CNN on each dev item's real EMNIST validation glyphs; return folded (L, 36) probabilities."""
     model = load_char_cnn_fp32(cnn_weights, device="cpu")
     val_indices = set(load_emnist_splits(splits_path)["val_indices"])
-    dataset = _load_emnist_dataset(Path(emnist_root), train=True)
+    dataset = load_emnist_dataset(Path(emnist_root), train=True)
     out: list[np.ndarray] = []
     for item in dev_items:
         indices = [int(i) for i in item.get("emnist_indices", [])]
@@ -64,9 +75,7 @@ def compute_dev_cnn_probs(
             raise ValueError(f"Dev item {item.get('id')} must use EMNIST val indices only.")
         if len(indices) != len(normalize_word(str(item["target_word"]))):
             raise ValueError(f"Dev item {item.get('id')} has {len(indices)} glyphs for target {item['target_word']!r}.")
-        if max(indices) >= len(dataset.data) or min(indices) < 0:
-            raise ValueError(f"Dev item {item.get('id')} has an EMNIST index out of range for {len(dataset.data)} images.")
-        glyphs = fix_emnist_orientation(dataset.data[indices].unsqueeze(1).to(torch.float32) / _PIXEL_MAX)
+        glyphs, _ = extract_oriented_tensors(dataset, np.asarray(indices, dtype=np.int64))
         with torch.inference_mode():
             probs_47 = torch.softmax(model(glyphs), dim=1)
         out.append(np.asarray(fold_47_to_36_probs(probs_47).cpu().numpy(), dtype=np.float64))
@@ -112,10 +121,13 @@ def train_ngram_pipeline(
         "dev_word_acc_tuned": _dev_word_accuracy(corrector, dev_items, dev_probs),
         "model_size_mb": float(corrector.get_model_size_mb(saved)), "corpus_word_counts": {**counts, "total": sum(counts.values())},
     }
-    out = Path(metrics_out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
+    _write_metrics(Path(metrics_out), metrics)
     return metrics
+
+
+def _write_metrics(path: Path, metrics: Mapping[str, Any]) -> None:
+    """Write metrics JSON; OS errors are mapped to path-naming exceptions."""
+    write_data(path, dict(metrics), as_json=True)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import errno
 import gzip
 import hashlib
 import json
@@ -27,6 +26,12 @@ import torch
 from PIL import Image, ImageDraw
 from torchvision.datasets import EMNIST
 
+if str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
+from data._io_errors import describe_os_error
+from data._io_errors import map_os_error as _map_os_error
+from data.emnist_data import SPLIT_SEED, TRAIN_FRAC, compute_stratified_split
 from data.preprocess import CANONICAL_36_CHARS, fix_emnist_orientation
 
 EMNIST_ROOT, EMNIST_SPLITS_PATH, RAW_GUTENBERG_DIR, RAW_WIKIPEDIA_DIR = Path("data/emnist"), Path("data/emnist_splits.json"), Path("data/raw/gutenberg"), Path("data/raw/wikipedia")
@@ -58,30 +63,15 @@ _WIKI_POOLS: dict[str, tuple[str, tuple[str, ...]]] = {
     "worksheet_test": ("simple", ("Planet", "Galaxy", "Universe", "Earthquake", "Desert", "Forest", "Ice", "Fire", "Heat", "Force", "Magnet", "Battery", "Computer", "Internet", "Airplane", "Train", "Bridge", "Clock", "Calendar", "Year", "Century", "History", "Geography", "Map", "Continent", "Europe", "Asia", "Africa", "Human skeleton", "Muscle", "Lung", "Stomach", "Eye", "Ear", "Skin", "Tooth", "Seed", "Leaf", "Root", "Soil", "Rock", "Gold", "Iron", "Copper", "Silver", "Carbon", "Nitrogen", "Hydrogen", "Acid", "Temperature", "Thermometer", "Compass", "Wheel", "Paper", "Book", "School", "Library", "Hospital", "Medicine", "Vaccine", "Virus", "Bacteria", "Boiling point", "Freezing point", "Triangle", "Circle", "World War I", "Apollo 11", "Steam engine", "Printing press", "Telephone", "Radio", "Television", "Bicycle", "Ship", "Pyramid", "Ancient Egypt", "Ancient Rome", "Industrial Revolution", "Renaissance", "Democracy", "Alphabet", "Dictionary", "Square", "Geometry", "Algebra", "Weather", "Lightning", "Snow", "Lake", "Island", "Valley")),
 }
 
-def describe_os_error(exc: OSError) -> str:
-    """One-line description of an OS error that always names the path when the error carries one."""
-    detail = exc.strerror or str(exc) or "I/O failure"
-    return detail if not exc.filename or str(exc.filename) in detail else f"{detail}: {exc.filename}"
-
 def _tls_context() -> ssl.SSLContext:
     return ssl.create_default_context(cafile=certifi.where())
-
-def _map_os_error(err: OSError, path: Path, action: str) -> OSError:
-    label = os.fspath(path)
-    if err.errno == errno.ENOENT:
-        return FileNotFoundError(errno.ENOENT, f"Path not found while {action}: {label}", label)
-    if err.errno == errno.EISDIR or (err.errno == errno.EACCES and path.is_dir()):
-        return IsADirectoryError(errno.EISDIR, f"Expected a file, got a directory while {action}: {label}", label)
-    if err.errno == errno.EACCES:
-        return PermissionError(errno.EACCES, f"Permission denied while {action}: {label}", label)
-    return OSError(err.errno, f"Filesystem error while {action}: {label}", label)
 
 def _validate_int(val: Any, name: str, minimum: int = 0) -> int:
     if isinstance(val, bool) or not isinstance(val, int) or val < minimum:
         raise ValueError(f"{name} must be an integer >= {minimum}.")
     return val
 
-def _read_data(path: Path, as_json: bool = False) -> Any:
+def read_data(path: Path, as_json: bool = False) -> Any:
     try:
         raw = path.read_bytes()
     except OSError as err:
@@ -95,7 +85,7 @@ def _read_data(path: Path, as_json: bool = False) -> Any:
     except json.JSONDecodeError as exc:
         raise ValueError(f"Invalid JSON in {os.fspath(path)}: {exc.msg}.") from exc
 
-def _write_data(path: Path, payload: Any, as_json: bool = False) -> None:
+def write_data(path: Path, payload: Any, as_json: bool = False) -> None:
     text = (json.dumps(payload, indent=2) + "\n") if as_json else str(payload)
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -138,7 +128,7 @@ def _download_emnist_balanced(root: Path) -> None:
         if tmp_path is not None:
             tmp_path.unlink(missing_ok=True)
 
-def _load_emnist_dataset(root: Path, train: bool) -> Any:
+def load_emnist_dataset(root: Path, train: bool) -> Any:
     try:
         if bool((ds := EMNIST(root=str(root), split="balanced", train=train, download=False))._check_exists()):
             return ds
@@ -150,23 +140,21 @@ def _load_emnist_dataset(root: Path, train: bool) -> Any:
         raise RuntimeError(f"EMNIST balanced dataset incomplete under {root}.")
     return ds
 
-def build_emnist_splits(root: str | Path = "data/emnist", out_path: str | Path = "data/emnist_splits.json", seed: int = DEFAULT_SEED) -> dict[str, Any]:
+def build_emnist_splits(root: str | Path = "data/emnist", out_path: str | Path = "data/emnist_splits.json") -> dict[str, Any]:
     """Write the exact train/val split the vision models were trained with (scripts.train_vision.compute_stratified_split)."""
-    from scripts.train_vision import TRAIN_FRAC, compute_stratified_split  # single source of truth for the CNN split
-
     if not isinstance(root, (str, os.PathLike)) or not isinstance(out_path, (str, os.PathLike)):
         raise TypeError("root and out_path must be strings or path-like objects.")
-    seed_val, ds = _validate_int(seed, "seed"), _load_emnist_dataset(Path(root), train=True)
-    train_idx, val_idx = compute_stratified_split(ds.targets, train_frac=TRAIN_FRAC, seed=seed_val)
-    payload = {"seed": seed_val, "train_indices": sorted(int(i) for i in train_idx), "val_indices": sorted(int(i) for i in val_idx)}
-    _write_data(Path(out_path), payload, as_json=True)
+    ds = load_emnist_dataset(Path(root), train=True)
+    train_idx, val_idx = compute_stratified_split(ds.targets, train_frac=TRAIN_FRAC, seed=SPLIT_SEED)
+    payload = {"seed": SPLIT_SEED, "train_indices": sorted(int(i) for i in train_idx), "val_indices": sorted(int(i) for i in val_idx)}
+    write_data(Path(out_path), payload, as_json=True)
     return {"seed": payload["seed"], "train_indices": list(payload["train_indices"]), "val_indices": list(payload["val_indices"])}
 
 def load_emnist_splits(path: str | Path = "data/emnist_splits.json") -> dict[str, Any]:
     """Load and validate EMNIST train/val index splits JSON with explicit OS error mapping."""
     if not isinstance(path, (str, os.PathLike)):
         raise TypeError("path must be a string or path-like object.")
-    data = _read_data(Path(path), as_json=True)
+    data = read_data(Path(path), as_json=True)
     if not isinstance(data, Mapping):
         raise TypeError("EMNIST splits file must contain a JSON object.")
     seed_val, train_raw, val_raw = _validate_int(data.get("seed"), "seed"), data.get("train_indices"), data.get("val_indices")
@@ -183,8 +171,8 @@ def _fetch_gutenberg_book(client: httpx.Client, bid: int, cache_dir: Path, force
     cache_path, url_path, raw, used_url = cache_dir / f"pg{bid}.txt", cache_dir / f"pg{bid}.url", "", urls[0]
     if not force_download:
         try:
-            raw = _read_data(cache_path)
-            used_url = _read_data(url_path).strip() if url_path.is_file() else urls[0]
+            raw = read_data(cache_path)
+            used_url = read_data(url_path).strip() if url_path.is_file() else urls[0]
         except FileNotFoundError:
             pass
     if not raw.strip():
@@ -192,7 +180,7 @@ def _fetch_gutenberg_book(client: httpx.Client, bid: int, cache_dir: Path, force
             try:
                 resp = client.get(url); resp.raise_for_status()
                 if (body := resp.content.decode("utf-8-sig", errors="replace")).strip():
-                    raw, used_url = body, url; _write_data(cache_path, raw); _write_data(url_path, url); break
+                    raw, used_url = body, url; write_data(cache_path, raw); write_data(url_path, url); break
             except httpx.HTTPError:
                 continue
     if not raw.strip():
@@ -204,7 +192,7 @@ def _fetch_wiki_article(client: httpx.Client, lang: str, title: str, cache_dir: 
     cache_path = cache_dir / f"{lang}__{re.sub(r'[^a-z0-9]+', '_', title.lower()).strip('_')}.json"
     if not force_download:
         try:
-            cached = _read_data(cache_path, as_json=True)
+            cached = read_data(cache_path, as_json=True)
             if isinstance(cached, Mapping) and str(cached.get("text", "")).strip() and cached.get("title") and cached.get("url"):
                 return {"title": str(cached["title"]), "url": str(cached["url"]), "text": _WIKI_HEADING_RE.sub("", str(cached["text"])).strip()}
         except FileNotFoundError:
@@ -220,7 +208,7 @@ def _fetch_wiki_article(client: httpx.Client, lang: str, title: str, cache_dir: 
         raise RuntimeError(f"Missing Wikipedia extract for '{title}' at {api_url}.")
     resolved = str(page.get("title", title))
     page_url = f"https://{lang}.wikipedia.org/wiki/{quote(resolved.replace(' ', '_'))}"
-    _write_data(cache_path, {"title": resolved, "requested_title": title, "url": page_url, "text": raw_extract}, as_json=True)
+    write_data(cache_path, {"title": resolved, "requested_title": title, "url": page_url, "text": raw_extract}, as_json=True)
     return {"title": resolved, "url": page_url, "text": _WIKI_HEADING_RE.sub("", raw_extract).strip()}
 
 def prepare_corpus(force_download: bool = False) -> dict[str, Any]:
@@ -383,32 +371,33 @@ def _export_sample_worksheets(test_items: Sequence[Mapping[str, Any]], test_ds: 
         except OSError as err:
             raise _map_os_error(err, img_path, "writing sample PNG") from err
         manifest.append({"id": it["id"], "filename": fname, "sentence": it["sentence"], "target_word": it["target_word"], "difficulty": it["difficulty"]})
-    _write_data(out_dir / "manifest.json", manifest, as_json=True)
+    write_data(out_dir / "manifest.json", manifest, as_json=True)
     return manifest
 
-def prepare_all(force_download: bool = False) -> dict[str, Any]:
+def prepare_all(force_download: bool = False, emnist_root: str | Path = EMNIST_ROOT) -> dict[str, Any]:
     """Run full EMNIST split, corpus fetch, lexicon build, worksheet generation, and sample export."""
     if not isinstance(force_download, bool):
         raise TypeError("force_download must be a bool.")
-    splits, corpus = build_emnist_splits(root=EMNIST_ROOT, out_path=EMNIST_SPLITS_PATH, seed=DEFAULT_SEED), prepare_corpus(force_download=force_download)
+    splits, corpus = build_emnist_splits(root=emnist_root, out_path=EMNIST_SPLITS_PATH), prepare_corpus(force_download=force_download)
     lexicon = build_lexicon([tok for text in corpus["train_texts"] for tok in _TOKEN_RE.findall(text.upper())])
-    train_ds, test_ds = _load_emnist_dataset(EMNIST_ROOT, train=True), _load_emnist_dataset(EMNIST_ROOT, train=False)
+    train_ds, test_ds = load_emnist_dataset(Path(emnist_root), train=True), load_emnist_dataset(Path(emnist_root), train=False)
     dev_items = _select_worksheet_items(corpus["worksheet_dev_docs"], DEV_WORKSHEET_COUNT, DEV_NUMERIC_TARGET, "dev", "val", splits["val_indices"], train_ds.targets, lexicon, DEFAULT_SEED)
     test_items = _select_worksheet_items(corpus["worksheet_test_docs"], TEST_WORKSHEET_COUNT, TEST_NUMERIC_TARGET, "test", "test", range(len(test_ds)), test_ds.targets, lexicon, DEFAULT_SEED)
-    _write_data(DEV_WORKSHEETS_PATH, dev_items, as_json=True); _write_data(TEST_WORKSHEETS_PATH, test_items, as_json=True)
+    write_data(DEV_WORKSHEETS_PATH, dev_items, as_json=True); write_data(TEST_WORKSHEETS_PATH, test_items, as_json=True)
     samples = _export_sample_worksheets(test_items, test_ds, SAMPLE_WORKSHEETS_DIR)
     test_oov_rate, dev_oov_rate = sum(1 for it in test_items if not it["in_lexicon"]) / len(test_items), sum(1 for it in dev_items if not it["in_lexicon"]) / len(dev_items)
     stats = {**corpus["stats"], "lexicon_size": len(lexicon), "dev_oov_rate": dev_oov_rate, "test_oov_rate": test_oov_rate}
-    _write_data(CORPUS_SOURCES_PATH, {"sources": corpus["sources"], "stats": stats}, as_json=True)
+    write_data(CORPUS_SOURCES_PATH, {"sources": corpus["sources"], "stats": stats}, as_json=True)
     return {"corpus": corpus, "splits": splits, "lexicon": lexicon, "dev_items": dev_items, "test_items": test_items, "samples": samples, "test_oov_rate": test_oov_rate, "sources": corpus["sources"], "stats": stats}
 
 def main(argv: Sequence[str] | None = None) -> int:
     """CLI entry point: regenerate splits, worksheets, samples, and corpus citations; friendly one-line errors."""
     parser = argparse.ArgumentParser(description="Prepare EMNIST splits, corpus citations, and worksheet datasets.")
     parser.add_argument("--force-download", action="store_true", help="Re-download corpus sources instead of using the cache.")
+    parser.add_argument("--emnist-root", type=Path, default=EMNIST_ROOT, help="EMNIST dataset root directory.")
     args = parser.parse_args(argv)
     try:
-        prepare_all(force_download=args.force_download)
+        prepare_all(force_download=args.force_download, emnist_root=args.emnist_root)
     except OSError as exc:
         sys.stderr.write(f"File system error: {describe_os_error(exc)}\n")
         return 1

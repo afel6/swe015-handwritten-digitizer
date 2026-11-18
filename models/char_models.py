@@ -16,6 +16,8 @@ from typing import Any
 import torch
 from torch import nn
 
+from data._io_errors import map_os_error as _map_os_error
+
 NUM_CLASSES: int = 47
 INPUT_DIM: int = 784
 
@@ -113,23 +115,6 @@ def _sanitize_metadata(metadata: Mapping[str, Any] | None) -> dict[str, Any] | N
     if not isinstance(metadata, Mapping):
         raise TypeError("metadata must be a mapping or None.")
     return _sanitize_mapping(metadata, depth=0)
-
-
-def _map_os_error(err: OSError, path_label: str, action: str) -> OSError:
-    is_dir = err.errno == errno.EISDIR or (
-        err.errno == errno.EACCES and bool(path_label) and Path(path_label).is_dir()
-    )
-    if is_dir:
-        return IsADirectoryError(
-            errno.EISDIR, f"Expected a checkpoint file path, got a directory: {path_label}"
-        )
-    if err.errno == errno.ENOENT:
-        return FileNotFoundError(errno.ENOENT, f"Checkpoint file not found: {path_label}")
-    if err.errno in (errno.EACCES, errno.EPERM):
-        return PermissionError(
-            err.errno, f"Permission denied while {action} checkpoint: {path_label}"
-        )
-    return OSError(err.errno, f"Unable to complete {action} checkpoint: {path_label}")
 
 
 def _make_conv_block(in_ch: int, out_ch: int, *, with_pool: bool) -> nn.Sequential:

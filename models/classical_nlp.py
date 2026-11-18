@@ -16,6 +16,7 @@ from typing import Any
 import numpy as np
 import torch
 
+from data._io_errors import map_os_error as _map_os_error
 from data.preprocess import CANONICAL_36_CHARS
 
 CONFUSION_MAP: dict[str, tuple[str, ...]] = {ch: tuple(o for o in g if o != ch) for g in ("0O", "1IL", "2Z", "4A", "5S", "6G", "8B", "9Q") for ch in g}
@@ -24,7 +25,8 @@ START_TOKEN, END_TOKEN, UNK_TOKEN, MASK_TOKEN = "<s>", "</s>", "<UNK>", "[MASK]"
 _START_ID, _NUM_CHARS, _BYTES_PER_MB = -1, len(CANONICAL_36_CHARS), 1024.0 * 1024.0
 _CHAR_TO_IDX = {ch: idx for idx, ch in enumerate(CANONICAL_36_CHARS)}
 _TOKEN_RE, _UNDERSCORE_MASK_RE, _CANONICAL_LEX_RE = re.compile(r"[A-Z0-9]+"), re.compile(r"_{3,}"), re.compile(r"^(?:[A-Z]{2,}|A|I)$")
-_ANY_CASE_MASK_RE, MAX_SENTENCE_CHARS = re.compile(re.escape(MASK_TOKEN), re.IGNORECASE), 500
+_ANY_CASE_MASK_RE = re.compile(re.escape(MASK_TOKEN), re.IGNORECASE)
+MAX_SENTENCE_CHARS = 500
 _MAX_SYMSPELL_ED, _SYMSPELL_PREFIX_LEN, _MAX_LATTICE_BOXES, _MAX_BEAM_SEEDS = 2, 10, 6, 64
 _DEFAULT_MAX_CANDIDATES, _CANDIDATE_POOL_MIN, _GRID_STEPS = 20, 60, 20
 _PROB_EPS, _CONFUSION_PENALTY, _INDEL_VIS_PENALTY = 1e-12, 1.5, 4.0
@@ -51,10 +53,14 @@ def normalize_word(word: str) -> str:
 
 def extract_cloze_context(sentence: str) -> tuple[list[str], list[str]]:
     """Normalize '___' and any-case '[mask]' blanks to [MASK], require exactly one, and tokenize both sides."""
-    if not isinstance(sentence, str): raise TypeError("sentence must be a string.")
-    if len(sentence) > MAX_SENTENCE_CHARS: raise ValueError(f"sentence must be at most {MAX_SENTENCE_CHARS} characters.")
-    parts = _ANY_CASE_MASK_RE.sub(MASK_TOKEN, _UNDERSCORE_MASK_RE.sub(MASK_TOKEN, sentence)).split(MASK_TOKEN)
-    if len(parts) != 2: raise ValueError("sentence must contain exactly one [MASK] (or '___') blank.")
+    if not isinstance(sentence, str):
+        raise TypeError("sentence must be a string.")
+    if len(sentence) > MAX_SENTENCE_CHARS:
+        raise ValueError(f"sentence must be at most {MAX_SENTENCE_CHARS} characters.")
+    normalized = _ANY_CASE_MASK_RE.sub(MASK_TOKEN, _UNDERSCORE_MASK_RE.sub(MASK_TOKEN, sentence))
+    parts = normalized.split(MASK_TOKEN)
+    if len(parts) != 2:
+        raise ValueError("sentence must contain exactly one [MASK] (or '___') blank.")
     return tokenize(parts[0]), tokenize(parts[1])
 
 
@@ -111,6 +117,8 @@ def _validate_lambdas(lambdas: Sequence[float]) -> tuple[float, float, float, fl
     vals = tuple(float(x) for x in lambdas)
     if any(not math.isfinite(x) or x < 0.0 for x in vals) or abs(sum(vals) - 1.0) > _LAMBDA_SUM_TOL:
         raise ValueError("lambdas must be finite, non-negative, and sum to 1.0.")
+    if vals[2] + vals[3] <= 0.0:
+        raise ValueError("lambdas need l1 + l0 > 0: the unsmoothed bigram/trigram terms can be zero.")
     return vals  # type: ignore[return-value]
 
 
@@ -119,14 +127,6 @@ def _validate_sentences(sentences: Any, name: str) -> list[list[str]]:
         raise TypeError(f"{name} must be a sequence of string-token sentences.")
     if not (out := [list(s) for s in sentences if s]): raise ValueError(f"{name} must contain at least one non-empty sentence.")
     return out
-
-
-def _map_os_error(err: OSError, target: Path, action: str) -> OSError:
-    label = os.fspath(target)
-    if err.errno == errno.ENOENT: return FileNotFoundError(errno.ENOENT, f"File not found while {action}: {label}", label)
-    if err.errno == errno.EISDIR or (err.errno == errno.EACCES and target.is_dir()): return IsADirectoryError(errno.EISDIR, f"Expected a file path, got a directory: {label}", label)
-    if err.errno == errno.EACCES: return PermissionError(errno.EACCES, f"Permission denied while {action}: {label}", label)
-    return OSError(err.errno, f"Failed {action} {label}: {err.strerror or 'OS error'}", label)
 
 
 def _validate_path(path: str | os.PathLike[str]) -> Path:
@@ -171,10 +171,12 @@ class ClassicalNLPCorrector:
 
     def _order_probs(self, uid: int, vid: int, wid: int) -> tuple[float, float, float]:
         """Jelinek-Mercer components: add-k unigram, MLE bigram/trigram backing off to the lower order for unseen contexts."""
-        tri_tot, bi_tot = self.trigram_totals.get((uid, vid), 0), self.bigram_totals.get(vid, 0)
+        tri_tot = self.trigram_totals.get((uid, vid), 0)
+        bi_tot = self.bigram_totals.get(vid, 0)
         p1 = float(self._p_uni[wid])
         p2 = self.bigram_counts[vid].get(wid, 0) / bi_tot if bi_tot else p1
-        return (self.trigram_counts[(uid, vid)].get(wid, 0) / tri_tot if tri_tot else p2), p2, p1
+        p3 = self.trigram_counts[(uid, vid)].get(wid, 0) / tri_tot if tri_tot else p2
+        return p3, p2, p1
 
     def _build_symspell_index(self, lexicon: Mapping[str, int]) -> None:
         if not isinstance(lexicon, Mapping): raise TypeError("lexicon must be a mapping of word -> count.")
@@ -224,9 +226,11 @@ class ClassicalNLPCorrector:
 
     @staticmethod
     def _mle_dist(counts: Mapping[int, int] | None, total: int, fallback: np.ndarray) -> np.ndarray:
-        if not total: return fallback.copy()
+        if not total:
+            return fallback.copy()
         dist = np.zeros_like(fallback)
-        for wid, cnt in (counts or {}).items(): dist[wid] = cnt / total
+        for wid, cnt in (counts or {}).items():
+            dist[wid] = cnt / total
         return dist
 
     def next_word_distribution(self, history: tuple[str, str], lambdas: tuple[float, float, float, float] | None = None) -> np.ndarray:
@@ -383,6 +387,10 @@ class ClassicalNLPCorrector:
         if not isinstance(payload, dict) or not set(_STATE_FIELDS).issubset(payload): raise ValueError(f"Corrupted classical NLP model payload: {target}")
         obj = cls()
         for k in _STATE_FIELDS: setattr(obj, k, payload[k])
+        try:
+            obj.lambdas, obj.bigram_lambdas, obj.unigram_lambdas = (_validate_lambdas(obj.lambdas), _validate_lambdas(obj.bigram_lambdas), _validate_lambdas(obj.unigram_lambdas))
+        except ValueError as exc:
+            raise ValueError(f"Invalid interpolation weights in {target}: {exc}") from exc
         obj.word_to_id = {w: i for i, w in enumerate(obj.vocab)}
         obj._unk_id, obj._end_id, obj._trained, obj._model_path = obj.word_to_id[UNK_TOKEN], obj.word_to_id[END_TOKEN], True, target
         obj._p_uni = (obj.unigram_counts.astype(np.float64) + obj.smoothing_k) / (obj.total_tokens + obj.smoothing_k * len(obj.vocab))
