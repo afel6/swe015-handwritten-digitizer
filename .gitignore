@@ -1,0 +1,23 @@
+# Model weights and large artifacts
+weights/
+*.pt
+*.pth
+*.pkl
+*.onnx
+
+# Raw and downloaded datasets (generated sample worksheets & frozen 300-item manifest stay tracked)
+data/emnist/
+data/raw/
+
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments & secrets
+.venv/
+venv/
+.env

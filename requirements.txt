@@ -1,0 +1,15 @@
+torch>=2.5,<2.10
+torchvision>=0.20,<0.25
+transformers
+fastapi
+uvicorn
+pillow
+numpy
+scipy
+scikit-learn
+matplotlib
+python-pptx
+pymupdf
+pytest
+pytest-cov
+httpx
