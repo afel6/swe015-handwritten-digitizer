@@ -114,4 +114,7 @@ def retime(worksheets: Path, passes: int, emnist_root: Path = ev.EMNIST_ROOT, su
     write_data(ev.OUT["json"], new_results, as_json=True)
     write_data(ev.OUT["md"], bench_report.render_markdown(new_results))
     write_data(ev.OUT["predictions"], new_preds, as_json=True)
+    if ev.OUT["failures"].is_file():
+        failures = read_data(ev.OUT["failures"], as_json=True)
+        write_data(ev.OUT["failures"], bench_report.refresh_failure_latencies(failures, new_preds["rows"]), as_json=True)
     return new_results

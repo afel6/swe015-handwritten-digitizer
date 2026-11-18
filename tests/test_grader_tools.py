@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import json
 import zipfile
 from pathlib import Path
 from typing import Any
@@ -204,3 +205,33 @@ def test_architecture_edges_follow_the_recognizer() -> None:
     assert ("CNN32", "OUT") in edges and ("CNN8", "OUT") in edges and ("MLP", "OUT") in edges
     assert "empty" not in next(n.label for n in architecture.NODES if n.key == "PRE")
     assert "non-empty" in edges[("FOLD32", "POOL32")] and "non-empty" in edges[("FOLD8", "POOL8")]
+
+
+def test_readme_states_venv_runtime_and_timing_protocol() -> None:
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    section = readme.split("<!-- grader section: keep identical to AGENTS.md -->\n", 1)[1].split("<!-- end grader section -->", 1)[0]
+    assert "python -m venv .venv" in section and r".venv\Scripts\Activate.ps1" in section and "source .venv/bin/activate" in section
+    assert "a few minutes once the weights are downloaded" in section
+    assert "100 timed runs after 10 warm-up runs" in readme and "median of 3" in readme
+    assert "one item is 0.33 pp" in readme
+
+
+def test_benchmark_report_states_the_timing_protocol() -> None:
+    report = (REPO_ROOT / "results" / "benchmark_results.md").read_text(encoding="utf-8")
+    assert "100 timed runs after 10 warm-up runs" in report and "mean over the 300 test worksheets" in report
+
+
+def test_failure_examples_carry_the_reported_latencies() -> None:
+    failures = json.loads((REPO_ROOT / "results" / "failure_examples.json").read_text(encoding="utf-8"))
+    rows = json.loads((REPO_ROOT / "results" / "test_predictions.json").read_text(encoding="utf-8"))["rows"]
+    by_item = {key: {r["item_id"]: r["latency_ms"] for r in recs} for key, recs in rows.items()}
+    for failure in failures:
+        for key, latency in failure["latency_ms"].items():
+            assert latency == by_item[key][failure["id"]], (failure["id"], key)
+
+
+def test_hardware_line_says_a_cuda_build_was_not_used_for_timing() -> None:
+    from scripts import slide_content
+
+    res = {"benchmark_results": {"hardware": {"cpu_model": "X", "torch_threads": 4, "ram_gb": 8.0, "torch": "2.9.1+cu128", "transformers": "5"}}}
+    assert "CUDA build, GPU unused for timing" in slide_content.hardware_line(res)

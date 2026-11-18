@@ -37,7 +37,8 @@ def run_history_rows(res: Mapping[str, Any]) -> list[list[str]]:
 
 def hardware_line(res: Mapping[str, Any]) -> str:
     hw = res["benchmark_results"]["hardware"]
-    return f"CPU only: {hw['cpu_model']}, {hw['torch_threads']} torch threads, {hw['ram_gb']} GB RAM; torch {hw['torch']}, transformers {hw['transformers']}"
+    cuda = " (CUDA build, GPU unused for timing)" if "+cu" in str(hw["torch"]) else ""
+    return f"CPU only: {hw['cpu_model']}, {hw['torch_threads']} torch threads, {hw['ram_gb']} GB RAM; torch {hw['torch']}{cuda}, transformers {hw['transformers']}"
 
 
 def checks_lines(res: Mapping[str, Any]) -> list[str]:

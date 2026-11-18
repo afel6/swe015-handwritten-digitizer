@@ -12,12 +12,12 @@
       "ablation_fp32cnn_int8bert": "CLUTTER"
     },
     "latency_ms": {
-      "raw_fp32": 11.645699996734038,
-      "raw_int8": 14.245099999243394,
-      "classical": 29.515800008084625,
-      "bert_fp32": 521.0994999943068,
-      "quantized_app": 212.34369998273905,
-      "ablation_fp32cnn_int8bert": 227.9771999892546
+      "raw_fp32": 5.0604999996721745,
+      "raw_int8": 4.1806999943219125,
+      "classical": 12.240099982591346,
+      "bert_fp32": 234.86959999718238,
+      "quantized_app": 67.32430000556633,
+      "ablation_fp32cnn_int8bert": 72.67579999461304
     },
     "raw_fp32": "LETTER",
     "raw_int8": "LETTER",
@@ -40,12 +40,12 @@
       "ablation_fp32cnn_int8bert": "EFFECTED"
     },
     "latency_ms": {
-      "raw_fp32": 16.36119998875074,
-      "raw_int8": 18.942900002002716,
-      "classical": 23.149299988290295,
-      "bert_fp32": 245.18739999621175,
-      "quantized_app": 101.55740000482183,
-      "ablation_fp32cnn_int8bert": 107.56159998709336
+      "raw_fp32": 7.228000002214685,
+      "raw_int8": 5.446800001664087,
+      "classical": 10.21279999986291,
+      "bert_fp32": 117.1980000071926,
+      "quantized_app": 36.76859998086002,
+      "ablation_fp32cnn_int8bert": 45.722900016698986
     },
     "raw_fp32": "REFIECTED",
     "raw_int8": "REFIECTED",
@@ -68,12 +68,12 @@
       "ablation_fp32cnn_int8bert": "REJOICED"
     },
     "latency_ms": {
-      "raw_fp32": 9.277100005419925,
-      "raw_int8": 10.07349998690188,
-      "classical": 15.286299996660091,
-      "bert_fp32": 284.0749000024516,
-      "quantized_app": 106.23799997847527,
-      "ablation_fp32cnn_int8bert": 118.08859999291599
+      "raw_fp32": 5.649700004141778,
+      "raw_int8": 4.297899999073707,
+      "classical": 8.603299997048452,
+      "bert_fp32": 151.51979999791365,
+      "quantized_app": 47.26690000097733,
+      "ablation_fp32cnn_int8bert": 52.9889000026742
     },
     "raw_fp32": "REDKCED",
     "raw_int8": "REDKCED",
@@ -96,12 +96,12 @@
       "ablation_fp32cnn_int8bert": "DAY"
     },
     "latency_ms": {
-      "raw_fp32": 21.314699988579378,
-      "raw_int8": 46.369800009415485,
-      "classical": 36.65829998499248,
-      "bert_fp32": 364.31909998646006,
-      "quantized_app": 324.80700001178775,
-      "ablation_fp32cnn_int8bert": 332.4482000025455
+      "raw_fp32": 4.240299997036345,
+      "raw_int8": 3.0772000027354807,
+      "classical": 9.501599983195774,
+      "bert_fp32": 73.83139999001287,
+      "quantized_app": 30.094799993094057,
+      "ablation_fp32cnn_int8bert": 36.21549998933915
     },
     "raw_fp32": "JUAY",
     "raw_int8": "JUAY",
@@ -124,12 +124,12 @@
       "ablation_fp32cnn_int8bert": "COO"
     },
     "latency_ms": {
-      "raw_fp32": 8.879800006980076,
-      "raw_int8": 11.275199998635799,
-      "classical": 12.919000000692904,
-      "bert_fp32": 304.74110001523513,
-      "quantized_app": 216.0200999933295,
-      "ablation_fp32cnn_int8bert": 144.67890000378247
+      "raw_fp32": 3.712899997481145,
+      "raw_int8": 2.802599992719479,
+      "classical": 5.595900001935661,
+      "bert_fp32": 135.78470000356901,
+      "quantized_app": 38.71620001154952,
+      "ablation_fp32cnn_int8bert": 42.25720000977162
     },
     "raw_fp32": "20O0",
     "raw_int8": "20O0",
@@ -152,12 +152,12 @@
       "ablation_fp32cnn_int8bert": "LEG"
     },
     "latency_ms": {
-      "raw_fp32": 8.984100000816397,
-      "raw_int8": 5.295599999953993,
-      "classical": 19.659600002341904,
-      "bert_fp32": 410.2786000003107,
-      "quantized_app": 159.81049998663366,
-      "ablation_fp32cnn_int8bert": 176.25330000009853
+      "raw_fp32": 3.990400000475347,
+      "raw_int8": 3.044700002647005,
+      "classical": 8.793599990895018,
+      "bert_fp32": 195.05529999150895,
+      "quantized_app": 52.48849999043159,
+      "ablation_fp32cnn_int8bert": 56.26819998724386
     },
     "raw_fp32": "1G76",
     "raw_int8": "1G76",
@@ -180,12 +180,12 @@
       "ablation_fp32cnn_int8bert": "II"
     },
     "latency_ms": {
-      "raw_fp32": 8.14290001289919,
-      "raw_int8": 9.40670000272803,
-      "classical": 22.92040002066642,
-      "bert_fp32": 176.06340000929777,
-      "quantized_app": 80.83390000683721,
-      "ablation_fp32cnn_int8bert": 96.7160000000149
+      "raw_fp32": 3.423699992708862,
+      "raw_int8": 2.5280999980168417,
+      "classical": 9.826599998632446,
+      "bert_fp32": 74.29720000072848,
+      "quantized_app": 32.3247999913292,
+      "ablation_fp32cnn_int8bert": 33.34809999796562
     },
     "raw_fp32": "SI0",
     "raw_int8": "SI0",
@@ -208,12 +208,12 @@
       "ablation_fp32cnn_int8bert": "LVI"
     },
     "latency_ms": {
-      "raw_fp32": 7.029000000329688,
-      "raw_int8": 7.545400003436953,
-      "classical": 18.44009998603724,
-      "bert_fp32": 273.9751999761211,
-      "quantized_app": 120.2843000064604,
-      "ablation_fp32cnn_int8bert": 114.042299988796
+      "raw_fp32": 4.237000001012348,
+      "raw_int8": 2.855200000340119,
+      "classical": 9.982599993236363,
+      "bert_fp32": 133.58449999941513,
+      "quantized_app": 43.606500010355376,
+      "ablation_fp32cnn_int8bert": 49.24589999427553
     },
     "raw_fp32": "LQI7",
     "raw_int8": "LQI7",

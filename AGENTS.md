@@ -2,14 +2,14 @@
 
 ## For graders
 
-Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13. CI runs the tests and `verify.py` on Ubuntu and Windows with both versions without the downloaded assets, and on Ubuntu and Windows with Python 3.13 after `python scripts/download_assets.py`.
+Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13. A fresh virtual environment is recommended: `python -m venv .venv`, then activate it with PowerShell `.venv\Scripts\Activate.ps1`, cmd `.venv\Scripts\activate.bat`, or bash `source .venv/bin/activate`. CI runs the tests and `verify.py` on Ubuntu and Windows with both versions without the downloaded assets, and on Ubuntu and Windows with Python 3.13 after `python scripts/download_assets.py`.
 
 1. Install (CPU build of torch first, then the pinned requirements):
 
        python -m pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu
        python -m pip install -r requirements.txt
 
-2. Check every claim that needs no download (prints PASS/FAIL/SKIP per claim, under a minute):
+2. Check every claim that needs no download (prints PASS/FAIL/SKIP per claim; under a minute without the weights, a few minutes once the weights are downloaded):
 
        python verify.py
        python -m pytest -q

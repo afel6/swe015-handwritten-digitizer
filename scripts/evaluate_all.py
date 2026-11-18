@@ -52,8 +52,8 @@ from scripts.train_vision import BATCH_SIZE, FOLD_TARGET_MAP, make_latency_batch
 
 THREADS = 4
 WARMUP_ITEMS = 10
-LATENCY_WARMUP = 10
-LATENCY_RUNS = 100
+LATENCY_WARMUP = bench_report.LATENCY_WARMUP
+LATENCY_RUNS = bench_report.LATENCY_RUNS
 LATENCY_BATCH_SIZES = (1, 8)
 EXPECTED_TUNING_FILE = DEV_WORKSHEETS_PATH.as_posix()
 REQUIRED_ITEM_KEYS = ("id", "sentence", "target_word", "emnist_split", "emnist_indices")

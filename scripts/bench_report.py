@@ -20,6 +20,8 @@ from models.classical_nlp import (
 )
 
 MAX_INT8_ACC_DROP_PP = 1.5
+LATENCY_WARMUP = 10  # warm-up calls before each latency measurement
+LATENCY_RUNS = 100  # timed calls per latency measurement (Table 1, standalone BERT)
 MIN_BERT_SIZE_REDUCTION = 2.0
 MAX_STRIP_GAP_PP = 5.0
 _BYTES_PER_GB = 1024.0**3
@@ -177,6 +179,20 @@ def _power_text(power: Mapping[str, Any] | None) -> str:
     return f" Timing {source}, power scheme {power.get('power_scheme') or 'unknown'}, power mode {power.get('power_mode') or 'unknown'}."
 
 
+def timing_protocol(result: Mapping[str, Any]) -> str:
+    """How every latency in the report was measured (constants shared with scripts/evaluate_all.py)."""
+    passes = len(result.get("retime", {}).get("passes", []))
+    median = f"; the median of {passes} timing passes (by app-model latency) is reported" if passes else ""
+    return (f"Timing protocol: Table 1 CPU ms and the standalone BERT ms are the mean of {LATENCY_RUNS} timed runs after {LATENCY_WARMUP} warm-up runs; "
+            f"Table 2 ms/word is the end-to-end mean over the {result['ladder_n']} test worksheets{median}.")
+
+
+def refresh_failure_latencies(failures: Sequence[Mapping[str, Any]], rows: Mapping[str, Sequence[Mapping[str, Any]]]) -> list[dict[str, Any]]:
+    """Copy each failure example's per-row latency from the reported per-item predictions."""
+    by_item = {key: {r["item_id"]: r["latency_ms"] for r in recs} for key, recs in rows.items()}
+    return [{**f, "latency_ms": {key: by_item[key][f["id"]] for key in f["latency_ms"]}} for f in failures]
+
+
 def _table(header: Sequence[str], rows: Sequence[Sequence[str]]) -> list[str]:
     return ["| " + " | ".join(header) + " |", "|" + "---|" * len(header), *("| " + " | ".join(r) + " |" for r in rows)]
 
@@ -187,7 +203,7 @@ def render_markdown(result: Mapping[str, Any]) -> str:
     lad_rows = [[v["label"], f"{v['word_acc_pct']:.2f}", f"{v['char_acc_pct']:.2f}", f"{v['size_mb']:.1f}", f"{v['latency_mean_ms']:.1f}"] for v in result["ladder"].values()]
     hw = result["hardware"]
     lines = ["# Benchmark results", "", f"CPU timing only: {hw['cpu_model']}, {hw['torch_threads']} torch threads, {hw['logical_cores']} logical cores, {'unknown' if hw['ram_gb'] is None else hw['ram_gb']} GB RAM; GPU present but unused for timing: {hw['gpu']}.",
-             f"{hw['os']}, Python {hw['python']}, torch {hw['torch']}, transformers {hw['transformers']}.{_power_text(hw.get('power'))}", "",
+             f"{hw['os']}, Python {hw['python']}, torch {hw['torch']}, transformers {hw['transformers']}.{_power_text(hw.get('power'))}", timing_protocol(result), "",
              f"## Table 1 - Vision (EMNIST balanced test, N={result['vision_n']})", "",
              *_table(["Model", "47-class acc %", "36-folded acc %", "Disk MB", "CPU b1 ms", "CPU b8 ms"], vis_rows), "",
              f"## Table 2 - Word ladder (N={result['ladder_n']} worksheets from {Path(str(result.get('worksheets', '?'))).name}, boxed strips)", "",

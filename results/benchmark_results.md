@@ -2,6 +2,7 @@
 
 CPU timing only: AMD Ryzen AI 9 HX 370 w/ Radeon 890M, 4 torch threads, 24 logical cores, 31.1 GB RAM; GPU present but unused for timing: NVIDIA GeForce RTX 5070 Ti Laptop GPU.
 Windows-11-10.0.26300-SP0, Python 3.13.15, torch 2.9.1+cu128, transformers 5.23.0. Timing on AC power, power scheme Turbo, power mode Best performance.
+Timing protocol: Table 1 CPU ms and the standalone BERT ms are the mean of 100 timed runs after 10 warm-up runs; Table 2 ms/word is the end-to-end mean over the 300 test worksheets; the median of 3 timing passes (by app-model latency) is reported.
 
 ## Table 1 - Vision (EMNIST balanced test, N=18800)
 

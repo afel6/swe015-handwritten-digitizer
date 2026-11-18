@@ -10,14 +10,14 @@ INT8-quantized model as the default.
 <!-- grader section: keep identical to AGENTS.md -->
 ## For graders
 
-Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13. CI runs the tests and `verify.py` on Ubuntu and Windows with both versions without the downloaded assets, and on Ubuntu and Windows with Python 3.13 after `python scripts/download_assets.py`.
+Everything below is a plain Python command; run them from the repository root in any shell. Supported Python: 3.12 and 3.13. A fresh virtual environment is recommended: `python -m venv .venv`, then activate it with PowerShell `.venv\Scripts\Activate.ps1`, cmd `.venv\Scripts\activate.bat`, or bash `source .venv/bin/activate`. CI runs the tests and `verify.py` on Ubuntu and Windows with both versions without the downloaded assets, and on Ubuntu and Windows with Python 3.13 after `python scripts/download_assets.py`.
 
 1. Install (CPU build of torch first, then the pinned requirements):
 
        python -m pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu
        python -m pip install -r requirements.txt
 
-2. Check every claim that needs no download (prints PASS/FAIL/SKIP per claim, under a minute):
+2. Check every claim that needs no download (prints PASS/FAIL/SKIP per claim; under a minute without the weights, a few minutes once the weights are downloaded):
 
        python verify.py
        python -m pytest -q
@@ -114,6 +114,7 @@ benchmark and box images -> probabilities in the app,
 
 CPU timing only: AMD Ryzen AI 9 HX 370 w/ Radeon 890M, 4 torch threads, 24 logical cores, 31.1 GB RAM; GPU present but unused for timing: NVIDIA GeForce RTX 5070 Ti Laptop GPU.
 Windows-11-10.0.26300-SP0, Python 3.13.15, torch 2.9.1+cu128, transformers 5.23.0. Timing on AC power, power scheme Turbo, power mode Best performance.
+Timing protocol: Table 1 CPU ms and the standalone BERT ms are the mean of 100 timed runs after 10 warm-up runs; Table 2 ms/word is the end-to-end mean over the 300 test worksheets; the median of 3 timing passes (by app-model latency) is reported.
 
 ### Table 1 - Vision (EMNIST balanced test, N=18800)
 
@@ -138,6 +139,12 @@ Candidate recall (target in the shared pool): FP32 CNN 88.67 %, INT8 CNN 89.00 %
 rows 2–4. Strip-path character accuracy 90.14 % vs raw EMNIST 91.32 % (gap +1.18 pp). All five checks pass
 (`results/benchmark_results.md`). Test OOV rate (target not in the lexicon): 12.7 %
 (`results/corpus_sources.json`).
+
+Noise: with N=300 test worksheets one item is 0.33 pp of word accuracy, so rows 3, 4 and the ablation (88.00 /
+87.67 / 87.33 %) differ by one or two items and are within noise of each other; the gaps to rows 1 and 2 are
+not. Row 2 is the classical correction baseline: SymSpell + n-gram fusion run on the same trained CNN's output,
+because a classical method with no trained reader cannot turn pixels into letters, and sharing the CNN and the
+candidate pool isolates the correction technique as the only thing that changes between rows 2, 3 and 4.
 
 Latencies above were re-timed twice on AC power in Windows "Best performance" mode (three timing passes each,
 median reported; every prediction verified identical to the accuracy run). The first re-timing replaced run 3's
