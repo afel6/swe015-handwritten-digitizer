@@ -15,14 +15,15 @@
     0.05
   ],
   "fusion_weights": {
-    "vis_weight": 1.0,
-    "edit_penalty": 2.0,
-    "lm_weight": 1.0
+    "vis_weight": 0.85,
+    "edit_penalty": 0.05,
+    "lm_weight": 0.1
   },
+  "fusion_objective_dev": -0.49440222179604354,
   "lexicon_size": 22000,
   "vocab_size": 28000,
   "test_oov_rate": 0.12666666666666668,
-  "dev_word_acc_tuned": 0.92,
+  "dev_word_acc_tuned": 0.88,
   "model_size_mb": 18.99095630645752,
   "corpus_word_counts": {
     "train": 846207,

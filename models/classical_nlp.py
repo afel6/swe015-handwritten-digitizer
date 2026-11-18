@@ -18,17 +18,19 @@ import torch
 
 from data._io_errors import map_os_error as _map_os_error
 from data.preprocess import CANONICAL_36_CHARS
+from models.cloze import MASK_TOKEN, normalize_masked_sentence
+from models.fusion_objective import mean_target_log_softmax, search, simplex_points
 
 CONFUSION_MAP: dict[str, tuple[str, ...]] = {ch: tuple(o for o in g if o != ch) for g in ("0O", "1IL", "2Z", "4A", "5S", "6G", "8B", "9Q") for ch in g}
 DEFAULT_SMOOTHING_K, DEFAULT_WEIGHTS_PATH = 0.05, Path("weights/ngram_lm.pkl")
-START_TOKEN, END_TOKEN, UNK_TOKEN, MASK_TOKEN = "<s>", "</s>", "<UNK>", "[MASK]"
+START_TOKEN, END_TOKEN, UNK_TOKEN = "<s>", "</s>", "<UNK>"
 _START_ID, _NUM_CHARS, _BYTES_PER_MB = -1, len(CANONICAL_36_CHARS), 1024.0 * 1024.0
 _CHAR_TO_IDX = {ch: idx for idx, ch in enumerate(CANONICAL_36_CHARS)}
-_TOKEN_RE, _UNDERSCORE_MASK_RE, _CANONICAL_LEX_RE = re.compile(r"[A-Z0-9]+"), re.compile(r"_{3,}"), re.compile(r"^(?:[A-Z]{2,}|A|I)$")
-_ANY_CASE_MASK_RE = re.compile(re.escape(MASK_TOKEN), re.IGNORECASE)
-MAX_SENTENCE_CHARS = 500
+_TOKEN_RE = re.compile(r"[A-Z0-9]+")
+_CANONICAL_LEX_RE = re.compile(r"^(?:[A-Z]{2,}|A|I)$")
+CANDIDATE_POOL_SIZE = 20  # shared by n-gram and BERT ranking; dev recall equals that of a 60-word pool
 _MAX_SYMSPELL_ED, _SYMSPELL_PREFIX_LEN, _MAX_LATTICE_BOXES, _MAX_BEAM_SEEDS = 2, 10, 6, 64
-_DEFAULT_MAX_CANDIDATES, _CANDIDATE_POOL_MIN, _GRID_STEPS = 20, 60, 20
+_DEFAULT_MAX_CANDIDATES, _GRID_STEPS = 20, 20
 _PROB_EPS, _CONFUSION_PENALTY, _INDEL_VIS_PENALTY = 1e-12, 1.5, 4.0
 _NUMERIC_CONF_THRESHOLD, _NUMERIC_MAX_LEX_WED = 0.70, 1.5
 _SUB_CONFUSION_COST, _SUB_OTHER_COST, _INDEL_COST, _MIN_L0_SMOOTH, _LAMBDA_SUM_TOL = 0.5, 1.0, 1.5, 0.005, 1e-5
@@ -53,14 +55,7 @@ def normalize_word(word: str) -> str:
 
 def extract_cloze_context(sentence: str) -> tuple[list[str], list[str]]:
     """Normalize '___' and any-case '[mask]' blanks to [MASK], require exactly one, and tokenize both sides."""
-    if not isinstance(sentence, str):
-        raise TypeError("sentence must be a string.")
-    if len(sentence) > MAX_SENTENCE_CHARS:
-        raise ValueError(f"sentence must be at most {MAX_SENTENCE_CHARS} characters.")
-    normalized = _ANY_CASE_MASK_RE.sub(MASK_TOKEN, _UNDERSCORE_MASK_RE.sub(MASK_TOKEN, sentence))
-    parts = normalized.split(MASK_TOKEN)
-    if len(parts) != 2:
-        raise ValueError("sentence must contain exactly one [MASK] (or '___') blank.")
+    parts = normalize_masked_sentence(sentence).split(MASK_TOKEN)
     return tokenize(parts[0]), tokenize(parts[1])
 
 
@@ -160,6 +155,7 @@ class ClassicalNLPCorrector:
         self.total_tokens, self.smoothing_k, self._unk_id, self._end_id, self._trained, self._model_path = 0, DEFAULT_SMOOTHING_K, 0, 1, False, None
         self.lambdas, self.bigram_lambdas, self.unigram_lambdas = DEFAULT_LAMBDAS, DEFAULT_BIGRAM_LAMBDAS, DEFAULT_UNIGRAM_LAMBDAS
         self.fusion_weights = dict(DEFAULT_FUSION_WEIGHTS)
+        self.fusion_objective: float | None = None
 
     def _require_trained(self) -> None:
         if not self._trained: raise RuntimeError("ClassicalNLPCorrector must be trained or loaded before use.")
@@ -339,39 +335,52 @@ class ClassicalNLPCorrector:
             items.append({"word": raw_word, "score": float(vw * raw_lp), "vis_log_prob": raw_lp, "edit_distance": 0, "weighted_edit_distance": 0.0, "in_lexicon": raw_word in self.lexicon, "is_numeric": raw_word.isdigit()})
         return self._rank_candidates(items, raw_word, numeric_preserved, max_candidates), {"raw_word": raw_word, "mean_top1_conf": mean_conf, "numeric_preserved": numeric_preserved}
 
+    def _fusion_rows(self, sentence: str, cands: Sequence[Mapping[str, Any]]) -> list[tuple[str, float, float, float]]:
+        left, right = extract_cloze_context(sentence)
+        return [(str(c["word"]), float(c["vis_log_prob"]), float(c["weighted_edit_distance"]), self.score_cloze_context(str(c["word"]), left, right)) for c in cands]
+
     def tune_fusion_weights(self, dev_items: Sequence[Mapping[str, Any]], probs_list: Sequence[np.ndarray | torch.Tensor]) -> dict[str, float]:
-        """Grid-search visual/edit/LM fusion weights maximizing Dev word accuracy."""
+        """Grid-search vis/edit/LM fusion weights on dev with the continuous objective of models.fusion_objective.
+
+        Objective: mean log-softmax of the target's fused score over the CANDIDATE_POOL_SIZE pool, over dev
+        items whose target is in the pool and that the numeric guard does not decide. Weights lie on a simplex (sum 1) so the score scale cannot be inflated; ties go to the smallest weights.
+        """
         self._require_trained()
         if isinstance(dev_items, (str, bytes)) or isinstance(probs_list, (str, bytes)) or not dev_items or len(dev_items) != len(probs_list):
             raise ValueError("dev_items and probs_list must be non-empty sequences of matching length.")
         cached = []
-        for item, probs in zip(dev_items, probs_list):
-            if not isinstance(item, Mapping) or "sentence" not in item or "target_word" not in item: raise ValueError("Each dev_item must be a mapping with 'sentence' and 'target_word'.")
-            left, right = extract_cloze_context(item["sentence"])
-            cands, meta = self.generate_candidates(probs, max_candidates=_CANDIDATE_POOL_MIN)
-            rows = [(c["word"], c["vis_log_prob"], c["weighted_edit_distance"], self.score_cloze_context(c["word"], left, right)) for c in cands]
-            cached.append((normalize_word(item["target_word"]), bool(meta["numeric_preserved"]), meta["raw_word"], rows))
-        best_acc, best_dist, best_w = -1, math.inf, dict(DEFAULT_FUSION_WEIGHTS)
-        for vw in (0.5, 1.0, 1.5, 2.0):
-            for ep in (0.5, 1.0, 2.0, 3.0, 4.0):
-                for lw in (0.25, 0.5, 1.0, 1.5, 2.0):
-                    hits = sum(1 for tgt, np_f, rw, rows in cached if (rw if np_f else max(rows, key=lambda r: (vw * r[1] - ep * r[2] + lw * r[3], -r[2], r[1]))[0]) == tgt)
-                    dist = abs(vw - 1.0) + abs(ep - 2.0) + abs(lw - 1.0)
-                    if hits > best_acc or (hits == best_acc and dist < best_dist): best_acc, best_dist, best_w = hits, dist, {"vis_weight": vw, "edit_penalty": ep, "lm_weight": lw}
-        self.fusion_weights = best_w
+        for item, probs in zip(dev_items, probs_list, strict=True):
+            if not isinstance(item, Mapping) or "sentence" not in item or "target_word" not in item:
+                raise ValueError("Each dev_item must be a mapping with 'sentence' and 'target_word'.")
+            cands, meta = self.generate_candidates(probs, max_candidates=CANDIDATE_POOL_SIZE)
+            rows = self._fusion_rows(str(item["sentence"]), cands)
+            words = [r[0] for r in rows]
+            target = normalize_word(str(item["target_word"]))
+            if not meta["numeric_preserved"] and target in words:
+                cached.append((np.asarray([r[1:] for r in rows], dtype=np.float64), words.index(target)))
+        simplex = simplex_points(("vis_weight", "edit_penalty", "lm_weight"))
+        best, value = search(simplex, lambda w: mean_target_log_softmax([(f @ np.array([w["vis_weight"], -w["edit_penalty"], w["lm_weight"]]), i) for f, i in cached]))
+        self.fusion_weights = best
+        self.fusion_objective = value
         return dict(self.fusion_weights)
+
+    def rank_pool(self, sentence: str, cands: Sequence[Mapping[str, Any]], meta: Mapping[str, Any], max_candidates: int = _DEFAULT_MAX_CANDIDATES) -> dict[str, Any]:
+        """Rank a given candidate pool (from generate_candidates) with vis/edit/n-gram fusion and the numeric guard."""
+        self._require_trained()
+        vw, ep, lw = self.fusion_weights["vis_weight"], self.fusion_weights["edit_penalty"], self.fusion_weights["lm_weight"]
+        scored = [{**c, "lm_log_prob": lm, "score": float(vw * vis - ep * wed + lw * lm)} for c, (_, vis, wed, lm) in zip(cands, self._fusion_rows(sentence, cands), strict=True)]
+        raw_word, num_pres = str(meta["raw_word"]), bool(meta["numeric_preserved"])
+        top = self._rank_candidates(scored, raw_word, num_pres, max_candidates)
+        return {"predicted_word": top[0]["word"], "raw_word": raw_word, "numeric_preserved": num_pres, "top_candidates": top}
 
     def predict(self, sentence: str, probs_36: np.ndarray | torch.Tensor, max_candidates: int = _DEFAULT_MAX_CANDIDATES) -> dict[str, Any]:
         """Predict masked word using candidate lattice, SymSpell, N-gram LM, and numeric guard."""
         self._require_trained()
-        if isinstance(max_candidates, bool) or not isinstance(max_candidates, int) or max_candidates < 1: raise ValueError("max_candidates must be an integer >= 1.")
-        left, right = extract_cloze_context(sentence)
-        cands, meta = self.generate_candidates(probs_36, max_candidates=max(max_candidates, _CANDIDATE_POOL_MIN))
-        vw, ep, lw = self.fusion_weights["vis_weight"], self.fusion_weights["edit_penalty"], self.fusion_weights["lm_weight"]
-        scored = [{**c, "lm_log_prob": (lp := self.score_cloze_context(c["word"], left, right)), "score": float(vw * c["vis_log_prob"] - ep * c["weighted_edit_distance"] + lw * lp)} for c in cands]
-        raw_word, num_pres = meta["raw_word"], bool(meta["numeric_preserved"])
-        top = self._rank_candidates(scored, raw_word, num_pres, max_candidates)
-        return {"predicted_word": top[0]["word"], "raw_word": raw_word, "numeric_preserved": num_pres, "top_candidates": top}
+        if isinstance(max_candidates, bool) or not isinstance(max_candidates, int) or max_candidates < 1:
+            raise ValueError("max_candidates must be an integer >= 1.")
+        extract_cloze_context(sentence)
+        cands, meta = self.generate_candidates(probs_36, max_candidates=max(max_candidates, CANDIDATE_POOL_SIZE))
+        return self.rank_pool(sentence, cands, meta, max_candidates)
 
     def save(self, path: str | os.PathLike[str] = DEFAULT_WEIGHTS_PATH) -> Path:
         """Persist trained model state to disk with explicit OS error mapping."""

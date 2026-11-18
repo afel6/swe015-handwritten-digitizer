@@ -11,13 +11,11 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import torch
 
 if str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
 from data._io_errors import describe_os_error
-from data.emnist_data import extract_oriented_tensors
 from data.prepare_data import (
     EMNIST_ROOT,
     EMNIST_SPLITS_PATH,
@@ -28,7 +26,7 @@ from data.prepare_data import (
     read_data,
     write_data,
 )
-from data.preprocess import fold_47_to_36_probs
+from data.word_pipeline import item_to_box_probs
 from models.char_models import load_char_cnn_fp32
 from models.classical_nlp import (
     DEFAULT_SMOOTHING_K,
@@ -64,7 +62,10 @@ def compute_dev_cnn_probs(
     dev_items: Sequence[Mapping[str, Any]], cnn_weights: Path = _CNN_WEIGHTS,
     emnist_root: Path = EMNIST_ROOT, splits_path: Path = EMNIST_SPLITS_PATH,
 ) -> list[np.ndarray]:
-    """Run the FP32 CNN on each dev item's real EMNIST validation glyphs; return folded (L, 36) probabilities."""
+    """FP32 CNN probabilities for each dev item through the shared strip path (data.word_pipeline.item_to_box_probs).
+
+    Only EMNIST validation glyphs (never seen by the CNN in training) are allowed.
+    """
     model = load_char_cnn_fp32(cnn_weights, device="cpu")
     val_indices = set(load_emnist_splits(splits_path)["val_indices"])
     dataset = load_emnist_dataset(Path(emnist_root), train=True)
@@ -75,10 +76,9 @@ def compute_dev_cnn_probs(
             raise ValueError(f"Dev item {item.get('id')} must use EMNIST val indices only.")
         if len(indices) != len(normalize_word(str(item["target_word"]))):
             raise ValueError(f"Dev item {item.get('id')} has {len(indices)} glyphs for target {item['target_word']!r}.")
-        glyphs, _ = extract_oriented_tensors(dataset, np.asarray(indices, dtype=np.int64))
-        with torch.inference_mode():
-            probs_47 = torch.softmax(model(glyphs), dim=1)
-        out.append(np.asarray(fold_47_to_36_probs(probs_47).cpu().numpy(), dtype=np.float64))
+        if min(indices) < 0 or max(indices) >= len(dataset.data):
+            raise ValueError(f"Dev item {item.get('id')} has an EMNIST index outside the dataset bounds ({len(dataset.data)} images).")
+        out.append(item_to_box_probs(item, dataset, model))
     return out
 
 
@@ -115,7 +115,7 @@ def train_ngram_pipeline(
     metrics: dict[str, Any] = {
         "ppl_unigram": ppls[0], "ppl_bigram": ppls[1], "ppl_trigram": ppls[2],
         "lambdas": [float(x) for x in lambdas], "bigram_lambdas": [float(x) for x in corrector.bigram_lambdas],
-        "fusion_weights": {str(k): float(v) for k, v in fusion.items()},
+        "fusion_weights": {str(k): float(v) for k, v in fusion.items()}, "fusion_objective_dev": corrector.fusion_objective,
         "lexicon_size": len(corrector.lexicon), "vocab_size": len(corrector.vocab),
         "test_oov_rate": sum(1 for it in test_items if normalize_word(str(it["target_word"])) not in corrector.lexicon) / len(test_items),
         "dev_word_acc_tuned": _dev_word_accuracy(corrector, dev_items, dev_probs),

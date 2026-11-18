@@ -1,0 +1,210 @@
+[
+  {
+    "id": "test_251",
+    "sentence": "Several Roman states took pieces of the [MASK] empire.",
+    "target": "REDUCED",
+    "outputs": {
+      "raw_fp32": "REDKCED",
+      "raw_int8": "REDKCED",
+      "classical": "REDUCE",
+      "bert_fp32": "REJOICED",
+      "quantized_app": "REJOICED",
+      "ablation_fp32cnn_int8bert": "REJOICED"
+    },
+    "latency_ms": {
+      "raw_fp32": 8.593700011260808,
+      "raw_int8": 5.660999988322146,
+      "classical": 12.492600013501942,
+      "bert_fp32": 248.17730001814198,
+      "quantized_app": 101.75579998758622,
+      "ablation_fp32cnn_int8bert": 112.4930000223685
+    },
+    "raw_int8": "REDKCED",
+    "target_in_pool_fp32": true,
+    "target_in_pool_int8": true,
+    "numeric_preserved_int8": false,
+    "why": "'REDUCED' was in the candidate pool, but the fused visual + BERT + edit score ranked 'REJOICED' higher"
+  },
+  {
+    "id": "test_001",
+    "sentence": "Around [MASK] people are struck by lightning each year.",
+    "target": "2000",
+    "outputs": {
+      "raw_fp32": "20O0",
+      "raw_int8": "20O0",
+      "classical": "TOO",
+      "bert_fp32": "LOO",
+      "quantized_app": "COO",
+      "ablation_fp32cnn_int8bert": "COO"
+    },
+    "latency_ms": {
+      "raw_fp32": 5.96709999081213,
+      "raw_int8": 3.9373000035993755,
+      "classical": 8.622599998489022,
+      "bert_fp32": 221.8371000053594,
+      "quantized_app": 80.16570001200307,
+      "ablation_fp32cnn_int8bert": 72.3193000012543
+    },
+    "raw_int8": "20O0",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read '20O0'; '2000' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  },
+  {
+    "id": "test_002",
+    "sentence": "Alexander Graham Bell was the first person to patent the telephone, in [MASK].",
+    "target": "1876",
+    "outputs": {
+      "raw_fp32": "1G76",
+      "raw_int8": "1G76",
+      "classical": "IGH",
+      "bert_fp32": "LOG",
+      "quantized_app": "LEG",
+      "ablation_fp32cnn_int8bert": "LEG"
+    },
+    "latency_ms": {
+      "raw_fp32": 5.432000005384907,
+      "raw_int8": 4.561599998851307,
+      "classical": 14.402100001461804,
+      "bert_fp32": 315.9295000077691,
+      "quantized_app": 106.50429999805056,
+      "ablation_fp32cnn_int8bert": 106.27000000386033
+    },
+    "raw_int8": "1G76",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read '1G76'; '1876' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  },
+  {
+    "id": "test_003",
+    "sentence": "As of 2017, about [MASK] million people lived in Europe.",
+    "target": "510",
+    "outputs": {
+      "raw_fp32": "SI0",
+      "raw_int8": "SI0",
+      "classical": "IN",
+      "bert_fp32": "II",
+      "quantized_app": "II",
+      "ablation_fp32cnn_int8bert": "II"
+    },
+    "latency_ms": {
+      "raw_fp32": 6.798200003686361,
+      "raw_int8": 6.283000009716488,
+      "classical": 16.27770000777673,
+      "bert_fp32": 118.99069999344647,
+      "quantized_app": 47.670700019807555,
+      "ablation_fp32cnn_int8bert": 62.719099994865246
+    },
+    "raw_int8": "SI0",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read 'SI0'; '510' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  },
+  {
+    "id": "test_005",
+    "sentence": "In [MASK], the Russian Revolution led to Russia leaving the war in March 1918.",
+    "target": "1917",
+    "outputs": {
+      "raw_fp32": "LQI7",
+      "raw_int8": "LQI7",
+      "classical": "LIT",
+      "bert_fp32": "LVI",
+      "quantized_app": "LVI",
+      "ablation_fp32cnn_int8bert": "LVI"
+    },
+    "latency_ms": {
+      "raw_fp32": 5.612199995084666,
+      "raw_int8": 4.131099994992837,
+      "classical": 13.69729998987168,
+      "bert_fp32": 205.6099999899743,
+      "quantized_app": 68.98419999924954,
+      "ablation_fp32cnn_int8bert": 81.53749999473803
+    },
+    "raw_int8": "LQI7",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read 'LQI7'; '1917' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  },
+  {
+    "id": "test_006",
+    "sentence": "The longest freshwater lake is Lake Tanganyika, with a length of about [MASK] km.",
+    "target": "660",
+    "outputs": {
+      "raw_fp32": "66O",
+      "raw_int8": "66O",
+      "classical": "TO",
+      "bert_fp32": "NO",
+      "quantized_app": "XO",
+      "ablation_fp32cnn_int8bert": "XO"
+    },
+    "latency_ms": {
+      "raw_fp32": 4.415299990796484,
+      "raw_int8": 3.2485999981872737,
+      "classical": 14.229999971576035,
+      "bert_fp32": 261.61799997498747,
+      "quantized_app": 78.99209999595769,
+      "ablation_fp32cnn_int8bert": 101.54339998553041
+    },
+    "raw_int8": "66O",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read '66O'; '660' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  },
+  {
+    "id": "test_007",
+    "sentence": "There are over [MASK] pyramids in Egypt.",
+    "target": "100",
+    "outputs": {
+      "raw_fp32": "1O0",
+      "raw_int8": "1O0",
+      "classical": "LOO",
+      "bert_fp32": "LOO",
+      "quantized_app": "LOO",
+      "ablation_fp32cnn_int8bert": "LOO"
+    },
+    "latency_ms": {
+      "raw_fp32": 4.553199993097223,
+      "raw_int8": 3.079800007981248,
+      "classical": 14.409499985049479,
+      "bert_fp32": 160.61639999679755,
+      "quantized_app": 54.83590000949334,
+      "ablation_fp32cnn_int8bert": 61.303599999519065
+    },
+    "raw_int8": "1O0",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read '1O0'; '100' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  },
+  {
+    "id": "test_008",
+    "sentence": "A centenarian is someone who is [MASK] years old or more.",
+    "target": "100",
+    "outputs": {
+      "raw_fp32": "I00",
+      "raw_int8": "I00",
+      "classical": "LOO",
+      "bert_fp32": "LOO",
+      "quantized_app": "LOO",
+      "ablation_fp32cnn_int8bert": "LOO"
+    },
+    "latency_ms": {
+      "raw_fp32": 6.967399996938184,
+      "raw_int8": 5.062399999587797,
+      "classical": 22.40110001002904,
+      "bert_fp32": 245.01100000634324,
+      "quantized_app": 78.2271999923978,
+      "ablation_fp32cnn_int8bert": 85.79520000785124
+    },
+    "raw_int8": "I00",
+    "target_in_pool_fp32": false,
+    "target_in_pool_int8": false,
+    "numeric_preserved_int8": false,
+    "why": "CNN read 'I00'; '100' is outside the SymSpell edit-distance-2 candidate pool, so no re-ranker can recover it"
+  }
+]

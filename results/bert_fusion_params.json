@@ -1,0 +1,43 @@
+{
+  "objective": "mean log-softmax of the target's fused score over the candidate pool (dev items with target in pool, numeric guard not engaged)",
+  "tie_break": "candidates visited in ascending lexicographic order; only a strictly better finite objective replaces the best",
+  "scale": "fused weights sum to 1 (simplex), because log-softmax otherwise always prefers larger weights",
+  "search_space": {
+    "alpha": [
+      0.0,
+      0.5,
+      1.0
+    ],
+    "simplex": [
+      "lambda_vis",
+      "lambda_bert",
+      "gamma"
+    ],
+    "simplex_step": 0.05,
+    "simplex_min": 0.05
+  },
+  "pool_size": 20,
+  "params_on_grid_edge": [
+    "alpha",
+    "gamma"
+  ],
+  "dev_items": 50,
+  "dev_target_in_pool": 44,
+  "params": {
+    "alpha": 0.0,
+    "lambda_vis": 0.65,
+    "lambda_bert": 0.3,
+    "gamma": 0.05
+  },
+  "objective_value_fp32": -0.10058914791631933,
+  "dev_word_acc_tuned_fp32": 0.88,
+  "int8_alone_params": {
+    "alpha": 0.0,
+    "lambda_vis": 0.6,
+    "lambda_bert": 0.35,
+    "gamma": 0.05
+  },
+  "objective_value_int8_alone": -0.18160303277957643,
+  "int8_alone_would_differ": true,
+  "objective_value_int8_with_fp32_params": -0.18602102634581782
+}
