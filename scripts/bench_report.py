@@ -69,7 +69,7 @@ _POWER_MODES = {"ded574b5-45a0-4f42-8737-46345c09c238": "Best performance", "000
 
 
 class _PowerStatus(ctypes.Structure):
-    _fields_ = [("ACLineStatus", ctypes.c_ubyte), ("BatteryFlag", ctypes.c_ubyte), ("BatteryLifePercent", ctypes.c_ubyte),
+    _fields_ = [("ACLineStatus", ctypes.c_ubyte), ("BatteryFlag", ctypes.c_ubyte), ("BatteryLifePercent", ctypes.c_ubyte),  # noqa: RUF012 - ctypes layout declaration
                 ("SystemStatusFlag", ctypes.c_ubyte), ("BatteryLifeTime", ctypes.c_ulong), ("BatteryFullLifeTime", ctypes.c_ulong)]
 
 
