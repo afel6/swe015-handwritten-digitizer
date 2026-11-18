@@ -22,7 +22,6 @@
   "fusion_objective_dev": -0.49440222179604354,
   "lexicon_size": 22000,
   "vocab_size": 28000,
-  "test_oov_rate": 0.12666666666666668,
   "dev_word_acc_tuned": 0.88,
   "model_size_mb": 18.99095630645752,
   "corpus_word_counts": {

@@ -29,6 +29,7 @@ _CHAR_TO_IDX = {ch: idx for idx, ch in enumerate(CANONICAL_36_CHARS)}
 _TOKEN_RE = re.compile(r"[A-Z0-9]+")
 _CANONICAL_LEX_RE = re.compile(r"^(?:[A-Z]{2,}|A|I)$")
 CANDIDATE_POOL_SIZE = 20  # shared by n-gram and BERT ranking; dev recall equals that of a 60-word pool
+POOL_EDIT_PENALTY = 2.0  # fixed pool-cut rule: rank by vis_log_prob - POOL_EDIT_PENALTY * weighted edit distance (never the tuned fusion weights)
 _MAX_SYMSPELL_ED, _SYMSPELL_PREFIX_LEN, _MAX_LATTICE_BOXES, _MAX_BEAM_SEEDS = 2, 10, 6, 64
 _DEFAULT_MAX_CANDIDATES, _GRID_STEPS = 20, 20
 _PROB_EPS, _CONFUSION_PENALTY, _INDEL_VIS_PENALTY = 1e-12, 1.5, 4.0
@@ -315,6 +316,12 @@ class ClassicalNLPCorrector:
         ordered.sort(key=lambda c: (1 if num_pres and c["word"] == raw_word else 0, c["score"], -c["weighted_edit_distance"], c["vis_log_prob"]), reverse=True)
         return ordered[:limit]
 
+    @staticmethod
+    def _cut_pool(items: list[dict[str, Any]], raw_word: str, num_pres: bool, limit: int) -> list[dict[str, Any]]:
+        """Fixed, weight-independent pool cut (guarded raw digits first, then pool_score, edit distance, word)."""
+        ordered = sorted(items, key=lambda c: (not (num_pres and c["word"] == raw_word), -c["pool_score"], c["weighted_edit_distance"], c["word"]))
+        return ordered[:limit]
+
     def generate_candidates(self, probs_36: np.ndarray | torch.Tensor, max_candidates: int = _DEFAULT_MAX_CANDIDATES) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """Build bounded lattice seeds, SymSpell candidates, and numeric-guard metadata."""
         self._require_trained()
@@ -327,13 +334,12 @@ class ClassicalNLPCorrector:
             for cand in self._symspell_lookup(seed):
                 vis_lp = float(sum(log_p[i, _CHAR_TO_IDX[ch]] for i, ch in enumerate(cand))) if len(cand) == length else float(seed_lp - abs(len(cand) - length) * _INDEL_VIS_PENALTY)
                 if cand not in best_vis or vis_lp > best_vis[cand]: best_vis[cand] = vis_lp
-        vw, ep = self.fusion_weights["vis_weight"], self.fusion_weights["edit_penalty"]
-        items = [{"word": w, "score": float(vw * v - ep * weighted_edit_distance(raw_word, w)), "vis_log_prob": float(v), "edit_distance": unweighted_edit_distance(raw_word, w), "weighted_edit_distance": weighted_edit_distance(raw_word, w), "in_lexicon": w in self.lexicon, "is_numeric": w.isdigit()} for w, v in best_vis.items()]
+        items = [{"word": w, "pool_score": float(v - POOL_EDIT_PENALTY * weighted_edit_distance(raw_word, w)), "vis_log_prob": float(v), "edit_distance": unweighted_edit_distance(raw_word, w), "weighted_edit_distance": weighted_edit_distance(raw_word, w), "in_lexicon": w in self.lexicon, "is_numeric": w.isdigit()} for w, v in best_vis.items()]
         numeric_preserved = raw_word.isdigit() and ((mean_conf >= _NUMERIC_CONF_THRESHOLD) or (not any(c["in_lexicon"] and c["weighted_edit_distance"] <= _NUMERIC_MAX_LEX_WED for c in items)))
         if (raw_word.isdigit() and raw_word not in best_vis) or not items:
             raw_lp = float(sum(log_p[i, _CHAR_TO_IDX[ch]] for i, ch in enumerate(raw_word)))
-            items.append({"word": raw_word, "score": float(vw * raw_lp), "vis_log_prob": raw_lp, "edit_distance": 0, "weighted_edit_distance": 0.0, "in_lexicon": raw_word in self.lexicon, "is_numeric": raw_word.isdigit()})
-        return self._rank_candidates(items, raw_word, numeric_preserved, max_candidates), {"raw_word": raw_word, "mean_top1_conf": mean_conf, "numeric_preserved": numeric_preserved}
+            items.append({"word": raw_word, "pool_score": raw_lp, "vis_log_prob": raw_lp, "edit_distance": 0, "weighted_edit_distance": 0.0, "in_lexicon": raw_word in self.lexicon, "is_numeric": raw_word.isdigit()})
+        return self._cut_pool(items, raw_word, numeric_preserved, max_candidates), {"raw_word": raw_word, "mean_top1_conf": mean_conf, "numeric_preserved": numeric_preserved}
 
     def _fusion_rows(self, sentence: str, cands: Sequence[Mapping[str, Any]]) -> list[tuple[str, float, float, float]]:
         left, right = extract_cloze_context(sentence)

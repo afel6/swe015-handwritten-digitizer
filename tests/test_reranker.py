@@ -14,11 +14,8 @@ from torch import nn
 from torch.ao.nn.quantized.dynamic import Linear as DynamicQuantizedLinear
 from transformers import BertConfig, BertForMaskedLM, BertTokenizer
 
-import models.classical_nlp as classical_nlp
-import scripts.evaluate_all as evaluate_all
-import scripts.tune_bert_fusion as tune_bert
 from data.preprocess import CANONICAL_36_CHARS
-from models import bert_reranker
+from models import bert_reranker, classical_nlp
 from models.bert_reranker import (
     BertMLMReranker,
     fused_score,
@@ -26,7 +23,8 @@ from models.bert_reranker import (
     pll_norm,
 )
 from models.fusion_objective import grid_search, mean_target_log_softmax
-from scripts import bench_report
+from scripts import bench_report, evaluate_all
+from scripts import tune_bert_fusion as tune_bert
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEV_PATH = REPO_ROOT / "data" / "worksheets_dev_50.json"
@@ -235,6 +233,14 @@ def test_search_skips_non_finite_objectives() -> None:
         search([{"a": 0.0}], lambda p: math.nan)
 
 
+@pytest.mark.parametrize(("step", "minimum"), [(0.3, 0.3), (0.25, 0.1), (0.1, 0.0)])
+def test_simplex_rejects_steps_that_do_not_tile_or_allow_zero_weights(step: float, minimum: float) -> None:
+    from models.fusion_objective import simplex_points
+
+    with pytest.raises(ValueError):
+        simplex_points(("a", "b"), step=step, minimum=minimum)
+
+
 def test_grid_search_breaks_ties_toward_smallest_weights() -> None:
     best, value = grid_search({"a": (2.0, 1.0), "b": (3.0, 1.0)}, lambda p: 0.0)
     assert best == {"a": 1.0, "b": 1.0} and value == 0.0
@@ -268,16 +274,50 @@ def test_hardware_metadata_has_required_keys() -> None:
     assert hw["timing_device"] == "cpu" and hw["ram_gb"] > 0
 
 
-def _ladder(raw: float, ngram: float, bert: float, abl: float) -> dict[str, Any]:
-    return {k: {"word_acc_pct": v} for k, v in (("raw_fp32", raw), ("classical", ngram), ("bert_fp32", bert), ("ablation_fp32cnn_int8bert", abl))}
+def _ladder(raw: float, ngram: float, bert: float, abl: float, app: float | None = None) -> dict[str, Any]:
+    rows = (("raw_fp32", raw), ("classical", ngram), ("bert_fp32", bert), ("ablation_fp32cnn_int8bert", abl), ("quantized_app", bert if app is None else app))
+    return {k: {"word_acc_pct": v} for k, v in rows}
+
+
+def _results(checks: list[dict[str, Any]]) -> dict[str, str]:
+    return {c["check"]: c["result"] for c in checks}
+
+
+def test_monotonic_check_also_covers_the_app_row() -> None:
+    vision = {"char_cnn_fp32": {"acc_36_pct": 91.0}, "char_cnn_int8": {"acc_36_pct": 91.0}}
+    checks = _results(bench_report.pass_fail_checks(vision, _ladder(60, 80, 85, 85, app=79), {"fp32_mb": 420.0, "int8_mb": 200.0}))
+    assert checks["Raw < N-gram < BERT FP32 (word acc)"] == "PASS"
+    assert checks["Raw < N-gram < quantized app (word acc)"] == "FAIL"
+
+
+@pytest.mark.parametrize(("drop", "ratio", "expected"), [(1.5, 2.0, "PASS"), (1.51, 1.99, "FAIL")])
+def test_threshold_checks_are_inclusive_at_the_boundary(drop: float, ratio: float, expected: str) -> None:
+    vision = {"char_cnn_fp32": {"acc_36_pct": 91.0}, "char_cnn_int8": {"acc_36_pct": 91.0 - drop}}
+    checks = _results(bench_report.pass_fail_checks(vision, _ladder(60, 80, 85.0, 85.0 - drop), {"fp32_mb": 400.0, "int8_mb": 400.0 / ratio}))
+    assert {checks[k] for k in checks if "drop" in k or "reduction" in k} == {expected}
+
+
+def test_numeric_failures_name_the_real_cause() -> None:
+    record = {"id": "t", "target": "2000", "raw_int8": "20O0", "outputs": {"quantized_app": "COO"}, "target_in_pool_int8": False, "numeric_preserved_int8": False}
+    why = bench_report.explain_failure(record)
+    assert "digit" in why and "lexicon" in why and "edit-distance" not in why
+
+
+def test_ram_falls_back_when_the_os_call_fails() -> None:
+    class FailingKernel:
+        @staticmethod
+        def GlobalMemoryStatusEx(_ptr: Any) -> int:
+            return 0
+
+    assert bench_report._windows_total_ram_gb(FailingKernel()) is None
 
 
 def test_pass_fail_checks_report_both_outcomes() -> None:
     vision = {"char_cnn_fp32": {"acc_36_pct": 91.0}, "char_cnn_int8": {"acc_36_pct": 90.0}}
     ok = bench_report.pass_fail_checks(vision, _ladder(60, 80, 85, 84), {"fp32_mb": 420.0, "int8_mb": 200.0})
-    assert [c["result"] for c in ok] == ["PASS"] * 4
+    assert [c["result"] for c in ok] == ["PASS"] * 5
     bad = bench_report.pass_fail_checks({"char_cnn_fp32": {"acc_36_pct": 91.0}, "char_cnn_int8": {"acc_36_pct": 89.0}}, _ladder(60, 85, 85, 83), {"fp32_mb": 420.0, "int8_mb": 300.0})
-    assert [c["result"] for c in bad] == ["FAIL"] * 4
+    assert [c["result"] for c in bad] == ["FAIL"] * 5
 
 
 def _record(rid: str, target: str, app: str, in_pool: bool, numeric: bool = False) -> dict[str, Any]:
@@ -288,7 +328,7 @@ def test_select_failures_prefers_reranker_errors_and_explains_them() -> None:
     records = [_record("a", "SUN", "SUN", True), _record("b", "MOON", "NOON", True), _record("c", "STAR", "5TAB", False), _record("d", "1985", "1965", True, numeric=True)]
     picked = bench_report.select_failures(records, minimum=3)
     assert [p["id"] for p in picked] == ["b", "d", "c"]
-    assert "outside the SymSpell" in picked[2]["why"] and "numeric guard" in picked[1]["why"] and "ranked 'NOON' higher" in picked[0]["why"]
+    assert "not among the 20 pool candidates" in picked[2]["why"] and "numeric guard" in picked[1]["why"] and "ranked 'NOON' higher" in picked[0]["why"]
 
 
 def test_word_scores_and_row_summary() -> None:

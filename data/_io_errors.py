@@ -32,6 +32,14 @@ def map_os_error(err: OSError, path: str | os.PathLike[str], action: str) -> OSE
     return cls(code, template.format(action=action, label=label), label)
 
 
+def describe_cli_os_error(exc: OSError) -> str:
+    """One CLI line for an OSError: filesystem errors name the path; errno-less ones (e.g. a model download) are joined onto one line."""
+    if exc.errno is None and not exc.filename:
+        detail = " ".join(str(exc).split()) or "unknown error"
+        return f"Model download or cache error (check the internet connection or the Hugging Face cache): {detail}"
+    return f"File system error: {describe_os_error(exc)}"
+
+
 def describe_os_error(exc: OSError) -> str:
     """One-line description of an OS error that always names the path when the error carries one."""
     detail = exc.strerror or str(exc) or "I/O failure"

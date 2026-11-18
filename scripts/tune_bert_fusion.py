@@ -22,8 +22,8 @@ if str(_ROOT := Path(__file__).resolve().parent.parent) not in sys.path:
 
 import numpy as np
 
-from data._io_errors import describe_os_error
-from data.prepare_data import write_data
+from data._io_errors import describe_cli_os_error
+from data.prepare_data import DEV_WORKSHEETS_PATH, load_worksheet_items, write_data
 from models.bert_reranker import BertMLMReranker, fused_score
 from models.classical_nlp import (
     CANDIDATE_POOL_SIZE,
@@ -75,7 +75,7 @@ def cached_accuracy(cache: Sequence[Mapping[str, Any]], params: Mapping[str, flo
 
 def candidate_params() -> list[dict[str, float]]:
     """alpha on a plain grid x fused weights on the simplex (see models.fusion_objective)."""
-    simplex = simplex_points(FUSED_WEIGHTS, step=SIMPLEX_STEP)
+    simplex = simplex_points(FUSED_WEIGHTS, step=SIMPLEX_STEP, minimum=SIMPLEX_STEP)
     return [{"alpha": float(a), **w} for a in sorted(BERT_ALPHAS) for w in simplex]
 
 
@@ -90,13 +90,9 @@ def tune(cache: Sequence[Mapping[str, Any]]) -> tuple[dict[str, float], float]:
 
 
 def run(out_path: Path = PARAMS_PATH, cnn_weights: Path = Path("weights/char_cnn_fp32.pt")) -> dict[str, Any]:
-    from scripts.train_ngram import (
-        _DEV_PATH,
-        _load_worksheet_items,
-        compute_dev_cnn_probs,
-    )
+    from scripts.train_ngram import compute_dev_cnn_probs
 
-    dev_items = _load_worksheet_items(_DEV_PATH)
+    dev_items = load_worksheet_items(DEV_WORKSHEETS_PATH)
     probs = compute_dev_cnn_probs(dev_items, cnn_weights=cnn_weights)
     corrector = ClassicalNLPCorrector.load()
     fp32 = BertMLMReranker()
@@ -105,6 +101,7 @@ def run(out_path: Path = PARAMS_PATH, cnn_weights: Path = Path("weights/char_cnn
     params, value = tuned["fp32"]
     in_pool = sum(rec["target"] in [r[0] for r in rec["rows"]] for rec in caches["fp32"])
     result = {
+        "tuned_on": DEV_WORKSHEETS_PATH.as_posix(),
         "objective": "mean log-softmax of the target's fused score over the candidate pool (dev items with target in pool, numeric guard not engaged)",
         "tie_break": "candidates visited in ascending lexicographic order; only a strictly better finite objective replaces the best",
         "scale": "fused weights sum to 1 (simplex), because log-softmax otherwise always prefers larger weights",
@@ -126,7 +123,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         result = run(args.out)
     except OSError as exc:
-        sys.stderr.write(f"File system error: {describe_os_error(exc)}\n")
+        sys.stderr.write(describe_cli_os_error(exc) + "\n")
         return 1
     except (ValueError, TypeError, RuntimeError, KeyError, IndexError) as exc:
         sys.stderr.write(f"Error: {' '.join(str(exc).splitlines()).strip() or 'tuning failed.'}\n")

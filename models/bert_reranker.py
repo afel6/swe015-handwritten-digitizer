@@ -82,8 +82,8 @@ class BertMLMReranker:
         encode = self.tokenizer
         return list(encode(left, add_special_tokens=False)["input_ids"]), list(encode(right, add_special_tokens=False)["input_ids"])
 
-    def _forward(self, sequences: Sequence[Sequence[int]]) -> torch.Tensor:
-        """One (batched) forward pass; returns log-softmax over the vocabulary, shape (B, T, V)."""
+    def _forward(self, sequences: Sequence[Sequence[int]], positions: Sequence[int]) -> torch.Tensor:
+        """One (batched) forward pass; log-softmax over the vocabulary at each row's masked position, shape (B, V)."""
         width = max(len(s) for s in sequences)
         limit = int(getattr(self.model.config, "max_position_embeddings", width))
         if width > limit:
@@ -97,7 +97,8 @@ class BertMLMReranker:
             mask[row, : len(seq)] = 1
         with torch.no_grad():
             logits = self.model(input_ids=ids.to(self.device), attention_mask=mask.to(self.device)).logits
-        return torch.log_softmax(logits.float(), dim=-1).cpu()
+            picked = logits[torch.arange(len(sequences)), torch.tensor(list(positions), dtype=torch.long)]
+        return torch.log_softmax(picked.float(), dim=-1).cpu()
 
     def span_log_probs(self, sentence: str, words: Sequence[str]) -> dict[str, list[float]]:
         """Per-piece log P(s_j | ...) for each word: one pass for all 1-piece words, one batched pass for the rest."""
@@ -107,14 +108,14 @@ class BertMLMReranker:
         out: dict[str, list[float]] = {}
         singles = [w for w, p in pieces.items() if len(p) == 1]
         if singles:
-            log_probs = self._forward([[cls_id, *prefix, mask_id, *suffix, sep_id]])[0, len(prefix) + 1]
+            log_probs = self._forward([[cls_id, *prefix, mask_id, *suffix, sep_id]], [len(prefix) + 1])[0]
             out.update({w: [float(log_probs[pieces[w][0]])] for w in singles})
         jobs = [(w, j) for w, p in pieces.items() if len(p) > 1 for j in range(len(p))]
         if jobs:
             seqs = [[cls_id, *prefix, *pieces[w][:j], mask_id, *pieces[w][j + 1 :], *suffix, sep_id] for w, j in jobs]
-            log_probs = self._forward(seqs)
+            log_probs = self._forward(seqs, [len(prefix) + 1 + j for _, j in jobs])
             for row, (w, j) in enumerate(jobs):
-                out.setdefault(w, []).append(float(log_probs[row, len(prefix) + 1 + j, pieces[w][j]]))
+                out.setdefault(w, []).append(float(log_probs[row, pieces[w][j]]))
         return out
 
     def rerank_candidates(self, sentence: str, candidates: Sequence[Mapping[str, Any]], *, params: Mapping[str, float] = DEFAULT_FUSION_PARAMS,

@@ -6,6 +6,7 @@ import errno
 import hashlib
 import json
 import math
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -17,7 +18,6 @@ import pytest
 import torch
 
 import data.prepare_data as prep
-import scripts.train_ngram as train_ngram
 from data.prepare_data import build_lexicon, load_emnist_splits
 from data.preprocess import CANONICAL_36_CHARS
 from models.classical_nlp import (
@@ -29,6 +29,7 @@ from models.classical_nlp import (
     unweighted_edit_distance,
     weighted_edit_distance,
 )
+from scripts import train_ngram
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SPLITS_PATH = REPO_ROOT / "data" / "emnist_splits.json"
@@ -235,8 +236,25 @@ def test_tune_fusion_weights_uses_given_items(tiny_model: ClassicalNLPCorrector)
     items = [{"sentence": "Students learn [MASK] at school.", "target_word": "SCIENCE"}, {"sentence": "Animals live in the [MASK].", "target_word": "ZOO"}]
     weights = tiny_model.tune_fusion_weights(items, [_probs_for("SC1ENCE"), _probs_for("Z00", top=0.6)])
     assert set(weights) == {"vis_weight", "edit_penalty", "lm_weight"}
+    assert sum(weights.values()) == pytest.approx(1.0) and min(weights.values()) > 0.0
     with pytest.raises(ValueError):
         tiny_model.tune_fusion_weights(items, [_probs_for("SC1ENCE")])
+
+
+def test_candidate_pool_does_not_depend_on_fusion_weights(tiny_model: ClassicalNLPCorrector) -> None:
+    probs = _probs_for("SC1ENCE", top=0.55, second={2: ("L", 0.40), 4: ("M", 0.40)})
+    pools = []
+    for weights in ({"vis_weight": 0.9, "edit_penalty": 0.05, "lm_weight": 0.05}, {"vis_weight": 0.05, "edit_penalty": 0.9, "lm_weight": 0.05}):
+        tiny_model.fusion_weights = weights
+        pools.append([c["word"] for c in tiny_model.generate_candidates(probs, max_candidates=1)[0]])
+    tiny_model.fusion_weights = dict(classical_nlp_defaults())
+    assert pools[0] == pools[1] and len(pools[0]) == 1  # before the fix the single kept word differed (SILENCE vs SCIENCE)
+
+
+def classical_nlp_defaults() -> dict[str, float]:
+    from models.classical_nlp import DEFAULT_FUSION_WEIGHTS
+
+    return DEFAULT_FUSION_WEIGHTS
 
 
 def test_untrained_model_refuses_use() -> None:
@@ -262,7 +280,7 @@ def test_fusion_tuning_changes_weights_when_defaults_pick_the_wrong_word() -> No
     sentence = "Students learn [MASK] at school."
     assert model.predict(sentence, probs)["predicted_word"] == "SCIENCE"  # the context outweighs the clear SILENCE glyphs
     tuned = model.tune_fusion_weights([{"sentence": sentence, "target_word": "SILENCE"}], [probs])
-    assert tuned != {"vis_weight": 1.0, "edit_penalty": 2.0, "lm_weight": 1.0}
+    assert tuned["lm_weight"] < 0.25  # the defaults give the LM a 0.25 share of the (normalised) weights; tuning must move off it
     assert model.predict(sentence, probs)["predicted_word"] == "SILENCE"
 
 
@@ -363,7 +381,7 @@ def test_save_load_round_trip_gives_identical_predictions(tiny_model: ClassicalN
 
 def test_worksheet_and_metrics_io_report_directories_with_the_path(tmp_path: Path) -> None:
     with pytest.raises(IsADirectoryError) as read_err:
-        train_ngram._load_worksheet_items(tmp_path)
+        prep.load_worksheet_items(tmp_path)
     assert read_err.value.filename == str(tmp_path)
     with pytest.raises(IsADirectoryError) as write_err:
         train_ngram._write_metrics(tmp_path, {"ppl_unigram": 1.0})
@@ -457,6 +475,21 @@ def test_split_constants_match_the_cnn_training_script() -> None:
 
 
 # ---------------------------------------------------------------- frozen data and corpus
+
+
+def _forbid_reading(monkeypatch: pytest.MonkeyPatch, filename: str) -> None:
+    """Fail the test if any code opens a file with this name (read_bytes, read_text or open)."""
+    import builtins
+
+    real_read_bytes, real_read_text, real_open = Path.read_bytes, Path.read_text, builtins.open
+
+    def check(target: Any) -> None:
+        if isinstance(target, (str, os.PathLike)) and Path(target).name == filename:
+            raise AssertionError(f"{filename} must not be read here")
+
+    monkeypatch.setattr(Path, "read_bytes", lambda self: (check(self), real_read_bytes(self))[1])
+    monkeypatch.setattr(Path, "read_text", lambda self, *a, **k: (check(self), real_read_text(self, *a, **k))[1])
+    monkeypatch.setattr(builtins, "open", lambda f, *a, **k: (check(f), real_open(f, *a, **k))[1])
 
 
 def _block_network(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -570,16 +603,17 @@ def test_train_pipeline_writes_metrics_without_touching_frozen_files(tmp_path: P
     frozen = [TEST_PATH, DEV_PATH, SPLITS_PATH, CORPUS_SOURCES, *sorted(SAMPLES_DIR.iterdir())]
     before = {p: _sha256(p) for p in frozen}
     weights, metrics_path = tmp_path / "lm.pkl", tmp_path / "metrics.json"
+    _forbid_reading(monkeypatch, TEST_PATH.name)
     metrics = train_ngram.train_ngram_pipeline(weights_out=weights, metrics_out=metrics_path, cnn_weights=CNN_WEIGHTS)
+    monkeypatch.undo()
     assert {p: _sha256(p) for p in frozen} == before
     assert json.loads(metrics_path.read_text(encoding="utf-8")) == metrics
-    required = {"ppl_unigram", "ppl_bigram", "ppl_trigram", "lambdas", "fusion_weights", "lexicon_size", "vocab_size", "test_oov_rate", "model_size_mb", "corpus_word_counts"}
-    assert required <= set(metrics)
+    required = {"ppl_unigram", "ppl_bigram", "ppl_trigram", "lambdas", "fusion_weights", "lexicon_size", "vocab_size", "model_size_mb", "corpus_word_counts"}
+    assert required <= set(metrics) and "test_oov_rate" not in metrics  # the test set is never read by the training pipeline
     assert metrics["ppl_unigram"] > metrics["ppl_bigram"] > metrics["ppl_trigram"] > 0
     assert len(metrics["lambdas"]) == 4 and abs(sum(metrics["lambdas"]) - 1.0) < 1e-5
     model = ClassicalNLPCorrector.load(weights)
     assert metrics["vocab_size"] == len(model.vocab) and metrics["lexicon_size"] == len(model.lexicon)
-    assert metrics["test_oov_rate"] == json.loads(CORPUS_SOURCES.read_text(encoding="utf-8"))["stats"]["test_oov_rate"]
     assert metrics["model_size_mb"] == pytest.approx(weights.stat().st_size / (1024 * 1024))
 
 
@@ -588,9 +622,9 @@ def test_worksheet_and_corpus_inputs_are_validated(tmp_path: Path) -> None:
     bad_json.write_text("{", encoding="utf-8")
     empty.write_text("[]", encoding="utf-8")
     with pytest.raises(ValueError, match="Invalid JSON"):
-        train_ngram._load_worksheet_items(bad_json)
+        prep.load_worksheet_items(bad_json)
     with pytest.raises(ValueError, match="non-empty list"):
-        train_ngram._load_worksheet_items(empty)
+        prep.load_worksheet_items(empty)
     with pytest.raises(TypeError):
         train_ngram._texts_to_sentences(["ok", 3])  # type: ignore[list-item]
     assert train_ngram._texts_to_sentences(["One two. Three!\nFour"]) == [["ONE", "TWO"], ["THREE"], ["FOUR"]]
@@ -655,7 +689,7 @@ def test_prepare_data_cli_reports_os_error_in_one_line(tmp_path: Path, monkeypat
 
 
 def test_train_ngram_main_prints_summary_and_maps_errors(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path) -> None:
-    fake = {"ppl_unigram": 9.0, "ppl_bigram": 5.0, "ppl_trigram": 4.0, "lexicon_size": 3, "vocab_size": 5, "test_oov_rate": 0.1, "dev_word_acc_tuned": 0.5, "model_size_mb": 1.0}
+    fake = {"ppl_unigram": 9.0, "ppl_bigram": 5.0, "ppl_trigram": 4.0, "lexicon_size": 3, "vocab_size": 5, "dev_word_acc_tuned": 0.5, "model_size_mb": 1.0}
     monkeypatch.setattr(train_ngram, "train_ngram_pipeline", lambda *a, **k: fake)
     assert train_ngram.main([]) == 0
     assert "PPL(1/2/3): 9.00/5.00/4.00" in capsys.readouterr().out

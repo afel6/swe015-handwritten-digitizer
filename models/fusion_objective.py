@@ -49,10 +49,11 @@ def mean_target_log_softmax(scored_items: Sequence[tuple[np.ndarray, int]]) -> f
 
 def simplex_points(names: Sequence[str], step: float = 0.05, minimum: float = 0.05) -> list[dict[str, float]]:
     """All weight vectors on a step grid with every weight >= minimum and the weights summing to 1."""
-    if not names or step <= 0 or minimum < 0 or minimum * len(names) > 1.0 + 1e-9:
-        raise ValueError("simplex needs names, a positive step and a feasible minimum.")
-    units = round(1.0 / step)
-    low = round(minimum / step)
+    if not names or step <= 0 or minimum <= 0 or minimum * len(names) > 1.0 + 1e-9:
+        raise ValueError("simplex needs names, a positive step and a positive feasible minimum.")
+    units, low = round(1.0 / step), round(minimum / step)
+    if abs(units * step - 1.0) > 1e-9 or abs(low * step - minimum) > 1e-9 or low < 1:
+        raise ValueError("step must divide 1 exactly and minimum must be a positive multiple of step.")
     points = []
     for combo in itertools.product(range(low, units + 1), repeat=len(names) - 1):
         last = units - sum(combo)

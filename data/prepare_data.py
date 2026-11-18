@@ -150,6 +150,20 @@ def build_emnist_splits(root: str | Path = "data/emnist", out_path: str | Path =
     write_data(Path(out_path), payload, as_json=True)
     return {"seed": payload["seed"], "train_indices": list(payload["train_indices"]), "val_indices": list(payload["val_indices"])}
 
+def load_worksheet_items(path: str | Path, required: Sequence[str] = ("sentence", "target_word")) -> list[dict[str, Any]]:
+    """Load a worksheet JSON file (dev or test) and check every item has the required keys."""
+    target = Path(path)
+    payload = read_data(target, as_json=True)
+    if not isinstance(payload, list) or not payload:
+        raise ValueError(f"{target.as_posix()} must hold a non-empty list of worksheet items.")
+    for index, item in enumerate(payload):
+        if not isinstance(item, Mapping):
+            raise ValueError(f"Worksheet item {index} in {target.as_posix()} is not an object.")
+        missing = [key for key in required if key not in item]
+        if missing:
+            raise ValueError(f"Worksheet item {index} in {target.as_posix()} is missing {', '.join(missing)}.")
+    return [dict(item) for item in payload]
+
 def load_emnist_splits(path: str | Path = "data/emnist_splits.json") -> dict[str, Any]:
     """Load and validate EMNIST train/val index splits JSON with explicit OS error mapping."""
     if not isinstance(path, (str, os.PathLike)):
