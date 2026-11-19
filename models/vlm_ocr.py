@@ -6,6 +6,7 @@ Standard library only. The server address is fixed to this computer, so images n
 from __future__ import annotations
 
 import base64
+import http.client
 import json
 import math
 import time
@@ -35,6 +36,16 @@ _PROB_DP = 4
 _IMAGE_MAGIC = ((b"\x89PNG\r\n\x1a\n", "image/png"), (b"\xff\xd8\xff", "image/jpeg"))
 
 
+# Never use a proxy: Ollama is on this computer, and images must not leave it (urllib would honour HTTP_PROXY).
+_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+_TRANSPORT_ERRORS = (OSError, TimeoutError, http.client.HTTPException)
+
+
+def open_url(req: urllib.request.Request | str, timeout_s: float) -> Any:
+    """urlopen without any proxy."""
+    return _OPENER.open(req, timeout=timeout_s)
+
+
 class OcrUnavailable(RuntimeError):
     """Ollama or the model cannot answer; the message is one user-facing line."""
 
@@ -53,9 +64,9 @@ def _mime(image: bytes) -> str:
 def status(base_url: str | None = None, timeout_s: float = STATUS_TIMEOUT_S) -> dict[str, Any]:
     """Whether Ollama answers and the OCR model is pulled. Never raises."""
     try:
-        with urllib.request.urlopen(f"{_base(base_url)}/api/tags", timeout=timeout_s) as resp:
+        with open_url(f"{_base(base_url)}/api/tags", timeout_s) as resp:
             names = {m.get("name") for m in json.load(resp).get("models", [])}
-    except (OSError, ValueError, AttributeError):
+    except (*_TRANSPORT_ERRORS, ValueError, AttributeError, TypeError):
         return {"available": False, "model_ready": False, "detail": f"Ollama is not running on this computer. {INSTALL_HINT}"}
     if MODEL not in names:
         return {"available": True, "model_ready": False, "detail": f"Ollama is running but the OCR model is missing. Run: {PULL_COMMAND}"}
@@ -76,19 +87,17 @@ def chat(image: bytes, prompt: str, *, base_url: str | None = None, timeout_s: f
     req = urllib.request.Request(f"{_base(base_url)}/v1/chat/completions", data=_request_body(image, prompt, max_tokens),
                                  headers={"Content-Type": "application/json"}, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=timeout_s) as resp:
+        with open_url(req, timeout_s) as resp:
             reply = json.load(resp)
     except urllib.error.HTTPError as exc:
         hint = f" Run: {PULL_COMMAND}" if exc.code == 404 else ""
         raise OcrUnavailable(f"Ollama could not run the OCR model (HTTP {exc.code}).{hint}") from exc
-    except (OSError, TimeoutError) as exc:
+    except _TRANSPORT_ERRORS as exc:
         raise OcrUnavailable(f"Ollama did not answer. {INSTALL_HINT}") from exc
     except ValueError as exc:
         raise OcrUnavailable("Ollama sent a reply that is not JSON.") from exc
-    try:
-        reply["choices"][0]["message"]
-    except (KeyError, IndexError, TypeError) as exc:
-        raise OcrUnavailable("Ollama sent a reply without a transcription.") from exc
+    if not isinstance(reply, dict):
+        raise OcrUnavailable("Ollama sent a reply without a transcription.")
     return reply
 
 
@@ -109,4 +118,7 @@ def summarise(reply: dict[str, Any], elapsed_ms: float) -> dict[str, Any]:
 def transcribe(image: bytes, prompt: str = OCR_PROMPT, *, base_url: str | None = None) -> dict[str, Any]:
     start = time.perf_counter()
     reply = chat(image, prompt, base_url=base_url)
-    return summarise(reply, (time.perf_counter() - start) * _MS)
+    try:
+        return summarise(reply, (time.perf_counter() - start) * _MS)
+    except (KeyError, IndexError, TypeError, AttributeError, OverflowError, ValueError) as exc:
+        raise OcrUnavailable("Ollama sent a reply without a usable transcription.") from exc

@@ -6,7 +6,7 @@ const MAX_SIDE_PX = 2048;
 const JPEG_QUALITY = 0.9;
 const SLOW_HINT_MS = 3000;
 const COPIED_MS = 1400;
-const ocr = { b64: null, previewUrl: null, text: "", ranOnce: false, statusChecked: false };
+const ocr = { b64: null, previewUrl: null, text: "", ranOnce: false, statusChecked: false, requestId: 0 };
 const byId = (id) => document.getElementById(id);
 
 /* ---------------- tool tabs ---------------- */
@@ -99,6 +99,8 @@ async function pick(file) {
     return;
   }
   byId("ocr-go").disabled = true; // no Transcribe while the new image is still loading
+  ocr.requestId += 1; // a transcription still in flight belongs to the old image: drop its result
+  byId("ocr-busy").textContent = "";
   ocr.b64 = null;
   try {
     ocr.b64 = await downscale(file);
@@ -142,15 +144,18 @@ function metaLine(data) {
 
 async function transcribe() {
   if (!ocr.b64) return;
+  ocr.requestId += 1;
+  const id = ocr.requestId;
   const button = byId("ocr-go");
   button.disabled = true;
   byId("ocr-busy").textContent = "Reading…";
   const slow = setTimeout(() => {
-    if (!ocr.ranOnce) byId("ocr-busy").textContent = "Loading the model, about a minute the first time…";
+    if (!ocr.ranOnce && id === ocr.requestId) byId("ocr-busy").textContent = "Loading the model, about a minute the first time…";
   }, SLOW_HINT_MS);
   try {
     const resp = await fetch("/api/ocr", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image_base64: ocr.b64 }) });
     const data = await resp.json().catch(() => ({}));
+    if (id !== ocr.requestId) return;
     if (!resp.ok) {
       showText(typeof data.detail === "string" ? data.detail : "The image could not be read.", "error");
       if (resp.status === 503) checkStatus();
@@ -162,11 +167,13 @@ async function transcribe() {
     byId("ocr-meta").textContent = metaLine(data);
     byId("ocr-copy").disabled = !ocr.text;
   } catch (err) {
-    showText("Could not reach the local server. Is python app.py still running?", "error");
+    if (id === ocr.requestId) showText("Could not reach the local server. Is python app.py still running?", "error");
   } finally {
     clearTimeout(slow);
-    button.disabled = false;
-    byId("ocr-busy").textContent = "";
+    if (id === ocr.requestId) {
+      button.disabled = !ocr.b64;
+      byId("ocr-busy").textContent = "";
+    }
   }
 }
 

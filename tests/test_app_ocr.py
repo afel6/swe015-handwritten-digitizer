@@ -107,3 +107,22 @@ def test_recognize_not_blocked_by_ocr(client: Any, monkeypatch: pytest.MonkeyPat
 
 def test_csp_allows_blob_previews(client: Any) -> None:
     assert "img-src 'self' data: blob:" in client.get("/").headers["content-security-policy"]
+
+
+def test_second_ocr_while_busy_gets_quick_503(client: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    started, release = threading.Event(), threading.Event()
+
+    def slow(_image: bytes) -> dict[str, Any]:
+        started.set()
+        release.wait(30)
+        return {"text": "", "latency_ms": 0, "tokens": 0, "min_prob": None, "finish_reason": "stop"}
+
+    monkeypatch.setattr(vlm_ocr, "transcribe", slow)
+    worker = threading.Thread(target=lambda: client.post("/api/ocr", json={"image_base64": _png_b64()}))
+    worker.start()
+    try:
+        assert started.wait(10)
+        assert "Another OCR" in _one_line_detail(client.post("/api/ocr", json={"image_base64": _png_b64()}), 503)
+    finally:
+        release.set()
+        worker.join(30)

@@ -44,3 +44,8 @@ def test_ocr_script_is_served() -> None:
 
     paths = {getattr(r, "path", "") for r in app.app.routes}
     assert "/static/ocr.js" in paths
+
+
+def test_stale_ocr_responses_are_ignored() -> None:
+    js = _read("ocr.js")
+    assert "ocr.requestId" in js and "if (id !== ocr.requestId) return;" in js

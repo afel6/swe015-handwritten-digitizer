@@ -276,13 +276,16 @@ def ocr_status() -> dict[str, Any]:
 def ocr(body: OcrRequest) -> dict[str, Any]:
     """Optional full-page OCR through local Ollama; 503 with setup steps when it is not available."""
     raw, _image = _decode_raw(body.image_base64)
-    with _OCR_LOCK:
-        try:
-            return vlm_ocr.transcribe(raw)
-        except UserInputError as exc:
-            raise _bad(str(exc)) from exc
-        except vlm_ocr.OcrUnavailable as exc:
-            raise HTTPException(status_code=503, detail=str(exc)) from exc
+    if not _OCR_LOCK.acquire(blocking=False):  # never queue behind a slow first model load
+        raise HTTPException(status_code=503, detail="Another OCR is still running; try again in a moment.")
+    try:
+        return vlm_ocr.transcribe(raw)
+    except UserInputError as exc:
+        raise _bad(str(exc)) from exc
+    except vlm_ocr.OcrUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    finally:
+        _OCR_LOCK.release()
 
 
 def main() -> int:

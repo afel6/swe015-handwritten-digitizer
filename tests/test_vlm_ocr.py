@@ -92,3 +92,52 @@ def test_transcribe_unreachable_raises_unavailable() -> None:
 def test_live_ollama_reads_invoice_line() -> None:
     got = vlm_ocr.transcribe(_png("Invoice number: INV-2026-3706", (900, 90)))
     assert "INV-2026-3706" in got["text"]
+
+
+def test_requests_bypass_any_configured_proxy(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in ("NO_PROXY", "no_proxy"):
+        monkeypatch.delenv(name, raising=False)
+    for name in ("HTTP_PROXY", "http_proxy"):
+        monkeypatch.setenv(name, closed_port_url())
+    import urllib.request
+
+    monkeypatch.setattr(urllib.request, "_opener", None)  # urlopen caches its opener (and the proxies) on first use
+    with fake_ollama() as fake:
+        assert vlm_ocr.status(base_url=fake.url)["model_ready"] is True
+        assert vlm_ocr.transcribe(_png(), base_url=fake.url)["text"] == "Invoice number: INV-2026-3706"
+    assert len(fake.requests) == 1
+
+
+@pytest.mark.parametrize("reply", [
+    {"choices": [{"message": None}]},
+    {"choices": [{"message": {"content": "x"}, "logprobs": {"content": ["not a dict"]}}]},
+    {"choices": [{"message": {"content": "x"}, "logprobs": {"content": [{"logprob": 1000.0}]}}]},
+])
+def test_malformed_replies_raise_unavailable(reply: dict) -> None:
+    with fake_ollama(reply=reply) as fake, pytest.raises(vlm_ocr.OcrUnavailable):
+        vlm_ocr.transcribe(_png(), base_url=fake.url)
+
+
+def test_non_http_listener_is_unavailable_not_a_crash() -> None:
+    import socket
+    import threading
+
+    srv = socket.socket()
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(4)
+
+    def serve() -> None:
+        for _ in range(2):
+            conn, _addr = srv.accept()
+            conn.recv(65536)
+            conn.sendall(b"garbage that is not http\r\n\r\n")
+            conn.close()
+
+    threading.Thread(target=serve, daemon=True).start()
+    url = f"http://127.0.0.1:{srv.getsockname()[1]}"
+    try:
+        assert vlm_ocr.status(base_url=url)["available"] is False
+        with pytest.raises(vlm_ocr.OcrUnavailable):
+            vlm_ocr.transcribe(_png(), base_url=url)
+    finally:
+        srv.close()

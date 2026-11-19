@@ -15,7 +15,6 @@ import io
 import json
 import subprocess
 import sys
-import urllib.request
 from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -72,7 +71,7 @@ def build_report(runs: Mapping[str, list[dict[str, Any]]], meta: Mapping[str, An
 
 
 def _get_json(path: str) -> Any:
-    with urllib.request.urlopen(f"{vlm_ocr.OLLAMA_URL}{path}", timeout=vlm_ocr.STATUS_TIMEOUT_S) as resp:
+    with vlm_ocr.open_url(f"{vlm_ocr.OLLAMA_URL}{path}", vlm_ocr.STATUS_TIMEOUT_S) as resp:
         return json.load(resp)
 
 
