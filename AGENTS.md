@@ -35,3 +35,4 @@ Everything below is a plain Python command; run them from the repository root in
 | Held-out perplexity falls from unigram to bigram to trigram | `results/ngram_metrics.json` | `python -m pytest -q tests/test_nlp.py -k perplexity` |
 | Fusion weights were tuned on the dev worksheets only | `results/bert_fusion_params.json` (`tuned_on`) | `python -m pytest -q tests/test_benchmark.py -k dev_only` |
 | The test worksheets were evaluated three times; run 3 is reported | `results/benchmark_run1_superseded.md`, `results/benchmark_run2_superseded.md` | read the reason paragraph at the top of each file |
+| Qwen3-VL reference (outside model, not part of the ladder) | `results/vlm_reference.json` | `python scripts/recompute_metrics.py` (re-running it needs Ollama and a GPU: `python scripts/benchmark_vlm.py`) |

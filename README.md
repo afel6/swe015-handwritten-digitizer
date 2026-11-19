@@ -7,6 +7,16 @@ box with a character CNN, then uses the sentence to correct misreads (0/O, 1/I, 
 interpolated n-gram model or a BERT re-ranker. It runs as one local web app on a laptop CPU, with an
 INT8-quantized model as the default.
 
+## Two parts
+
+1. **Answer reader (the course project).** Everything above: our own trained CNNs, the n-gram model, BERT and
+   quantization, measured on held-out worksheets. All graded numbers come from this part.
+2. **Full-page OCR (the real-world tool).** A second tab in the same app reads whole handwritten or printed
+   pages (English and Arabic) with Qwen3-VL 8B, a vision-language model **not trained by us**, running locally
+   through Ollama, so documents never leave the laptop. It is optional: without Ollama the tab shows setup
+   steps and the answer reader works as before. Setup: install Ollama from ollama.com/download, then
+   `ollama pull qwen3-vl:8b-instruct-q4_K_M` (about 6 GB; a GPU is strongly recommended).
+
 <!-- grader section: keep identical to AGENTS.md -->
 ## For graders
 
@@ -43,6 +53,7 @@ Everything below is a plain Python command; run them from the repository root in
 | Held-out perplexity falls from unigram to bigram to trigram | `results/ngram_metrics.json` | `python -m pytest -q tests/test_nlp.py -k perplexity` |
 | Fusion weights were tuned on the dev worksheets only | `results/bert_fusion_params.json` (`tuned_on`) | `python -m pytest -q tests/test_benchmark.py -k dev_only` |
 | The test worksheets were evaluated three times; run 3 is reported | `results/benchmark_run1_superseded.md`, `results/benchmark_run2_superseded.md` | read the reason paragraph at the top of each file |
+| Qwen3-VL reference (outside model, not part of the ladder) | `results/vlm_reference.json` | `python scripts/recompute_metrics.py` (re-running it needs Ollama and a GPU: `python scripts/benchmark_vlm.py`) |
 <!-- end grader section -->
 
 ## What the app does
@@ -146,6 +157,14 @@ not. Row 2 is the classical correction baseline: SymSpell + n-gram fusion run on
 because a classical method with no trained reader cannot turn pixels into letters, and sharing the CNN and the
 candidate pool isolates the correction technique as the only thing that changes between rows 2, 3 and 4.
 
+Reference, not trained by us (`results/vlm_reference.json`, recomputed by `scripts/recompute_metrics.py`):
+Qwen3-VL 8B (6.2 GB, Q4_K_M) read the same 300 strips zero-shot on the laptop GPU (NVIDIA GeForce RTX 5070 Ti Laptop GPU), with no
+tuning. From the strip alone it scores 80.67 % word / 92.91 % char accuracy
+(compare row 1); given the sentence too, 89.33 % / 94.46 % (compare rows 3 and 4),
+at about 966 ms/word on the GPU. This timing is not comparable
+with the CPU column above. It has no pass/fail check and is not part of the ladder: it shows what a model ~29x the
+size of our app model reaches on the same task.
+
 Latencies above were re-timed twice on AC power in Windows "Best performance" mode (three timing passes each,
 median reported; every prediction verified identical to the accuracy run). The first re-timing replaced run 3's
 throttled timings (kept in `results/benchmark_run3_timing_superseded.json`); the second followed the
@@ -187,7 +206,10 @@ the dev set without writing anything.
   (`REDUCED` -> `REJOICED` in `results/failure_examples.json`).
 - 12.7 % of test targets are not in the lexicon, and only 88–89 % of targets reach the candidate pool.
 - BERT scores use at most 48 WordPieces on each side of the blank; the benchmark sentences are all shorter, so this does not affect reported results.
-- Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon.
+- Full-page OCR returns plain text only (no field extraction yet), and the app still needs the answer reader's
+  weights to start, even when only OCR is used.
+- Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon; OCR field extraction
+  and an OCR-only start.
 
 ## Security notes
 

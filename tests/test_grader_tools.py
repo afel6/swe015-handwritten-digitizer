@@ -235,3 +235,25 @@ def test_hardware_line_says_a_cuda_build_was_not_used_for_timing() -> None:
 
     res = {"benchmark_results": {"hardware": {"cpu_model": "X", "torch_threads": 4, "ram_gb": 8.0, "torch": "2.9.1+cu128", "transformers": "5"}}}
     assert "CUDA build, GPU unused for timing" in slide_content.hardware_line(res)
+
+
+def _reference() -> dict:
+    return json.loads((REPO_ROOT / "results" / "vlm_reference.json").read_text(encoding="utf-8"))
+
+
+def test_readme_explains_two_parts_and_reference() -> None:
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Two parts" in readme and "Full-page OCR" in readme and "not trained by us" in readme
+    for run in _reference()["runs"].values():
+        assert f"{run['word_acc_pct']:.2f}" in readme
+    assert "results/vlm_reference.json" in readme.split("<!-- grader section: keep identical to AGENTS.md -->\n", 1)[1]
+
+
+def test_reference_line_reads_json() -> None:
+    from scripts import slide_content
+
+    res = slide_content.load_results()
+    line = slide_content.reference_line(res)
+    assert "not trained by us" in line and "Qwen3-VL" in line
+    for run in _reference()["runs"].values():
+        assert f"{run['word_acc_pct']:.2f}" in line

@@ -104,6 +104,8 @@ def slide_intro(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
         "Constraint: one local app on a laptop CPU, quantized for speed and size, with every claim measured on held-out data.",
         f"Result on {res['benchmark_results']['ladder_n']} held-out worksheets: word accuracy {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
         f"-> {br['bert_fp32']['word_acc_pct']:.1f} % (BERT) / {br['quantized_app']['word_acc_pct']:.1f} % (INT8 app model).",
+        ("Two parts: the answer reader shows the fundamentals with our own models; a second tab, Full-page OCR, solves the real-world task "
+         "(any handwritten or printed page) with a local vision-language model, so documents never leave the laptop."),
     ])
     return fig
 
@@ -175,7 +177,7 @@ def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Area D: quantization and R4 results", 8)
     _table(fig, (0.04, 0.47, 0.92, 0.37), [f"Pipeline (N={res['benchmark_results']['ladder_n']})", "Word %", "Char %", "MB", "ms/word"], sc.ladder_rows(res), highlight=4, first_col=0.36)
     y = _bullets(ax, ["Static INT8 CNN (observers on train data) and dynamic INT8 BERT; sizes are serialized state_dicts; CPU, 4 threads, perf_counter.", *sc.checks_lines(res)], top=0.45, size=11)
-    note = sc.hardware_line(res) + ". " + sc.methodology_note(res)
+    note = sc.hardware_line(res) + ". " + sc.methodology_note(res) + (" " + sc.reference_line(res) + "." if sc.reference_line(res) else "")
     ax.text(0.05, y - 0.01, "\n".join(textwrap.wrap(note, 150)), fontsize=9.5, color=MUTED, va="top")
     return fig
 
@@ -183,7 +185,8 @@ def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 def slide_conclusion(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Conclusion", 9)
     _bullets(ax, [*sc.conclusion_lines(res), *("Failure - " + line for line in sc.failure_lines(res, limit=2)),
-                  "Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon."], top=0.81, size=11, width=140)
+                  *([sc.ocr_win_line(res)] if sc.ocr_win_line(res) else []),
+                  "Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon; OCR field extraction and OCR-only start."], top=0.81, size=11, width=140)
     return fig
 
 

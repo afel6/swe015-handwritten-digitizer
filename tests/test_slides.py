@@ -59,3 +59,14 @@ def test_numbers_are_read_not_hard_coded(tmp_path: Path) -> None:
     (results / "benchmark_results.json").write_text(json.dumps(bench), encoding="utf-8")
     pdf, _ = generate_slides.render(META, tmp_path / "out", results)
     assert "12.34" in _pdf_text(pdf)[7]
+
+
+def test_slide_8_shows_reference_and_slide_2_the_split(deck: tuple[Path, Path]) -> None:
+    pages = _pdf_text(deck[0])
+    ref = json.loads((RESULTS / "vlm_reference.json").read_text(encoding="utf-8"))
+    flat = " ".join(pages[7].split())
+    assert "not trained by us" in flat
+    for run in ref["runs"].values():
+        assert f"{run['word_acc_pct']:.2f}" in flat
+    assert "Full-page OCR" in " ".join(pages[1].split())
+    assert "Full-page OCR" in " ".join(pages[8].split())

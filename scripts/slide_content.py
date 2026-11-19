@@ -16,7 +16,35 @@ SHORT = {"raw_fp32": "(1) FP32 CNN, no correction", "raw_int8": "(1b) INT8 CNN, 
 def load_results(root: Path = RESULTS) -> dict[str, Any]:
     names = ("benchmark_results", "ngram_metrics", "bert_fusion_params", "corpus_sources", "vision_metrics", "failure_examples",
              "benchmark_run1_superseded", "benchmark_run2_superseded")
-    return {n: json.loads((root / f"{n}.json").read_text(encoding="utf-8")) for n in names}
+    out = {n: json.loads((root / f"{n}.json").read_text(encoding="utf-8")) for n in names}
+    if (root / "vlm_reference.json").is_file():  # optional outside-model reference
+        out["vlm_reference"] = json.loads((root / "vlm_reference.json").read_text(encoding="utf-8"))
+    return out
+
+
+QWEN_MODEL_MB = 6191.0  # qwen3-vl:8b-instruct-q4_K_M, 6190971795 bytes per `ollama list`
+
+
+def ocr_win_line(res: Mapping[str, Any]) -> str:
+    """The real-world tab as a win, with the reference compared against our app model from the results files."""
+    ref = res.get("vlm_reference")
+    if not ref:
+        return ""
+    app, sent = res["benchmark_results"]["ladder"]["quantized_app"], ref["runs"]["strip_sentence"]
+    return (f"Real-world win: the Full-page OCR tab reads whole handwritten or printed pages on the laptop. On our task the outside "
+            f"Qwen3-VL reference scores {sent['word_acc_pct'] - app['word_acc_pct']:+.2f} pp vs our INT8 app model, but needs a GPU, "
+            f"{QWEN_MODEL_MB / app['size_mb']:.0f}x the size and {sent['latency_mean_ms'] / app['latency_mean_ms']:.0f}x the time per word.")
+
+
+def reference_line(res: Mapping[str, Any]) -> str:
+    """The Qwen3-VL reference in one line, read from results/vlm_reference.json; empty when it is absent."""
+    ref = res.get("vlm_reference")
+    if not ref:
+        return ""
+    strip, sent = ref["runs"]["strip_only"], ref["runs"]["strip_sentence"]
+    ms = (strip["latency_mean_ms"] + sent["latency_mean_ms"]) / 2
+    return (f"Reference, not trained by us: Qwen3-VL 8B (6.2 GB, {ref['gpu']}), zero-shot on the same {ref['n']} strips: "
+            f"{strip['word_acc_pct']:.2f} % word acc from the strip alone, {sent['word_acc_pct']:.2f} % with the sentence, about {ms:.0f} ms/word on the GPU")
 
 
 def vision_rows(res: Mapping[str, Any]) -> list[list[str]]:
