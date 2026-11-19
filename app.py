@@ -39,6 +39,7 @@ from data.preprocess import (  # noqa: E402
     load_validated_image_bytes,
     slice_strip_image,
 )
+from models import vlm_ocr  # noqa: E402
 from models.assets import (  # noqa: E402
     FIX_COMMAND,
     missing_assets,
@@ -55,12 +56,21 @@ MIN_BOXES, MAX_BOXES = 1, 16
 MAX_B64_CHARS = math.ceil(MAX_IMAGE_BYTES / 3) * 4
 _SAMPLE_NAME_RE = re.compile(r"^sample_\d{2}\.png$")
 _SECURITY_HEADERS = {
-    "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+    "Content-Security-Policy": "default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
     "X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer",
 }
 _BAD_REQUEST = "Send JSON with a text 'sentence' and either 'boxes_base64' (list of base64 images) or 'strip_base64' (base64 image) plus optional integer 'num_boxes'."
+_BAD_OCR_REQUEST = "Send JSON with a text 'image_base64' (base64 PNG or JPEG)."
 _RECOGNIZE_LOCK = threading.Lock()
+_OCR_LOCK = threading.Lock()  # one full-page OCR at a time; independent of the graded reader
 _IMAGE_RULES = f"Each image must be a PNG or JPEG of at most {MAX_IMAGE_BYTES // (1024 * 1024)} MB and {MAX_IMAGE_DIM}x{MAX_IMAGE_DIM} pixels."
+
+
+class OcrRequest(BaseModel):
+    """Full-page OCR request: one base64 image, strict types, no unknown fields."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+    image_base64: str
 
 
 class RecognizeRequest(BaseModel):
@@ -160,8 +170,9 @@ def _secure(response: Any) -> Any:
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_error(_request: Request, _exc: RequestValidationError) -> JSONResponse:
-    return JSONResponse({"detail": _BAD_REQUEST}, status_code=400)
+async def validation_error(request: Request, _exc: RequestValidationError) -> JSONResponse:
+    detail = _BAD_OCR_REQUEST if request.url.path == "/api/ocr" else _BAD_REQUEST
+    return JSONResponse({"detail": detail}, status_code=400)
 
 
 @app.exception_handler(Exception)
@@ -173,7 +184,8 @@ def _bad(detail: str) -> HTTPException:
     return HTTPException(status_code=400, detail=detail)
 
 
-def _decode_image(b64: str) -> Image.Image:
+def _decode_raw(b64: str) -> tuple[bytes, Image.Image]:
+    """Base64 -> (raw bytes, validated image); every failure is a one-line 400."""
     if len(b64) > MAX_B64_CHARS:
         raise _bad(_IMAGE_RULES)
     try:
@@ -181,9 +193,13 @@ def _decode_image(b64: str) -> Image.Image:
     except (binascii.Error, ValueError) as exc:
         raise _bad("Images must be plain base64 strings (no 'data:' prefix).") from exc
     try:
-        return load_validated_image_bytes(raw)
+        return raw, load_validated_image_bytes(raw)
     except (ValueError, OSError, Image.DecompressionBombError) as exc:
         raise _bad(_IMAGE_RULES) from exc
+
+
+def _decode_image(b64: str) -> Image.Image:
+    return _decode_raw(b64)[1]
 
 
 def _box_images(body: RecognizeRequest) -> list[Image.Image]:
@@ -244,6 +260,24 @@ def recognize(body: RecognizeRequest, request: Request) -> dict[str, Any]:
             return request.app.state.service.recognize(sentence, images)
         except UserInputError as exc:
             raise _bad(str(exc)) from exc
+
+
+@app.get("/api/ocr/status")
+def ocr_status() -> dict[str, Any]:
+    return vlm_ocr.status()
+
+
+@app.post("/api/ocr")
+def ocr(body: OcrRequest) -> dict[str, Any]:
+    """Optional full-page OCR through local Ollama; 503 with setup steps when it is not available."""
+    raw, _image = _decode_raw(body.image_base64)
+    with _OCR_LOCK:
+        try:
+            return vlm_ocr.transcribe(raw)
+        except UserInputError as exc:
+            raise _bad(str(exc)) from exc
+        except vlm_ocr.OcrUnavailable as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
 def main() -> int:
