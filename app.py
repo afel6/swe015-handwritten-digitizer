@@ -231,6 +231,11 @@ def script() -> FileResponse:
     return FileResponse(STATIC_DIR / "app.js", media_type="text/javascript")
 
 
+@app.get("/static/ocr.js", include_in_schema=False)
+def ocr_script() -> FileResponse:
+    return FileResponse(STATIC_DIR / "ocr.js", media_type="text/javascript")
+
+
 @app.get("/static/app.css", include_in_schema=False)
 def stylesheet() -> FileResponse:
     return FileResponse(STATIC_DIR / "app.css", media_type="text/css")
