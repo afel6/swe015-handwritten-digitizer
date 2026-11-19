@@ -18,7 +18,7 @@ from typing import Any
 
 PREDICTIONS = Path("results/test_predictions.json")
 RESULTS = Path("results/benchmark_results.json")
-REFERENCE = Path("results/vlm_reference.json")
+REFERENCE_NAME = "vlm_reference.json"  # lives next to the results file it accompanies
 TOLERANCE = 0.01
 _TOKEN_RE = re.compile(r"[A-Z0-9]+")
 _RECALL_ROW = {"fp32": "classical", "int8": "quantized_app"}
@@ -96,14 +96,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Recompute the reported benchmark numbers from the committed per-item predictions.")
     parser.add_argument("--predictions", type=Path, default=PREDICTIONS)
     parser.add_argument("--results", type=Path, default=RESULTS)
-    parser.add_argument("--reference", type=Path, default=REFERENCE, help="Qwen3-VL reference results; checked only when the file exists")
+    parser.add_argument("--reference", type=Path, default=None, help=f"Qwen3-VL reference results (default: {REFERENCE_NAME} next to --results); checked only when the file exists")
     args = parser.parse_args(argv)
     try:
         predictions = json.loads(args.predictions.read_text(encoding="utf-8"))
         results = json.loads(args.results.read_text(encoding="utf-8"))
         checks = compare(predictions, results)
-        if args.reference.is_file():
-            checks += compare_reference(json.loads(args.reference.read_text(encoding="utf-8")))
+        reference = args.reference or args.results.with_name(REFERENCE_NAME)
+        if reference.is_file():
+            checks += compare_reference(json.loads(reference.read_text(encoding="utf-8")))
     except (OSError, ValueError, KeyError, TypeError, ZeroDivisionError) as exc:
         sys.stderr.write(f"Error: could not recompute metrics: {' '.join(str(exc).split())}\n")
         return 1

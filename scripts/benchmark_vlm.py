@@ -86,7 +86,12 @@ def run_metadata() -> dict[str, Any]:
 
 
 def load_test_strips(limit: int | None) -> tuple[list[dict[str, Any]], list[bytes]]:
-    from data.prepare_data import EMNIST_ROOT, TEST_WORKSHEETS_PATH, load_emnist_dataset, load_worksheet_items
+    from data.prepare_data import (
+        EMNIST_ROOT,
+        TEST_WORKSHEETS_PATH,
+        load_emnist_dataset,
+        load_worksheet_items,
+    )
     from data.word_pipeline import item_to_strip
     from scripts import evaluate_all as ev
 
