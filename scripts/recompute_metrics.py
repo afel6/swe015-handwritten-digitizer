@@ -18,6 +18,7 @@ from typing import Any
 
 PREDICTIONS = Path("results/test_predictions.json")
 RESULTS = Path("results/benchmark_results.json")
+REFERENCE = Path("results/vlm_reference.json")
 TOLERANCE = 0.01
 _TOKEN_RE = re.compile(r"[A-Z0-9]+")
 _RECALL_ROW = {"fp32": "classical", "int8": "quantized_app"}
@@ -80,15 +81,29 @@ def compare(predictions: Mapping[str, Any], results: Mapping[str, Any]) -> list[
     return checks
 
 
+def compare_reference(reference: Mapping[str, Any]) -> list[tuple[str, float, float, bool]]:
+    """Checks for the Qwen3-VL reference (an outside model, reported apart from the ladder)."""
+    checks: list[tuple[str, float, float, bool]] = []
+    for mode, run in reference["runs"].items():
+        got = row_metrics(run["records"])
+        for metric in ("word_acc_pct", "char_acc_pct", "latency_mean_ms"):
+            checks.append((f"reference {mode} {metric}", got[metric], float(run[metric]), abs(got[metric] - float(run[metric])) <= TOLERANCE))
+        checks.append((f"reference {mode} n", float(len(run["records"])), float(reference["n"]), len(run["records"]) == reference["n"]))
+    return checks
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Recompute the reported benchmark numbers from the committed per-item predictions.")
     parser.add_argument("--predictions", type=Path, default=PREDICTIONS)
     parser.add_argument("--results", type=Path, default=RESULTS)
+    parser.add_argument("--reference", type=Path, default=REFERENCE, help="Qwen3-VL reference results; checked only when the file exists")
     args = parser.parse_args(argv)
     try:
         predictions = json.loads(args.predictions.read_text(encoding="utf-8"))
         results = json.loads(args.results.read_text(encoding="utf-8"))
         checks = compare(predictions, results)
+        if args.reference.is_file():
+            checks += compare_reference(json.loads(args.reference.read_text(encoding="utf-8")))
     except (OSError, ValueError, KeyError, TypeError, ZeroDivisionError) as exc:
         sys.stderr.write(f"Error: could not recompute metrics: {' '.join(str(exc).split())}\n")
         return 1

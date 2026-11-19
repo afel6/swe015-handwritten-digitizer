@@ -1,0 +1,4233 @@
+{
+  "label": "Reference, not trained by us, GPU",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "digest": "70e58e37beb15464e19aa903dedb2cba828b89c0fb186f75ff2738c7347b96eb",
+  "ollama_version": "0.40.16",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+  "n": 300,
+  "settings": {
+    "temperature": 0,
+    "seed": 42,
+    "logprobs": true,
+    "prompts": {
+      "strip_only": "This image shows one handwritten word written in a row of boxes, one character per box; some boxes may be empty. Reply with only that word in capital letters, with no spaces, punctuation or explanation.",
+      "strip_sentence": "This image shows one handwritten word written in a row of boxes, one character per box; some boxes may be empty. Reply with only that word in capital letters, with no spaces, punctuation or explanation. The word fills the blank ([MASK]) in this sentence: <sentence>"
+    }
+  },
+  "runs": {
+    "strip_only": {
+      "word_acc_pct": 80.66666666666667,
+      "char_acc_pct": 92.91237113402062,
+      "latency_mean_ms": 966.7666666666667,
+      "records": [
+        {
+          "item_id": "test_001",
+          "target_word": "2000",
+          "predicted_word": "2000",
+          "raw_reply": "2000",
+          "latency_ms": 9580.0
+        },
+        {
+          "item_id": "test_002",
+          "target_word": "1876",
+          "predicted_word": "1876",
+          "raw_reply": "1876",
+          "latency_ms": 169.0
+        },
+        {
+          "item_id": "test_003",
+          "target_word": "510",
+          "predicted_word": "SIO",
+          "raw_reply": "SIO",
+          "latency_ms": 163.0
+        },
+        {
+          "item_id": "test_004",
+          "target_word": "4000",
+          "predicted_word": "4000",
+          "raw_reply": "4000",
+          "latency_ms": 193.0
+        },
+        {
+          "item_id": "test_005",
+          "target_word": "1917",
+          "predicted_word": "1917",
+          "raw_reply": "1917",
+          "latency_ms": 188.0
+        },
+        {
+          "item_id": "test_006",
+          "target_word": "660",
+          "predicted_word": "660",
+          "raw_reply": "660",
+          "latency_ms": 884.0
+        },
+        {
+          "item_id": "test_007",
+          "target_word": "100",
+          "predicted_word": "100",
+          "raw_reply": "100",
+          "latency_ms": 889.0
+        },
+        {
+          "item_id": "test_008",
+          "target_word": "100",
+          "predicted_word": "100",
+          "raw_reply": "100",
+          "latency_ms": 885.0
+        },
+        {
+          "item_id": "test_009",
+          "target_word": "1800",
+          "predicted_word": "1800",
+          "raw_reply": "1800",
+          "latency_ms": 846.0
+        },
+        {
+          "item_id": "test_010",
+          "target_word": "1935",
+          "predicted_word": "1935",
+          "raw_reply": "1935",
+          "latency_ms": 848.0
+        },
+        {
+          "item_id": "test_011",
+          "target_word": "1922",
+          "predicted_word": "1922",
+          "raw_reply": "1922",
+          "latency_ms": 849.0
+        },
+        {
+          "item_id": "test_012",
+          "target_word": "400",
+          "predicted_word": "400",
+          "raw_reply": "400",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_013",
+          "target_word": "300",
+          "predicted_word": "300",
+          "raw_reply": "300",
+          "latency_ms": 903.0
+        },
+        {
+          "item_id": "test_014",
+          "target_word": "1825",
+          "predicted_word": "1825",
+          "raw_reply": "1825",
+          "latency_ms": 867.0
+        },
+        {
+          "item_id": "test_015",
+          "target_word": "1939",
+          "predicted_word": "1939",
+          "raw_reply": "1939",
+          "latency_ms": 892.0
+        },
+        {
+          "item_id": "test_016",
+          "target_word": "751",
+          "predicted_word": "751",
+          "raw_reply": "751",
+          "latency_ms": 947.0
+        },
+        {
+          "item_id": "test_017",
+          "target_word": "1402",
+          "predicted_word": "1402",
+          "raw_reply": "1402",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_018",
+          "target_word": "3150",
+          "predicted_word": "3150",
+          "raw_reply": "3150",
+          "latency_ms": 902.0
+        },
+        {
+          "item_id": "test_019",
+          "target_word": "1914",
+          "predicted_word": "1914",
+          "raw_reply": "1914",
+          "latency_ms": 910.0
+        },
+        {
+          "item_id": "test_020",
+          "target_word": "1772",
+          "predicted_word": "1772",
+          "raw_reply": "1772",
+          "latency_ms": 916.0
+        },
+        {
+          "item_id": "test_021",
+          "target_word": "HOT",
+          "predicted_word": "HOT",
+          "raw_reply": "HOT",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_022",
+          "target_word": "FORM",
+          "predicted_word": "FORM",
+          "raw_reply": "FORM",
+          "latency_ms": 871.0
+        },
+        {
+          "item_id": "test_023",
+          "target_word": "USE",
+          "predicted_word": "USE",
+          "raw_reply": "USE",
+          "latency_ms": 922.0
+        },
+        {
+          "item_id": "test_024",
+          "target_word": "SYSTEM",
+          "predicted_word": "SYSTEM",
+          "raw_reply": "SYSTEM",
+          "latency_ms": 963.0
+        },
+        {
+          "item_id": "test_025",
+          "target_word": "BUZZ",
+          "predicted_word": "BU3Z",
+          "raw_reply": "B U 3 Z",
+          "latency_ms": 895.0
+        },
+        {
+          "item_id": "test_026",
+          "target_word": "CARL",
+          "predicted_word": "CAR1",
+          "raw_reply": "CAR1",
+          "latency_ms": 883.0
+        },
+        {
+          "item_id": "test_027",
+          "target_word": "SPEAKERS",
+          "predicted_word": "SPEAKERS",
+          "raw_reply": "SPEAKERS",
+          "latency_ms": 989.0
+        },
+        {
+          "item_id": "test_028",
+          "target_word": "PRODUCTION",
+          "predicted_word": "PRODUCTION",
+          "raw_reply": "PRODUCTION",
+          "latency_ms": 1012.0
+        },
+        {
+          "item_id": "test_029",
+          "target_word": "TAKEN",
+          "predicted_word": "TAKEN",
+          "raw_reply": "TAKEN",
+          "latency_ms": 961.0
+        },
+        {
+          "item_id": "test_030",
+          "target_word": "TWO",
+          "predicted_word": "TWO",
+          "raw_reply": "TWO",
+          "latency_ms": 943.0
+        },
+        {
+          "item_id": "test_031",
+          "target_word": "HOW",
+          "predicted_word": "HOW",
+          "raw_reply": "HOW",
+          "latency_ms": 916.0
+        },
+        {
+          "item_id": "test_032",
+          "target_word": "ONE",
+          "predicted_word": "ONE",
+          "raw_reply": "ONE",
+          "latency_ms": 939.0
+        },
+        {
+          "item_id": "test_033",
+          "target_word": "IMAGO",
+          "predicted_word": "IMAGO",
+          "raw_reply": "IMAGO",
+          "latency_ms": 956.0
+        },
+        {
+          "item_id": "test_034",
+          "target_word": "PERSON",
+          "predicted_word": "PERSON",
+          "raw_reply": "PERSON",
+          "latency_ms": 1002.0
+        },
+        {
+          "item_id": "test_035",
+          "target_word": "EGYPT",
+          "predicted_word": "EGYPT",
+          "raw_reply": "EGYPT",
+          "latency_ms": 1008.0
+        },
+        {
+          "item_id": "test_036",
+          "target_word": "LANGUAGE",
+          "predicted_word": "LANGUAGE",
+          "raw_reply": "LANGUAGE",
+          "latency_ms": 969.0
+        },
+        {
+          "item_id": "test_037",
+          "target_word": "BULGARIA",
+          "predicted_word": "BULGARIA",
+          "raw_reply": "BULGARIA",
+          "latency_ms": 993.0
+        },
+        {
+          "item_id": "test_038",
+          "target_word": "PROTONS",
+          "predicted_word": "PROTONS",
+          "raw_reply": "PROTONS",
+          "latency_ms": 1041.0
+        },
+        {
+          "item_id": "test_039",
+          "target_word": "THOUSANDS",
+          "predicted_word": "THOUSANDS",
+          "raw_reply": "THOUSANDS",
+          "latency_ms": 944.0
+        },
+        {
+          "item_id": "test_040",
+          "target_word": "COUNTRIES",
+          "predicted_word": "COUNTRIES",
+          "raw_reply": "COUNTRIES",
+          "latency_ms": 952.0
+        },
+        {
+          "item_id": "test_041",
+          "target_word": "GERMAN",
+          "predicted_word": "GERMAN",
+          "raw_reply": "GERMAN",
+          "latency_ms": 989.0
+        },
+        {
+          "item_id": "test_042",
+          "target_word": "MATTER",
+          "predicted_word": "MATTER",
+          "raw_reply": "MATTER",
+          "latency_ms": 987.0
+        },
+        {
+          "item_id": "test_043",
+          "target_word": "LIBRARY",
+          "predicted_word": "LIBRARY",
+          "raw_reply": "LIBRARY",
+          "latency_ms": 986.0
+        },
+        {
+          "item_id": "test_044",
+          "target_word": "DIFFERENT",
+          "predicted_word": "IDIFFEET",
+          "raw_reply": "IDIFFEET",
+          "latency_ms": 944.0
+        },
+        {
+          "item_id": "test_045",
+          "target_word": "BCE",
+          "predicted_word": "BCE",
+          "raw_reply": "BCE",
+          "latency_ms": 931.0
+        },
+        {
+          "item_id": "test_046",
+          "target_word": "CAPTURE",
+          "predicted_word": "CAPTURE",
+          "raw_reply": "CAPTURE",
+          "latency_ms": 974.0
+        },
+        {
+          "item_id": "test_047",
+          "target_word": "HOW",
+          "predicted_word": "NOW",
+          "raw_reply": "NOW",
+          "latency_ms": 944.0
+        },
+        {
+          "item_id": "test_048",
+          "target_word": "EVERYDAY",
+          "predicted_word": "EVERYDAY",
+          "raw_reply": "EVERYDAY",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_049",
+          "target_word": "ARMOR",
+          "predicted_word": "AMOR",
+          "raw_reply": "AMOR",
+          "latency_ms": 959.0
+        },
+        {
+          "item_id": "test_050",
+          "target_word": "SEA",
+          "predicted_word": "SEA",
+          "raw_reply": "SEA",
+          "latency_ms": 928.0
+        },
+        {
+          "item_id": "test_051",
+          "target_word": "FAR",
+          "predicted_word": "FAR",
+          "raw_reply": "FAR",
+          "latency_ms": 933.0
+        },
+        {
+          "item_id": "test_052",
+          "target_word": "FAULT",
+          "predicted_word": "FAUIT",
+          "raw_reply": "FAUIT",
+          "latency_ms": 961.0
+        },
+        {
+          "item_id": "test_053",
+          "target_word": "UNIVERSE",
+          "predicted_word": "UNIVERSE",
+          "raw_reply": "UNIVERSE",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_054",
+          "target_word": "WAY",
+          "predicted_word": "WAY",
+          "raw_reply": "WAY",
+          "latency_ms": 911.0
+        },
+        {
+          "item_id": "test_055",
+          "target_word": "ABOVE",
+          "predicted_word": "ABOVE",
+          "raw_reply": "ABOVE",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_056",
+          "target_word": "MOVE",
+          "predicted_word": "MOVE",
+          "raw_reply": "MOVE",
+          "latency_ms": 858.0
+        },
+        {
+          "item_id": "test_057",
+          "target_word": "THINGS",
+          "predicted_word": "T41NGS",
+          "raw_reply": "T41NGS",
+          "latency_ms": 986.0
+        },
+        {
+          "item_id": "test_058",
+          "target_word": "GODS",
+          "predicted_word": "GODS",
+          "raw_reply": "GODS",
+          "latency_ms": 865.0
+        },
+        {
+          "item_id": "test_059",
+          "target_word": "HIGH",
+          "predicted_word": "HIGH",
+          "raw_reply": "HIGH",
+          "latency_ms": 857.0
+        },
+        {
+          "item_id": "test_060",
+          "target_word": "GLACIER",
+          "predicted_word": "GLACIER",
+          "raw_reply": "GLACIER",
+          "latency_ms": 969.0
+        },
+        {
+          "item_id": "test_061",
+          "target_word": "SOIL",
+          "predicted_word": "SOII",
+          "raw_reply": "SOII",
+          "latency_ms": 863.0
+        },
+        {
+          "item_id": "test_062",
+          "target_word": "TRAFFIC",
+          "predicted_word": "TRAFFIC",
+          "raw_reply": "TRAFFIC",
+          "latency_ms": 964.0
+        },
+        {
+          "item_id": "test_063",
+          "target_word": "EXAMPLE",
+          "predicted_word": "EXAMPLE",
+          "raw_reply": "EXAMPLE",
+          "latency_ms": 934.0
+        },
+        {
+          "item_id": "test_064",
+          "target_word": "PREGNANT",
+          "predicted_word": "PREGNANT",
+          "raw_reply": "PREGNANT",
+          "latency_ms": 966.0
+        },
+        {
+          "item_id": "test_065",
+          "target_word": "SECOND",
+          "predicted_word": "SECOND",
+          "raw_reply": "SECOND",
+          "latency_ms": 936.0
+        },
+        {
+          "item_id": "test_066",
+          "target_word": "SAID",
+          "predicted_word": "SAID",
+          "raw_reply": "SAID",
+          "latency_ms": 895.0
+        },
+        {
+          "item_id": "test_067",
+          "target_word": "PART",
+          "predicted_word": "PART",
+          "raw_reply": "PART",
+          "latency_ms": 865.0
+        },
+        {
+          "item_id": "test_068",
+          "target_word": "OCEANS",
+          "predicted_word": "OCEANS",
+          "raw_reply": "OCEANS",
+          "latency_ms": 977.0
+        },
+        {
+          "item_id": "test_069",
+          "target_word": "BLOOD",
+          "predicted_word": "BLOOD",
+          "raw_reply": "BLOOD",
+          "latency_ms": 948.0
+        },
+        {
+          "item_id": "test_070",
+          "target_word": "SQUARE",
+          "predicted_word": "SQUARE",
+          "raw_reply": "SQUARE",
+          "latency_ms": 959.0
+        },
+        {
+          "item_id": "test_071",
+          "target_word": "USE",
+          "predicted_word": "USE",
+          "raw_reply": "USE",
+          "latency_ms": 921.0
+        },
+        {
+          "item_id": "test_072",
+          "target_word": "ISSUES",
+          "predicted_word": "ISSUES",
+          "raw_reply": "ISSUES",
+          "latency_ms": 958.0
+        },
+        {
+          "item_id": "test_073",
+          "target_word": "LEAVES",
+          "predicted_word": "IEAVES",
+          "raw_reply": "I E A V E S",
+          "latency_ms": 1065.0
+        },
+        {
+          "item_id": "test_074",
+          "target_word": "FIGHTING",
+          "predicted_word": "FIGHTING",
+          "raw_reply": "FIGHTING",
+          "latency_ms": 987.0
+        },
+        {
+          "item_id": "test_075",
+          "target_word": "MOUNTAINS",
+          "predicted_word": "MOUNTAINS",
+          "raw_reply": "MOUNTAINS",
+          "latency_ms": 957.0
+        },
+        {
+          "item_id": "test_076",
+          "target_word": "HOTTER",
+          "predicted_word": "HOTTER",
+          "raw_reply": "HOTTER",
+          "latency_ms": 998.0
+        },
+        {
+          "item_id": "test_077",
+          "target_word": "HAD",
+          "predicted_word": "HAD",
+          "raw_reply": "HAD",
+          "latency_ms": 954.0
+        },
+        {
+          "item_id": "test_078",
+          "target_word": "MACHINE",
+          "predicted_word": "MACHINE",
+          "raw_reply": "MACHINE",
+          "latency_ms": 980.0
+        },
+        {
+          "item_id": "test_079",
+          "target_word": "CENTURIA",
+          "predicted_word": "CENTURIA",
+          "raw_reply": "CENTURIA",
+          "latency_ms": 1024.0
+        },
+        {
+          "item_id": "test_080",
+          "target_word": "ITS",
+          "predicted_word": "ITS",
+          "raw_reply": "ITS",
+          "latency_ms": 953.0
+        },
+        {
+          "item_id": "test_081",
+          "target_word": "WATER",
+          "predicted_word": "WATER",
+          "raw_reply": "WATER",
+          "latency_ms": 954.0
+        },
+        {
+          "item_id": "test_082",
+          "target_word": "TERMS",
+          "predicted_word": "TERMS",
+          "raw_reply": "TERMS",
+          "latency_ms": 964.0
+        },
+        {
+          "item_id": "test_083",
+          "target_word": "COURSE",
+          "predicted_word": "COURSE",
+          "raw_reply": "COURSE",
+          "latency_ms": 979.0
+        },
+        {
+          "item_id": "test_084",
+          "target_word": "DESIGNED",
+          "predicted_word": "DESIGNED",
+          "raw_reply": "DESIGNED",
+          "latency_ms": 1012.0
+        },
+        {
+          "item_id": "test_085",
+          "target_word": "BIG",
+          "predicted_word": "BIG",
+          "raw_reply": "BIG",
+          "latency_ms": 943.0
+        },
+        {
+          "item_id": "test_086",
+          "target_word": "DIFFERENT",
+          "predicted_word": "DIFFERENT",
+          "raw_reply": "DIFFERENT",
+          "latency_ms": 956.0
+        },
+        {
+          "item_id": "test_087",
+          "target_word": "ATTRACTED",
+          "predicted_word": "ATTRACTED",
+          "raw_reply": "ATTRACTED",
+          "latency_ms": 941.0
+        },
+        {
+          "item_id": "test_088",
+          "target_word": "AGE",
+          "predicted_word": "AGE",
+          "raw_reply": "AGE",
+          "latency_ms": 923.0
+        },
+        {
+          "item_id": "test_089",
+          "target_word": "AFFECT",
+          "predicted_word": "AFFECTION",
+          "raw_reply": "AFFECTION",
+          "latency_ms": 995.0
+        },
+        {
+          "item_id": "test_090",
+          "target_word": "HAD",
+          "predicted_word": "4AD",
+          "raw_reply": "4AD",
+          "latency_ms": 947.0
+        },
+        {
+          "item_id": "test_091",
+          "target_word": "LESS",
+          "predicted_word": "LESS",
+          "raw_reply": "LESS",
+          "latency_ms": 877.0
+        },
+        {
+          "item_id": "test_092",
+          "target_word": "SOUND",
+          "predicted_word": "SOUND",
+          "raw_reply": "SOUND",
+          "latency_ms": 973.0
+        },
+        {
+          "item_id": "test_093",
+          "target_word": "ATOMS",
+          "predicted_word": "ATOMS",
+          "raw_reply": "ATOMS",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_094",
+          "target_word": "SHORT",
+          "predicted_word": "SHORT",
+          "raw_reply": "SHORT",
+          "latency_ms": 942.0
+        },
+        {
+          "item_id": "test_095",
+          "target_word": "COMPULSORY",
+          "predicted_word": "COMPLISORY",
+          "raw_reply": "COMPLISORY",
+          "latency_ms": 1043.0
+        },
+        {
+          "item_id": "test_096",
+          "target_word": "EQUIPMENT",
+          "predicted_word": "EQUIPMENT",
+          "raw_reply": "EQUIPMENT",
+          "latency_ms": 970.0
+        },
+        {
+          "item_id": "test_097",
+          "target_word": "EACH",
+          "predicted_word": "EACH",
+          "raw_reply": "EACH",
+          "latency_ms": 887.0
+        },
+        {
+          "item_id": "test_098",
+          "target_word": "VOLTAGES",
+          "predicted_word": "VOLTAGES",
+          "raw_reply": "VOLTAGES",
+          "latency_ms": 993.0
+        },
+        {
+          "item_id": "test_099",
+          "target_word": "SKIN",
+          "predicted_word": "SKIN",
+          "raw_reply": "SKIN",
+          "latency_ms": 891.0
+        },
+        {
+          "item_id": "test_100",
+          "target_word": "LIVE",
+          "predicted_word": "IVE",
+          "raw_reply": "IVE",
+          "latency_ms": 886.0
+        },
+        {
+          "item_id": "test_101",
+          "target_word": "SOURCE",
+          "predicted_word": "SOURCE",
+          "raw_reply": "SOURCE",
+          "latency_ms": 961.0
+        },
+        {
+          "item_id": "test_102",
+          "target_word": "STRICT",
+          "predicted_word": "STRICT",
+          "raw_reply": "STRICt",
+          "latency_ms": 979.0
+        },
+        {
+          "item_id": "test_103",
+          "target_word": "CALL",
+          "predicted_word": "CALL",
+          "raw_reply": "CALL",
+          "latency_ms": 864.0
+        },
+        {
+          "item_id": "test_104",
+          "target_word": "COUNTRY",
+          "predicted_word": "COUNTRY",
+          "raw_reply": "COUNTRY",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_105",
+          "target_word": "SINGLE",
+          "predicted_word": "SINGLE",
+          "raw_reply": "SINGLE",
+          "latency_ms": 977.0
+        },
+        {
+          "item_id": "test_106",
+          "target_word": "BECAME",
+          "predicted_word": "BECAME",
+          "raw_reply": "BECAME",
+          "latency_ms": 976.0
+        },
+        {
+          "item_id": "test_107",
+          "target_word": "NILE",
+          "predicted_word": "NILE",
+          "raw_reply": "NILE",
+          "latency_ms": 859.0
+        },
+        {
+          "item_id": "test_108",
+          "target_word": "SEASON",
+          "predicted_word": "SEASON",
+          "raw_reply": "SEASON",
+          "latency_ms": 986.0
+        },
+        {
+          "item_id": "test_109",
+          "target_word": "JOINED",
+          "predicted_word": "JOINED",
+          "raw_reply": "JOINED",
+          "latency_ms": 978.0
+        },
+        {
+          "item_id": "test_110",
+          "target_word": "EASILY",
+          "predicted_word": "EASILY",
+          "raw_reply": "EASILY",
+          "latency_ms": 1005.0
+        },
+        {
+          "item_id": "test_111",
+          "target_word": "PERSON",
+          "predicted_word": "PERSON",
+          "raw_reply": "PERSON",
+          "latency_ms": 962.0
+        },
+        {
+          "item_id": "test_112",
+          "target_word": "MILLION",
+          "predicted_word": "MILLION",
+          "raw_reply": "MILLION",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_113",
+          "target_word": "BASED",
+          "predicted_word": "BASED",
+          "raw_reply": "BASED",
+          "latency_ms": 935.0
+        },
+        {
+          "item_id": "test_114",
+          "target_word": "REMOVE",
+          "predicted_word": "REMOVE",
+          "raw_reply": "REMOVE",
+          "latency_ms": 976.0
+        },
+        {
+          "item_id": "test_115",
+          "target_word": "SURGEONS",
+          "predicted_word": "SURGEONS",
+          "raw_reply": "SURGEONS",
+          "latency_ms": 992.0
+        },
+        {
+          "item_id": "test_116",
+          "target_word": "NOW",
+          "predicted_word": "NOW",
+          "raw_reply": "NOW",
+          "latency_ms": 932.0
+        },
+        {
+          "item_id": "test_117",
+          "target_word": "LAWS",
+          "predicted_word": "LAWS",
+          "raw_reply": "LAW S",
+          "latency_ms": 896.0
+        },
+        {
+          "item_id": "test_118",
+          "target_word": "MAINLY",
+          "predicted_word": "MAINLY",
+          "raw_reply": "MAINLY",
+          "latency_ms": 975.0
+        },
+        {
+          "item_id": "test_119",
+          "target_word": "REACTIVE",
+          "predicted_word": "REACTIVE",
+          "raw_reply": "REACTIVE",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_120",
+          "target_word": "PART",
+          "predicted_word": "PARE",
+          "raw_reply": "PARE",
+          "latency_ms": 872.0
+        },
+        {
+          "item_id": "test_121",
+          "target_word": "SNOW",
+          "predicted_word": "SNOW",
+          "raw_reply": "SNOW",
+          "latency_ms": 869.0
+        },
+        {
+          "item_id": "test_122",
+          "target_word": "THOUSANDS",
+          "predicted_word": "THOUSANDS",
+          "raw_reply": "THOUSANDS",
+          "latency_ms": 958.0
+        },
+        {
+          "item_id": "test_123",
+          "target_word": "TORPEDO",
+          "predicted_word": "TORPEDO",
+          "raw_reply": "TORPEDO",
+          "latency_ms": 980.0
+        },
+        {
+          "item_id": "test_124",
+          "target_word": "LEATHER",
+          "predicted_word": "IEATHER",
+          "raw_reply": "IEATHER",
+          "latency_ms": 987.0
+        },
+        {
+          "item_id": "test_125",
+          "target_word": "SYSTEM",
+          "predicted_word": "SYSTEM",
+          "raw_reply": "SYSTEM",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_126",
+          "target_word": "DYNASTY",
+          "predicted_word": "DYNASTY",
+          "raw_reply": "DYNASTY",
+          "latency_ms": 1021.0
+        },
+        {
+          "item_id": "test_127",
+          "target_word": "JONAS",
+          "predicted_word": "ONAS",
+          "raw_reply": ")ONAS",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_128",
+          "target_word": "THERMAL",
+          "predicted_word": "THERMAI",
+          "raw_reply": "THERMAI",
+          "latency_ms": 1001.0
+        },
+        {
+          "item_id": "test_129",
+          "target_word": "TIME",
+          "predicted_word": "TIME",
+          "raw_reply": "TIME",
+          "latency_ms": 890.0
+        },
+        {
+          "item_id": "test_130",
+          "target_word": "WHO",
+          "predicted_word": "WHO",
+          "raw_reply": "WHO",
+          "latency_ms": 935.0
+        },
+        {
+          "item_id": "test_131",
+          "target_word": "SHELVES",
+          "predicted_word": "SHEIVUES",
+          "raw_reply": "SHEIVUES",
+          "latency_ms": 1008.0
+        },
+        {
+          "item_id": "test_132",
+          "target_word": "ELECTION",
+          "predicted_word": "ELECTION",
+          "raw_reply": "ELECTION",
+          "latency_ms": 985.0
+        },
+        {
+          "item_id": "test_133",
+          "target_word": "TRIBES",
+          "predicted_word": "TRIBES",
+          "raw_reply": "TRIBES",
+          "latency_ms": 990.0
+        },
+        {
+          "item_id": "test_134",
+          "target_word": "TWO",
+          "predicted_word": "TWO",
+          "raw_reply": "TWO",
+          "latency_ms": 932.0
+        },
+        {
+          "item_id": "test_135",
+          "target_word": "THREAT",
+          "predicted_word": "HEREAT",
+          "raw_reply": "HEREAT",
+          "latency_ms": 985.0
+        },
+        {
+          "item_id": "test_136",
+          "target_word": "EASY",
+          "predicted_word": "EASY",
+          "raw_reply": "EASY",
+          "latency_ms": 895.0
+        },
+        {
+          "item_id": "test_137",
+          "target_word": "MEASURE",
+          "predicted_word": "MEASURE",
+          "raw_reply": "MEASURE",
+          "latency_ms": 978.0
+        },
+        {
+          "item_id": "test_138",
+          "target_word": "VACCINATED",
+          "predicted_word": "VACCINATED",
+          "raw_reply": "VACCINATED",
+          "latency_ms": 1054.0
+        },
+        {
+          "item_id": "test_139",
+          "target_word": "RESOLUTION",
+          "predicted_word": "RESOLUTION",
+          "raw_reply": "RESOLUTION",
+          "latency_ms": 1000.0
+        },
+        {
+          "item_id": "test_140",
+          "target_word": "SKIN",
+          "predicted_word": "SKIN",
+          "raw_reply": "SKIN",
+          "latency_ms": 878.0
+        },
+        {
+          "item_id": "test_141",
+          "target_word": "ENERGY",
+          "predicted_word": "ENERGY",
+          "raw_reply": "ENERGY",
+          "latency_ms": 989.0
+        },
+        {
+          "item_id": "test_142",
+          "target_word": "CONTINENT",
+          "predicted_word": "CONTENT",
+          "raw_reply": "CONTENT",
+          "latency_ms": 927.0
+        },
+        {
+          "item_id": "test_143",
+          "target_word": "AVERROES",
+          "predicted_word": "AVERROES",
+          "raw_reply": "AVERROES",
+          "latency_ms": 989.0
+        },
+        {
+          "item_id": "test_144",
+          "target_word": "USES",
+          "predicted_word": "USES",
+          "raw_reply": "USE S",
+          "latency_ms": 905.0
+        },
+        {
+          "item_id": "test_145",
+          "target_word": "GOLD",
+          "predicted_word": "601D",
+          "raw_reply": "601D",
+          "latency_ms": 929.0
+        },
+        {
+          "item_id": "test_146",
+          "target_word": "FISH",
+          "predicted_word": "FISH",
+          "raw_reply": "FISH",
+          "latency_ms": 915.0
+        },
+        {
+          "item_id": "test_147",
+          "target_word": "AIR",
+          "predicted_word": "AIR",
+          "raw_reply": "AIR",
+          "latency_ms": 934.0
+        },
+        {
+          "item_id": "test_148",
+          "target_word": "THING",
+          "predicted_word": "THINK",
+          "raw_reply": "THINK",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_149",
+          "target_word": "CAN",
+          "predicted_word": "CAN",
+          "raw_reply": "CAN",
+          "latency_ms": 941.0
+        },
+        {
+          "item_id": "test_150",
+          "target_word": "CROPS",
+          "predicted_word": "CROPS",
+          "raw_reply": "CROPS",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_151",
+          "target_word": "PEOPLE",
+          "predicted_word": "PEOPLE",
+          "raw_reply": "PEOPLE",
+          "latency_ms": 980.0
+        },
+        {
+          "item_id": "test_152",
+          "target_word": "ENAMEL",
+          "predicted_word": "ENAMEI",
+          "raw_reply": "ENAMEI",
+          "latency_ms": 1024.0
+        },
+        {
+          "item_id": "test_153",
+          "target_word": "REVOLUTION",
+          "predicted_word": "REVOLUTION",
+          "raw_reply": "REVOLUTION",
+          "latency_ms": 999.0
+        },
+        {
+          "item_id": "test_154",
+          "target_word": "MOVING",
+          "predicted_word": "MOVING",
+          "raw_reply": "MOVING",
+          "latency_ms": 1000.0
+        },
+        {
+          "item_id": "test_155",
+          "target_word": "DONE",
+          "predicted_word": "DONE",
+          "raw_reply": "DONE",
+          "latency_ms": 851.0
+        },
+        {
+          "item_id": "test_156",
+          "target_word": "WIDER",
+          "predicted_word": "WIDER",
+          "raw_reply": "WIDER",
+          "latency_ms": 965.0
+        },
+        {
+          "item_id": "test_157",
+          "target_word": "SYMBIOSIS",
+          "predicted_word": "SYMBIOSIS",
+          "raw_reply": "SYMBIOSIS",
+          "latency_ms": 926.0
+        },
+        {
+          "item_id": "test_158",
+          "target_word": "BIRD",
+          "predicted_word": "BIRD",
+          "raw_reply": "BIRD",
+          "latency_ms": 861.0
+        },
+        {
+          "item_id": "test_159",
+          "target_word": "DUST",
+          "predicted_word": "DUST",
+          "raw_reply": "DUST",
+          "latency_ms": 888.0
+        },
+        {
+          "item_id": "test_160",
+          "target_word": "CLAY",
+          "predicted_word": "CLAY",
+          "raw_reply": "CLAY",
+          "latency_ms": 848.0
+        },
+        {
+          "item_id": "test_161",
+          "target_word": "HELD",
+          "predicted_word": "HEID",
+          "raw_reply": "HEID",
+          "latency_ms": 865.0
+        },
+        {
+          "item_id": "test_162",
+          "target_word": "EXPELLED",
+          "predicted_word": "EXPERIENCED",
+          "raw_reply": "EXPERIENCED",
+          "latency_ms": 983.0
+        },
+        {
+          "item_id": "test_163",
+          "target_word": "EVEN",
+          "predicted_word": "EVEN",
+          "raw_reply": "EVEN",
+          "latency_ms": 878.0
+        },
+        {
+          "item_id": "test_164",
+          "target_word": "PERCENT",
+          "predicted_word": "PERCENT",
+          "raw_reply": "PERCENT",
+          "latency_ms": 979.0
+        },
+        {
+          "item_id": "test_165",
+          "target_word": "RULED",
+          "predicted_word": "RULED",
+          "raw_reply": "RULED",
+          "latency_ms": 930.0
+        },
+        {
+          "item_id": "test_166",
+          "target_word": "TYPE",
+          "predicted_word": "TYPE",
+          "raw_reply": "TYPE",
+          "latency_ms": 849.0
+        },
+        {
+          "item_id": "test_167",
+          "target_word": "LETTER",
+          "predicted_word": "ETTER",
+          "raw_reply": "/ETTER",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_168",
+          "target_word": "HELPED",
+          "predicted_word": "HGFPED",
+          "raw_reply": "HGF/PED",
+          "latency_ms": 1027.0
+        },
+        {
+          "item_id": "test_169",
+          "target_word": "HELPED",
+          "predicted_word": "HEIPED",
+          "raw_reply": "HEIPED",
+          "latency_ms": 1014.0
+        },
+        {
+          "item_id": "test_170",
+          "target_word": "TELL",
+          "predicted_word": "TELL",
+          "raw_reply": "TELL",
+          "latency_ms": 895.0
+        },
+        {
+          "item_id": "test_171",
+          "target_word": "ELECTED",
+          "predicted_word": "ELECTED",
+          "raw_reply": "ELECTED",
+          "latency_ms": 1020.0
+        },
+        {
+          "item_id": "test_172",
+          "target_word": "LETTER",
+          "predicted_word": "LETTER",
+          "raw_reply": "LETTER",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_173",
+          "target_word": "THEN",
+          "predicted_word": "THEN",
+          "raw_reply": "THEN",
+          "latency_ms": 879.0
+        },
+        {
+          "item_id": "test_174",
+          "target_word": "TYPE",
+          "predicted_word": "TYPE",
+          "raw_reply": "TYPE",
+          "latency_ms": 883.0
+        },
+        {
+          "item_id": "test_175",
+          "target_word": "WHEEL",
+          "predicted_word": "WHEEI",
+          "raw_reply": "WHEEI",
+          "latency_ms": 984.0
+        },
+        {
+          "item_id": "test_176",
+          "target_word": "LET",
+          "predicted_word": "LET",
+          "raw_reply": "LET",
+          "latency_ms": 941.0
+        },
+        {
+          "item_id": "test_177",
+          "target_word": "KEPT",
+          "predicted_word": "KEPT",
+          "raw_reply": "KEPT",
+          "latency_ms": 895.0
+        },
+        {
+          "item_id": "test_178",
+          "target_word": "REFLECT",
+          "predicted_word": "REFLECT",
+          "raw_reply": "REFLECT",
+          "latency_ms": 991.0
+        },
+        {
+          "item_id": "test_179",
+          "target_word": "FREE",
+          "predicted_word": "FREE",
+          "raw_reply": "FREE",
+          "latency_ms": 899.0
+        },
+        {
+          "item_id": "test_180",
+          "target_word": "WENT",
+          "predicted_word": "WENT",
+          "raw_reply": "WENT",
+          "latency_ms": 887.0
+        },
+        {
+          "item_id": "test_181",
+          "target_word": "PUMP",
+          "predicted_word": "PUMP",
+          "raw_reply": "PUMP",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_182",
+          "target_word": "NEW",
+          "predicted_word": "NEW",
+          "raw_reply": "NEW",
+          "latency_ms": 937.0
+        },
+        {
+          "item_id": "test_183",
+          "target_word": "FREED",
+          "predicted_word": "FREED",
+          "raw_reply": "FREED",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_184",
+          "target_word": "FEW",
+          "predicted_word": "FEW",
+          "raw_reply": "FEW",
+          "latency_ms": 969.0
+        },
+        {
+          "item_id": "test_185",
+          "target_word": "MUCH",
+          "predicted_word": "WUCH",
+          "raw_reply": "WUCH",
+          "latency_ms": 880.0
+        },
+        {
+          "item_id": "test_186",
+          "target_word": "NEEDED",
+          "predicted_word": "NEEDED",
+          "raw_reply": "NEEDED",
+          "latency_ms": 1008.0
+        },
+        {
+          "item_id": "test_187",
+          "target_word": "DEL",
+          "predicted_word": "DE",
+          "raw_reply": "DE!",
+          "latency_ms": 950.0
+        },
+        {
+          "item_id": "test_188",
+          "target_word": "DEEP",
+          "predicted_word": "DEEP",
+          "raw_reply": "DEEP",
+          "latency_ms": 881.0
+        },
+        {
+          "item_id": "test_189",
+          "target_word": "REMEDY",
+          "predicted_word": "REMEDY",
+          "raw_reply": "REMEDY",
+          "latency_ms": 1002.0
+        },
+        {
+          "item_id": "test_190",
+          "target_word": "THEN",
+          "predicted_word": "THEN",
+          "raw_reply": "THEN",
+          "latency_ms": 878.0
+        },
+        {
+          "item_id": "test_191",
+          "target_word": "NEW",
+          "predicted_word": "NEW",
+          "raw_reply": "NEW",
+          "latency_ms": 924.0
+        },
+        {
+          "item_id": "test_192",
+          "target_word": "ENTER",
+          "predicted_word": "ENTER",
+          "raw_reply": "ENTER",
+          "latency_ms": 962.0
+        },
+        {
+          "item_id": "test_193",
+          "target_word": "TEXT",
+          "predicted_word": "TEXT",
+          "raw_reply": "TEXT",
+          "latency_ms": 886.0
+        },
+        {
+          "item_id": "test_194",
+          "target_word": "LET",
+          "predicted_word": "IET",
+          "raw_reply": "IET",
+          "latency_ms": 969.0
+        },
+        {
+          "item_id": "test_195",
+          "target_word": "TEETH",
+          "predicted_word": "TEETH",
+          "raw_reply": "TEETH",
+          "latency_ms": 974.0
+        },
+        {
+          "item_id": "test_196",
+          "target_word": "NEEDED",
+          "predicted_word": "NEEDED",
+          "raw_reply": "NEEDED",
+          "latency_ms": 1009.0
+        },
+        {
+          "item_id": "test_197",
+          "target_word": "WET",
+          "predicted_word": "WET",
+          "raw_reply": "WET",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_198",
+          "target_word": "PUNCHED",
+          "predicted_word": "PUNCHED",
+          "raw_reply": "PUNCHED",
+          "latency_ms": 991.0
+        },
+        {
+          "item_id": "test_199",
+          "target_word": "LED",
+          "predicted_word": "1E0",
+          "raw_reply": "1E0",
+          "latency_ms": 964.0
+        },
+        {
+          "item_id": "test_200",
+          "target_word": "NEED",
+          "predicted_word": "NEED",
+          "raw_reply": "NEED",
+          "latency_ms": 876.0
+        },
+        {
+          "item_id": "test_201",
+          "target_word": "HER",
+          "predicted_word": "HER",
+          "raw_reply": "HER",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_202",
+          "target_word": "PURE",
+          "predicted_word": "PURE",
+          "raw_reply": "PURE",
+          "latency_ms": 889.0
+        },
+        {
+          "item_id": "test_203",
+          "target_word": "TELL",
+          "predicted_word": "TELL",
+          "raw_reply": "TELL",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_204",
+          "target_word": "EXCEPT",
+          "predicted_word": "EXCEPT",
+          "raw_reply": "EXCEPT",
+          "latency_ms": 999.0
+        },
+        {
+          "item_id": "test_205",
+          "target_word": "NEVER",
+          "predicted_word": "NEVER",
+          "raw_reply": "NEVER",
+          "latency_ms": 973.0
+        },
+        {
+          "item_id": "test_206",
+          "target_word": "END",
+          "predicted_word": "END",
+          "raw_reply": "END",
+          "latency_ms": 936.0
+        },
+        {
+          "item_id": "test_207",
+          "target_word": "CENTERED",
+          "predicted_word": "CENTERED",
+          "raw_reply": "CENTERED",
+          "latency_ms": 952.0
+        },
+        {
+          "item_id": "test_208",
+          "target_word": "ELECT",
+          "predicted_word": "ELECT",
+          "raw_reply": "ELECT",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_209",
+          "target_word": "DRY",
+          "predicted_word": "PRY",
+          "raw_reply": "PRY",
+          "latency_ms": 957.0
+        },
+        {
+          "item_id": "test_210",
+          "target_word": "HELD",
+          "predicted_word": "HEID",
+          "raw_reply": "HEID",
+          "latency_ms": 877.0
+        },
+        {
+          "item_id": "test_211",
+          "target_word": "TURKEY",
+          "predicted_word": "TURKEY",
+          "raw_reply": "TURKEY",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_212",
+          "target_word": "ELEMENT",
+          "predicted_word": "ELEVENT",
+          "raw_reply": "ELEVENT",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_213",
+          "target_word": "CELL",
+          "predicted_word": "CEIL",
+          "raw_reply": "CEIL",
+          "latency_ms": 853.0
+        },
+        {
+          "item_id": "test_214",
+          "target_word": "RECENT",
+          "predicted_word": "RECENT",
+          "raw_reply": "RECENT",
+          "latency_ms": 940.0
+        },
+        {
+          "item_id": "test_215",
+          "target_word": "MERCURY",
+          "predicted_word": "MECUEY",
+          "raw_reply": "MECUEY",
+          "latency_ms": 980.0
+        },
+        {
+          "item_id": "test_216",
+          "target_word": "HELP",
+          "predicted_word": "HE1P",
+          "raw_reply": "HE1P",
+          "latency_ms": 871.0
+        },
+        {
+          "item_id": "test_217",
+          "target_word": "CENTRE",
+          "predicted_word": "CENTRE",
+          "raw_reply": "CENTRE",
+          "latency_ms": 949.0
+        },
+        {
+          "item_id": "test_218",
+          "target_word": "TEXT",
+          "predicted_word": "TEXT",
+          "raw_reply": "TEXT",
+          "latency_ms": 860.0
+        },
+        {
+          "item_id": "test_219",
+          "target_word": "TEETH",
+          "predicted_word": "TEETH",
+          "raw_reply": "TEETH",
+          "latency_ms": 924.0
+        },
+        {
+          "item_id": "test_220",
+          "target_word": "PURE",
+          "predicted_word": "PURE",
+          "raw_reply": "PURE",
+          "latency_ms": 851.0
+        },
+        {
+          "item_id": "test_221",
+          "target_word": "RED",
+          "predicted_word": "RED",
+          "raw_reply": "RED",
+          "latency_ms": 921.0
+        },
+        {
+          "item_id": "test_222",
+          "target_word": "PULLED",
+          "predicted_word": "PULLED",
+          "raw_reply": "PULLED",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_223",
+          "target_word": "NEED",
+          "predicted_word": "NEED",
+          "raw_reply": "NEED",
+          "latency_ms": 868.0
+        },
+        {
+          "item_id": "test_224",
+          "target_word": "RUN",
+          "predicted_word": "RUN",
+          "raw_reply": "RUN",
+          "latency_ms": 951.0
+        },
+        {
+          "item_id": "test_225",
+          "target_word": "CENTURY",
+          "predicted_word": "CENTURY",
+          "raw_reply": "CENTURY",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_226",
+          "target_word": "FEW",
+          "predicted_word": "FKW",
+          "raw_reply": "Fk=w",
+          "latency_ms": 958.0
+        },
+        {
+          "item_id": "test_227",
+          "target_word": "FUNDED",
+          "predicted_word": "FUNDED",
+          "raw_reply": "FUNDED",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_228",
+          "target_word": "LED",
+          "predicted_word": "13D",
+          "raw_reply": "13D",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_229",
+          "target_word": "DRY",
+          "predicted_word": "0R4",
+          "raw_reply": "0R4",
+          "latency_ms": 943.0
+        },
+        {
+          "item_id": "test_230",
+          "target_word": "TRUE",
+          "predicted_word": "TRUE",
+          "raw_reply": "TRUE",
+          "latency_ms": 891.0
+        },
+        {
+          "item_id": "test_231",
+          "target_word": "EVERYWHERE",
+          "predicted_word": "EVERYWHERE",
+          "raw_reply": "EVERYWHERE",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_232",
+          "target_word": "PULP",
+          "predicted_word": "PULP",
+          "raw_reply": "PULP",
+          "latency_ms": 906.0
+        },
+        {
+          "item_id": "test_233",
+          "target_word": "RECYCLED",
+          "predicted_word": "RECYCLED",
+          "raw_reply": "RECYCLED",
+          "latency_ms": 1000.0
+        },
+        {
+          "item_id": "test_234",
+          "target_word": "WHY",
+          "predicted_word": "MHY",
+          "raw_reply": "M H Y",
+          "latency_ms": 973.0
+        },
+        {
+          "item_id": "test_235",
+          "target_word": "ELEMENT",
+          "predicted_word": "ELEMENT",
+          "raw_reply": "ELEMENT",
+          "latency_ms": 1011.0
+        },
+        {
+          "item_id": "test_236",
+          "target_word": "CENTURY",
+          "predicted_word": "CENTURY",
+          "raw_reply": "CENTURY",
+          "latency_ms": 977.0
+        },
+        {
+          "item_id": "test_237",
+          "target_word": "CURRENT",
+          "predicted_word": "CURRENT",
+          "raw_reply": "CURRENT",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_238",
+          "target_word": "WHY",
+          "predicted_word": "WHY",
+          "raw_reply": "WHY",
+          "latency_ms": 947.0
+        },
+        {
+          "item_id": "test_239",
+          "target_word": "YET",
+          "predicted_word": "YET",
+          "raw_reply": "YET",
+          "latency_ms": 985.0
+        },
+        {
+          "item_id": "test_240",
+          "target_word": "JENNER",
+          "predicted_word": "JENNEE",
+          "raw_reply": "JENNEE",
+          "latency_ms": 1029.0
+        },
+        {
+          "item_id": "test_241",
+          "target_word": "MEN",
+          "predicted_word": "MEN",
+          "raw_reply": "MEN",
+          "latency_ms": 974.0
+        },
+        {
+          "item_id": "test_242",
+          "target_word": "WENT",
+          "predicted_word": "WENT",
+          "raw_reply": "WENT",
+          "latency_ms": 937.0
+        },
+        {
+          "item_id": "test_243",
+          "target_word": "END",
+          "predicted_word": "END",
+          "raw_reply": "END",
+          "latency_ms": 953.0
+        },
+        {
+          "item_id": "test_244",
+          "target_word": "CULTURE",
+          "predicted_word": "CULTURE",
+          "raw_reply": "CULTURE",
+          "latency_ms": 1041.0
+        },
+        {
+          "item_id": "test_245",
+          "target_word": "MUCH",
+          "predicted_word": "MUCH",
+          "raw_reply": "MUCH",
+          "latency_ms": 928.0
+        },
+        {
+          "item_id": "test_246",
+          "target_word": "THREE",
+          "predicted_word": "THERE",
+          "raw_reply": "THERE",
+          "latency_ms": 977.0
+        },
+        {
+          "item_id": "test_247",
+          "target_word": "REFLECTED",
+          "predicted_word": "REFLECTED",
+          "raw_reply": "REFLECTED",
+          "latency_ms": 976.0
+        },
+        {
+          "item_id": "test_248",
+          "target_word": "NEXT",
+          "predicted_word": "NEX7",
+          "raw_reply": "NEX7",
+          "latency_ms": 906.0
+        },
+        {
+          "item_id": "test_249",
+          "target_word": "CENTRE",
+          "predicted_word": "CENTRE",
+          "raw_reply": "CENTRE",
+          "latency_ms": 1004.0
+        },
+        {
+          "item_id": "test_250",
+          "target_word": "PUT",
+          "predicted_word": "PUT",
+          "raw_reply": "PUT",
+          "latency_ms": 964.0
+        },
+        {
+          "item_id": "test_251",
+          "target_word": "REDUCED",
+          "predicted_word": "REORDERED",
+          "raw_reply": "REORDERED",
+          "latency_ms": 1027.0
+        },
+        {
+          "item_id": "test_252",
+          "target_word": "FREQUENTLY",
+          "predicted_word": "FREQUENT14",
+          "raw_reply": "FREQUENT>14",
+          "latency_ms": 1110.0
+        },
+        {
+          "item_id": "test_253",
+          "target_word": "WEEK",
+          "predicted_word": "WEEK",
+          "raw_reply": "WEEK",
+          "latency_ms": 938.0
+        },
+        {
+          "item_id": "test_254",
+          "target_word": "LEFT",
+          "predicted_word": "LEFT",
+          "raw_reply": "LEFT",
+          "latency_ms": 892.0
+        },
+        {
+          "item_id": "test_255",
+          "target_word": "FED",
+          "predicted_word": "FED",
+          "raw_reply": "FED",
+          "latency_ms": 984.0
+        },
+        {
+          "item_id": "test_256",
+          "target_word": "THREE",
+          "predicted_word": "THREE",
+          "raw_reply": "THREE",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_257",
+          "target_word": "YET",
+          "predicted_word": "XET",
+          "raw_reply": "XET",
+          "latency_ms": 951.0
+        },
+        {
+          "item_id": "test_258",
+          "target_word": "WELL",
+          "predicted_word": "WELL",
+          "raw_reply": "WELL",
+          "latency_ms": 888.0
+        },
+        {
+          "item_id": "test_259",
+          "target_word": "CPU",
+          "predicted_word": "CPU",
+          "raw_reply": "cpu",
+          "latency_ms": 958.0
+        },
+        {
+          "item_id": "test_260",
+          "target_word": "JENNER",
+          "predicted_word": "JENNER",
+          "raw_reply": "JENNER",
+          "latency_ms": 1031.0
+        },
+        {
+          "item_id": "test_261",
+          "target_word": "MET",
+          "predicted_word": "MET",
+          "raw_reply": "MET",
+          "latency_ms": 960.0
+        },
+        {
+          "item_id": "test_262",
+          "target_word": "TRUE",
+          "predicted_word": "TRUE",
+          "raw_reply": "TRUE",
+          "latency_ms": 886.0
+        },
+        {
+          "item_id": "test_263",
+          "target_word": "MERCURY",
+          "predicted_word": "MERCURY",
+          "raw_reply": "MERCURY",
+          "latency_ms": 1015.0
+        },
+        {
+          "item_id": "test_264",
+          "target_word": "CULTURE",
+          "predicted_word": "CULTURE",
+          "raw_reply": "CULTURE",
+          "latency_ms": 1025.0
+        },
+        {
+          "item_id": "test_265",
+          "target_word": "EVER",
+          "predicted_word": "EVER",
+          "raw_reply": "EVER",
+          "latency_ms": 875.0
+        },
+        {
+          "item_id": "test_266",
+          "target_word": "PUNCHED",
+          "predicted_word": "PUNCHED",
+          "raw_reply": "PUNCHED",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_267",
+          "target_word": "EVENT",
+          "predicted_word": "EVENT",
+          "raw_reply": "EVENT",
+          "latency_ms": 950.0
+        },
+        {
+          "item_id": "test_268",
+          "target_word": "MEET",
+          "predicted_word": "MEET",
+          "raw_reply": "MEET",
+          "latency_ms": 898.0
+        },
+        {
+          "item_id": "test_269",
+          "target_word": "WELL",
+          "predicted_word": "WELL",
+          "raw_reply": "WELL",
+          "latency_ms": 884.0
+        },
+        {
+          "item_id": "test_270",
+          "target_word": "NEWLY",
+          "predicted_word": "NEWLY",
+          "raw_reply": "NEWLY",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_271",
+          "target_word": "KHUFU",
+          "predicted_word": "KH49U",
+          "raw_reply": "KH49U",
+          "latency_ms": 1010.0
+        },
+        {
+          "item_id": "test_272",
+          "target_word": "KNEW",
+          "predicted_word": "KUSEW",
+          "raw_reply": "KUSEW",
+          "latency_ms": 928.0
+        },
+        {
+          "item_id": "test_273",
+          "target_word": "FUEL",
+          "predicted_word": "FUEL",
+          "raw_reply": "FUEL",
+          "latency_ms": 961.0
+        },
+        {
+          "item_id": "test_274",
+          "target_word": "JURY",
+          "predicted_word": "JUAN",
+          "raw_reply": "JUAN",
+          "latency_ms": 907.0
+        },
+        {
+          "item_id": "test_275",
+          "target_word": "EVERY",
+          "predicted_word": "EVERY",
+          "raw_reply": "EVERY",
+          "latency_ms": 981.0
+        },
+        {
+          "item_id": "test_276",
+          "target_word": "PER",
+          "predicted_word": "DER",
+          "raw_reply": "DER",
+          "latency_ms": 964.0
+        },
+        {
+          "item_id": "test_277",
+          "target_word": "FREE",
+          "predicted_word": "FREE",
+          "raw_reply": "FREE",
+          "latency_ms": 858.0
+        },
+        {
+          "item_id": "test_278",
+          "target_word": "PUT",
+          "predicted_word": "PUT",
+          "raw_reply": "PUT",
+          "latency_ms": 931.0
+        },
+        {
+          "item_id": "test_279",
+          "target_word": "CELL",
+          "predicted_word": "CELL",
+          "raw_reply": "CELL",
+          "latency_ms": 896.0
+        },
+        {
+          "item_id": "test_280",
+          "target_word": "DEPENDED",
+          "predicted_word": "DEPENDED",
+          "raw_reply": "DEPENDED",
+          "latency_ms": 980.0
+        },
+        {
+          "item_id": "test_281",
+          "target_word": "PREVENT",
+          "predicted_word": "PREVENT",
+          "raw_reply": "PREVENT",
+          "latency_ms": 1002.0
+        },
+        {
+          "item_id": "test_282",
+          "target_word": "WEEK",
+          "predicted_word": "WEEK",
+          "raw_reply": "WEEK",
+          "latency_ms": 902.0
+        },
+        {
+          "item_id": "test_283",
+          "target_word": "DEPEND",
+          "predicted_word": "DEPEND",
+          "raw_reply": "DEPEND",
+          "latency_ms": 984.0
+        },
+        {
+          "item_id": "test_284",
+          "target_word": "FURTHER",
+          "predicted_word": "FURTHER",
+          "raw_reply": "FURTHER",
+          "latency_ms": 990.0
+        },
+        {
+          "item_id": "test_285",
+          "target_word": "EVERYWHERE",
+          "predicted_word": "EVERYWHERE",
+          "raw_reply": "EVERYWHERE",
+          "latency_ms": 1028.0
+        },
+        {
+          "item_id": "test_286",
+          "target_word": "HELP",
+          "predicted_word": "HELP",
+          "raw_reply": "H E L P",
+          "latency_ms": 948.0
+        },
+        {
+          "item_id": "test_287",
+          "target_word": "FULL",
+          "predicted_word": "FULL",
+          "raw_reply": "FULL",
+          "latency_ms": 882.0
+        },
+        {
+          "item_id": "test_288",
+          "target_word": "EVEN",
+          "predicted_word": "EVEN",
+          "raw_reply": "EVEN",
+          "latency_ms": 893.0
+        },
+        {
+          "item_id": "test_289",
+          "target_word": "NEXT",
+          "predicted_word": "NEX7",
+          "raw_reply": "NEX7",
+          "latency_ms": 904.0
+        },
+        {
+          "item_id": "test_290",
+          "target_word": "LEFT",
+          "predicted_word": "1EFT",
+          "raw_reply": "1 E f T",
+          "latency_ms": 922.0
+        },
+        {
+          "item_id": "test_291",
+          "target_word": "ENTERED",
+          "predicted_word": "ENTERED",
+          "raw_reply": "ENTERED",
+          "latency_ms": 1032.0
+        },
+        {
+          "item_id": "test_292",
+          "target_word": "FLY",
+          "predicted_word": "F11",
+          "raw_reply": "F11",
+          "latency_ms": 973.0
+        },
+        {
+          "item_id": "test_293",
+          "target_word": "CHURCH",
+          "predicted_word": "CHURCH",
+          "raw_reply": "CHURCH",
+          "latency_ms": 1000.0
+        },
+        {
+          "item_id": "test_294",
+          "target_word": "CENTER",
+          "predicted_word": "CENTER",
+          "raw_reply": "CENTER",
+          "latency_ms": 1009.0
+        },
+        {
+          "item_id": "test_295",
+          "target_word": "PULLED",
+          "predicted_word": "PULLED",
+          "raw_reply": "PULLED",
+          "latency_ms": 1012.0
+        },
+        {
+          "item_id": "test_296",
+          "target_word": "EVERY",
+          "predicted_word": "EVERY",
+          "raw_reply": "EVERY",
+          "latency_ms": 994.0
+        },
+        {
+          "item_id": "test_297",
+          "target_word": "ENDED",
+          "predicted_word": "ENDS",
+          "raw_reply": "ENDS",
+          "latency_ms": 973.0
+        },
+        {
+          "item_id": "test_298",
+          "target_word": "FURTHER",
+          "predicted_word": "FURTHER",
+          "raw_reply": "FURTHER",
+          "latency_ms": 1012.0
+        },
+        {
+          "item_id": "test_299",
+          "target_word": "MELT",
+          "predicted_word": "MELT",
+          "raw_reply": "M E L T",
+          "latency_ms": 933.0
+        },
+        {
+          "item_id": "test_300",
+          "target_word": "RUN",
+          "predicted_word": "RUN",
+          "raw_reply": "RUN",
+          "latency_ms": 927.0
+        }
+      ]
+    },
+    "strip_sentence": {
+      "word_acc_pct": 89.33333333333333,
+      "char_acc_pct": 94.45876288659794,
+      "latency_mean_ms": 965.4233333333333,
+      "records": [
+        {
+          "item_id": "test_001",
+          "target_word": "2000",
+          "predicted_word": "TWENTYTHOUSAND",
+          "raw_reply": "TWENTYTHOUSAND",
+          "latency_ms": 940.0
+        },
+        {
+          "item_id": "test_002",
+          "target_word": "1876",
+          "predicted_word": "1876",
+          "raw_reply": "1876",
+          "latency_ms": 892.0
+        },
+        {
+          "item_id": "test_003",
+          "target_word": "510",
+          "predicted_word": "510",
+          "raw_reply": "510",
+          "latency_ms": 964.0
+        },
+        {
+          "item_id": "test_004",
+          "target_word": "4000",
+          "predicted_word": "4000",
+          "raw_reply": "4000",
+          "latency_ms": 911.0
+        },
+        {
+          "item_id": "test_005",
+          "target_word": "1917",
+          "predicted_word": "1917",
+          "raw_reply": "1917",
+          "latency_ms": 936.0
+        },
+        {
+          "item_id": "test_006",
+          "target_word": "660",
+          "predicted_word": "660",
+          "raw_reply": "660",
+          "latency_ms": 970.0
+        },
+        {
+          "item_id": "test_007",
+          "target_word": "100",
+          "predicted_word": "100",
+          "raw_reply": "100",
+          "latency_ms": 922.0
+        },
+        {
+          "item_id": "test_008",
+          "target_word": "100",
+          "predicted_word": "ONEHUNDRED",
+          "raw_reply": "ONE HUNDRED",
+          "latency_ms": 962.0
+        },
+        {
+          "item_id": "test_009",
+          "target_word": "1800",
+          "predicted_word": "1800",
+          "raw_reply": "1800",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_010",
+          "target_word": "1935",
+          "predicted_word": "1935",
+          "raw_reply": "1935",
+          "latency_ms": 901.0
+        },
+        {
+          "item_id": "test_011",
+          "target_word": "1922",
+          "predicted_word": "1952",
+          "raw_reply": "1952",
+          "latency_ms": 904.0
+        },
+        {
+          "item_id": "test_012",
+          "target_word": "400",
+          "predicted_word": "400",
+          "raw_reply": "400",
+          "latency_ms": 941.0
+        },
+        {
+          "item_id": "test_013",
+          "target_word": "300",
+          "predicted_word": "THREEHUNDRED",
+          "raw_reply": "THREE HUNDRED",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_014",
+          "target_word": "1825",
+          "predicted_word": "ENGLAND",
+          "raw_reply": "ENGLAND",
+          "latency_ms": 881.0
+        },
+        {
+          "item_id": "test_015",
+          "target_word": "1939",
+          "predicted_word": "1939",
+          "raw_reply": "1939",
+          "latency_ms": 892.0
+        },
+        {
+          "item_id": "test_016",
+          "target_word": "751",
+          "predicted_word": "751",
+          "raw_reply": "751",
+          "latency_ms": 943.0
+        },
+        {
+          "item_id": "test_017",
+          "target_word": "1402",
+          "predicted_word": "1402",
+          "raw_reply": "1402",
+          "latency_ms": 905.0
+        },
+        {
+          "item_id": "test_018",
+          "target_word": "3150",
+          "predicted_word": "3150",
+          "raw_reply": "3150",
+          "latency_ms": 942.0
+        },
+        {
+          "item_id": "test_019",
+          "target_word": "1914",
+          "predicted_word": "1914",
+          "raw_reply": "1914",
+          "latency_ms": 909.0
+        },
+        {
+          "item_id": "test_020",
+          "target_word": "1772",
+          "predicted_word": "1772",
+          "raw_reply": "1772",
+          "latency_ms": 918.0
+        },
+        {
+          "item_id": "test_021",
+          "target_word": "HOT",
+          "predicted_word": "HOT",
+          "raw_reply": "hot",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_022",
+          "target_word": "FORM",
+          "predicted_word": "FORM",
+          "raw_reply": "FORM",
+          "latency_ms": 876.0
+        },
+        {
+          "item_id": "test_023",
+          "target_word": "USE",
+          "predicted_word": "USE",
+          "raw_reply": "USE",
+          "latency_ms": 919.0
+        },
+        {
+          "item_id": "test_024",
+          "target_word": "SYSTEM",
+          "predicted_word": "SYSTEM",
+          "raw_reply": "SYSTEM",
+          "latency_ms": 987.0
+        },
+        {
+          "item_id": "test_025",
+          "target_word": "BUZZ",
+          "predicted_word": "BUTZ",
+          "raw_reply": "BUTZ",
+          "latency_ms": 901.0
+        },
+        {
+          "item_id": "test_026",
+          "target_word": "CARL",
+          "predicted_word": "CARL",
+          "raw_reply": "CARL",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_027",
+          "target_word": "SPEAKERS",
+          "predicted_word": "SPEAKERS",
+          "raw_reply": "SPEAKERS",
+          "latency_ms": 1040.0
+        },
+        {
+          "item_id": "test_028",
+          "target_word": "PRODUCTION",
+          "predicted_word": "PRODUCTION",
+          "raw_reply": "PRODUCTION",
+          "latency_ms": 1037.0
+        },
+        {
+          "item_id": "test_029",
+          "target_word": "TAKEN",
+          "predicted_word": "TAKEN",
+          "raw_reply": "TAKEN",
+          "latency_ms": 991.0
+        },
+        {
+          "item_id": "test_030",
+          "target_word": "TWO",
+          "predicted_word": "TWO",
+          "raw_reply": "TWO",
+          "latency_ms": 974.0
+        },
+        {
+          "item_id": "test_031",
+          "target_word": "HOW",
+          "predicted_word": "HOW",
+          "raw_reply": "HOW",
+          "latency_ms": 935.0
+        },
+        {
+          "item_id": "test_032",
+          "target_word": "ONE",
+          "predicted_word": "ONE",
+          "raw_reply": "ONE",
+          "latency_ms": 962.0
+        },
+        {
+          "item_id": "test_033",
+          "target_word": "IMAGO",
+          "predicted_word": "IMAGO",
+          "raw_reply": "IMAGO",
+          "latency_ms": 979.0
+        },
+        {
+          "item_id": "test_034",
+          "target_word": "PERSON",
+          "predicted_word": "PERSON",
+          "raw_reply": "PERSON",
+          "latency_ms": 993.0
+        },
+        {
+          "item_id": "test_035",
+          "target_word": "EGYPT",
+          "predicted_word": "EGYPT",
+          "raw_reply": "EGYPT",
+          "latency_ms": 975.0
+        },
+        {
+          "item_id": "test_036",
+          "target_word": "LANGUAGE",
+          "predicted_word": "LANGUAGE",
+          "raw_reply": "LANGUAGE",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_037",
+          "target_word": "BULGARIA",
+          "predicted_word": "BULGARIA",
+          "raw_reply": "BULGARIA",
+          "latency_ms": 1064.0
+        },
+        {
+          "item_id": "test_038",
+          "target_word": "PROTONS",
+          "predicted_word": "PROTONS",
+          "raw_reply": "PROTONS",
+          "latency_ms": 1013.0
+        },
+        {
+          "item_id": "test_039",
+          "target_word": "THOUSANDS",
+          "predicted_word": "THOUSANDS",
+          "raw_reply": "THOUSANDS",
+          "latency_ms": 965.0
+        },
+        {
+          "item_id": "test_040",
+          "target_word": "COUNTRIES",
+          "predicted_word": "COUNTRIES",
+          "raw_reply": "COUNTRIES",
+          "latency_ms": 984.0
+        },
+        {
+          "item_id": "test_041",
+          "target_word": "GERMAN",
+          "predicted_word": "GERMAN",
+          "raw_reply": "GERMAN",
+          "latency_ms": 1002.0
+        },
+        {
+          "item_id": "test_042",
+          "target_word": "MATTER",
+          "predicted_word": "MATTER",
+          "raw_reply": "MATTER",
+          "latency_ms": 1003.0
+        },
+        {
+          "item_id": "test_043",
+          "target_word": "LIBRARY",
+          "predicted_word": "LIBRARY",
+          "raw_reply": "LIBRARY",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_044",
+          "target_word": "DIFFERENT",
+          "predicted_word": "DIFFERENT",
+          "raw_reply": "DIFFERENT",
+          "latency_ms": 976.0
+        },
+        {
+          "item_id": "test_045",
+          "target_word": "BCE",
+          "predicted_word": "BCE",
+          "raw_reply": "BCE",
+          "latency_ms": 985.0
+        },
+        {
+          "item_id": "test_046",
+          "target_word": "CAPTURE",
+          "predicted_word": "CAPTURE",
+          "raw_reply": "CAPTURE",
+          "latency_ms": 1026.0
+        },
+        {
+          "item_id": "test_047",
+          "target_word": "HOW",
+          "predicted_word": "HOW",
+          "raw_reply": "HOW",
+          "latency_ms": 965.0
+        },
+        {
+          "item_id": "test_048",
+          "target_word": "EVERYDAY",
+          "predicted_word": "EVERYDAY",
+          "raw_reply": "EVERYDAY",
+          "latency_ms": 1021.0
+        },
+        {
+          "item_id": "test_049",
+          "target_word": "ARMOR",
+          "predicted_word": "AMOR",
+          "raw_reply": "AMOR",
+          "latency_ms": 1005.0
+        },
+        {
+          "item_id": "test_050",
+          "target_word": "SEA",
+          "predicted_word": "SEA",
+          "raw_reply": "Sea",
+          "latency_ms": 943.0
+        },
+        {
+          "item_id": "test_051",
+          "target_word": "FAR",
+          "predicted_word": "FAR",
+          "raw_reply": "FAR",
+          "latency_ms": 981.0
+        },
+        {
+          "item_id": "test_052",
+          "target_word": "FAULT",
+          "predicted_word": "FAULT",
+          "raw_reply": "FAULT",
+          "latency_ms": 956.0
+        },
+        {
+          "item_id": "test_053",
+          "target_word": "UNIVERSE",
+          "predicted_word": "UNIVERSE",
+          "raw_reply": "UNIVERSE",
+          "latency_ms": 1017.0
+        },
+        {
+          "item_id": "test_054",
+          "target_word": "WAY",
+          "predicted_word": "WAY",
+          "raw_reply": "WAY",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_055",
+          "target_word": "ABOVE",
+          "predicted_word": "ABOVE",
+          "raw_reply": "ABOVE",
+          "latency_ms": 1004.0
+        },
+        {
+          "item_id": "test_056",
+          "target_word": "MOVE",
+          "predicted_word": "MOVE",
+          "raw_reply": "MOVE",
+          "latency_ms": 934.0
+        },
+        {
+          "item_id": "test_057",
+          "target_word": "THINGS",
+          "predicted_word": "TERRAIN",
+          "raw_reply": "TERRAIN",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_058",
+          "target_word": "GODS",
+          "predicted_word": "GODS",
+          "raw_reply": "GODS",
+          "latency_ms": 915.0
+        },
+        {
+          "item_id": "test_059",
+          "target_word": "HIGH",
+          "predicted_word": "HIGH",
+          "raw_reply": "HIGH",
+          "latency_ms": 873.0
+        },
+        {
+          "item_id": "test_060",
+          "target_word": "GLACIER",
+          "predicted_word": "GLACIER",
+          "raw_reply": "GLACIER",
+          "latency_ms": 1025.0
+        },
+        {
+          "item_id": "test_061",
+          "target_word": "SOIL",
+          "predicted_word": "SOIL",
+          "raw_reply": "SOIL",
+          "latency_ms": 890.0
+        },
+        {
+          "item_id": "test_062",
+          "target_word": "TRAFFIC",
+          "predicted_word": "TRAFFIC",
+          "raw_reply": "TRAFFIC",
+          "latency_ms": 1021.0
+        },
+        {
+          "item_id": "test_063",
+          "target_word": "EXAMPLE",
+          "predicted_word": "EXAMPLE",
+          "raw_reply": "EXAMPLE",
+          "latency_ms": 978.0
+        },
+        {
+          "item_id": "test_064",
+          "target_word": "PREGNANT",
+          "predicted_word": "PREGNANT",
+          "raw_reply": "PREGNANT",
+          "latency_ms": 1025.0
+        },
+        {
+          "item_id": "test_065",
+          "target_word": "SECOND",
+          "predicted_word": "SECOND",
+          "raw_reply": "SECOND",
+          "latency_ms": 990.0
+        },
+        {
+          "item_id": "test_066",
+          "target_word": "SAID",
+          "predicted_word": "SAID",
+          "raw_reply": "SAID",
+          "latency_ms": 903.0
+        },
+        {
+          "item_id": "test_067",
+          "target_word": "PART",
+          "predicted_word": "PART",
+          "raw_reply": "PART",
+          "latency_ms": 894.0
+        },
+        {
+          "item_id": "test_068",
+          "target_word": "OCEANS",
+          "predicted_word": "OCEANS",
+          "raw_reply": "OCEANS",
+          "latency_ms": 1020.0
+        },
+        {
+          "item_id": "test_069",
+          "target_word": "BLOOD",
+          "predicted_word": "BLOOD",
+          "raw_reply": "BLOOD",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_070",
+          "target_word": "SQUARE",
+          "predicted_word": "SQUARE",
+          "raw_reply": "SQUARE",
+          "latency_ms": 1013.0
+        },
+        {
+          "item_id": "test_071",
+          "target_word": "USE",
+          "predicted_word": "USE",
+          "raw_reply": "USE",
+          "latency_ms": 962.0
+        },
+        {
+          "item_id": "test_072",
+          "target_word": "ISSUES",
+          "predicted_word": "ISSUES",
+          "raw_reply": "ISSUES",
+          "latency_ms": 1006.0
+        },
+        {
+          "item_id": "test_073",
+          "target_word": "LEAVES",
+          "predicted_word": "LEAVES",
+          "raw_reply": "LEAVES",
+          "latency_ms": 1021.0
+        },
+        {
+          "item_id": "test_074",
+          "target_word": "FIGHTING",
+          "predicted_word": "FIGHTING",
+          "raw_reply": "FIGHTING",
+          "latency_ms": 991.0
+        },
+        {
+          "item_id": "test_075",
+          "target_word": "MOUNTAINS",
+          "predicted_word": "MOUNTAINS",
+          "raw_reply": "MOUNTAINS",
+          "latency_ms": 956.0
+        },
+        {
+          "item_id": "test_076",
+          "target_word": "HOTTER",
+          "predicted_word": "HOTTER",
+          "raw_reply": "HOTTER",
+          "latency_ms": 1049.0
+        },
+        {
+          "item_id": "test_077",
+          "target_word": "HAD",
+          "predicted_word": "HAD",
+          "raw_reply": "had",
+          "latency_ms": 930.0
+        },
+        {
+          "item_id": "test_078",
+          "target_word": "MACHINE",
+          "predicted_word": "MACHINE",
+          "raw_reply": "MACHINE",
+          "latency_ms": 998.0
+        },
+        {
+          "item_id": "test_079",
+          "target_word": "CENTURIA",
+          "predicted_word": "CENTURIA",
+          "raw_reply": "CENTURIA",
+          "latency_ms": 1003.0
+        },
+        {
+          "item_id": "test_080",
+          "target_word": "ITS",
+          "predicted_word": "ITS",
+          "raw_reply": "ITS",
+          "latency_ms": 937.0
+        },
+        {
+          "item_id": "test_081",
+          "target_word": "WATER",
+          "predicted_word": "WATER",
+          "raw_reply": "WATER",
+          "latency_ms": 976.0
+        },
+        {
+          "item_id": "test_082",
+          "target_word": "TERMS",
+          "predicted_word": "TERMS",
+          "raw_reply": "TERMS",
+          "latency_ms": 987.0
+        },
+        {
+          "item_id": "test_083",
+          "target_word": "COURSE",
+          "predicted_word": "COURSE",
+          "raw_reply": "course",
+          "latency_ms": 998.0
+        },
+        {
+          "item_id": "test_084",
+          "target_word": "DESIGNED",
+          "predicted_word": "DESIGNED",
+          "raw_reply": "DESIGNED",
+          "latency_ms": 1014.0
+        },
+        {
+          "item_id": "test_085",
+          "target_word": "BIG",
+          "predicted_word": "BIG",
+          "raw_reply": "BIG",
+          "latency_ms": 954.0
+        },
+        {
+          "item_id": "test_086",
+          "target_word": "DIFFERENT",
+          "predicted_word": "DIFFERENT",
+          "raw_reply": "DIFFERENT",
+          "latency_ms": 991.0
+        },
+        {
+          "item_id": "test_087",
+          "target_word": "ATTRACTED",
+          "predicted_word": "ATTRACTED",
+          "raw_reply": "ATTRACTED",
+          "latency_ms": 967.0
+        },
+        {
+          "item_id": "test_088",
+          "target_word": "AGE",
+          "predicted_word": "AGE",
+          "raw_reply": "AGE",
+          "latency_ms": 940.0
+        },
+        {
+          "item_id": "test_089",
+          "target_word": "AFFECT",
+          "predicted_word": "AFFECT",
+          "raw_reply": "AFFECT",
+          "latency_ms": 1022.0
+        },
+        {
+          "item_id": "test_090",
+          "target_word": "HAD",
+          "predicted_word": "REFUSED",
+          "raw_reply": "REFUSED",
+          "latency_ms": 963.0
+        },
+        {
+          "item_id": "test_091",
+          "target_word": "LESS",
+          "predicted_word": "LESS",
+          "raw_reply": "LESS",
+          "latency_ms": 887.0
+        },
+        {
+          "item_id": "test_092",
+          "target_word": "SOUND",
+          "predicted_word": "SOUND",
+          "raw_reply": "SOUND",
+          "latency_ms": 979.0
+        },
+        {
+          "item_id": "test_093",
+          "target_word": "ATOMS",
+          "predicted_word": "ATOMS",
+          "raw_reply": "ATOMS",
+          "latency_ms": 983.0
+        },
+        {
+          "item_id": "test_094",
+          "target_word": "SHORT",
+          "predicted_word": "SHORT",
+          "raw_reply": "SHORT",
+          "latency_ms": 948.0
+        },
+        {
+          "item_id": "test_095",
+          "target_word": "COMPULSORY",
+          "predicted_word": "COMPULSORY",
+          "raw_reply": "COMPULSORY",
+          "latency_ms": 1101.0
+        },
+        {
+          "item_id": "test_096",
+          "target_word": "EQUIPMENT",
+          "predicted_word": "EQUIPMENT",
+          "raw_reply": "EQUIPMENT",
+          "latency_ms": 981.0
+        },
+        {
+          "item_id": "test_097",
+          "target_word": "EACH",
+          "predicted_word": "EACH",
+          "raw_reply": "EACH",
+          "latency_ms": 913.0
+        },
+        {
+          "item_id": "test_098",
+          "target_word": "VOLTAGES",
+          "predicted_word": "VOLTAGES",
+          "raw_reply": "VOLTAGES",
+          "latency_ms": 1033.0
+        },
+        {
+          "item_id": "test_099",
+          "target_word": "SKIN",
+          "predicted_word": "SKIN",
+          "raw_reply": "SKIN",
+          "latency_ms": 898.0
+        },
+        {
+          "item_id": "test_100",
+          "target_word": "LIVE",
+          "predicted_word": "LIVE",
+          "raw_reply": "LIVE",
+          "latency_ms": 902.0
+        },
+        {
+          "item_id": "test_101",
+          "target_word": "SOURCE",
+          "predicted_word": "SOURCE",
+          "raw_reply": "SOURCE",
+          "latency_ms": 1008.0
+        },
+        {
+          "item_id": "test_102",
+          "target_word": "STRICT",
+          "predicted_word": "STRICT",
+          "raw_reply": "STRICT",
+          "latency_ms": 1014.0
+        },
+        {
+          "item_id": "test_103",
+          "target_word": "CALL",
+          "predicted_word": "CALL",
+          "raw_reply": "CALL",
+          "latency_ms": 899.0
+        },
+        {
+          "item_id": "test_104",
+          "target_word": "COUNTRY",
+          "predicted_word": "COUNTRY",
+          "raw_reply": "COUNTRY",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_105",
+          "target_word": "SINGLE",
+          "predicted_word": "SINGLE",
+          "raw_reply": "SINGLE",
+          "latency_ms": 1028.0
+        },
+        {
+          "item_id": "test_106",
+          "target_word": "BECAME",
+          "predicted_word": "BECAME",
+          "raw_reply": "BECAME",
+          "latency_ms": 1058.0
+        },
+        {
+          "item_id": "test_107",
+          "target_word": "NILE",
+          "predicted_word": "NILE",
+          "raw_reply": "NILE",
+          "latency_ms": 896.0
+        },
+        {
+          "item_id": "test_108",
+          "target_word": "SEASON",
+          "predicted_word": "SEASON",
+          "raw_reply": "SEASON",
+          "latency_ms": 994.0
+        },
+        {
+          "item_id": "test_109",
+          "target_word": "JOINED",
+          "predicted_word": "JOINED",
+          "raw_reply": "JOINED",
+          "latency_ms": 970.0
+        },
+        {
+          "item_id": "test_110",
+          "target_word": "EASILY",
+          "predicted_word": "EASILY",
+          "raw_reply": "EASILY",
+          "latency_ms": 1005.0
+        },
+        {
+          "item_id": "test_111",
+          "target_word": "PERSON",
+          "predicted_word": "PERSON",
+          "raw_reply": "PERSON",
+          "latency_ms": 962.0
+        },
+        {
+          "item_id": "test_112",
+          "target_word": "MILLION",
+          "predicted_word": "MILLION",
+          "raw_reply": "MILLION",
+          "latency_ms": 1002.0
+        },
+        {
+          "item_id": "test_113",
+          "target_word": "BASED",
+          "predicted_word": "BASED",
+          "raw_reply": "BASED",
+          "latency_ms": 953.0
+        },
+        {
+          "item_id": "test_114",
+          "target_word": "REMOVE",
+          "predicted_word": "REMOVE",
+          "raw_reply": "REMOVE",
+          "latency_ms": 960.0
+        },
+        {
+          "item_id": "test_115",
+          "target_word": "SURGEONS",
+          "predicted_word": "SURGEONS",
+          "raw_reply": "SURGEONS",
+          "latency_ms": 997.0
+        },
+        {
+          "item_id": "test_116",
+          "target_word": "NOW",
+          "predicted_word": "NOW",
+          "raw_reply": "NOW",
+          "latency_ms": 930.0
+        },
+        {
+          "item_id": "test_117",
+          "target_word": "LAWS",
+          "predicted_word": "LAWS",
+          "raw_reply": "LAWS",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_118",
+          "target_word": "MAINLY",
+          "predicted_word": "MAINLY",
+          "raw_reply": "MAINLY",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_119",
+          "target_word": "REACTIVE",
+          "predicted_word": "REACTIVE",
+          "raw_reply": "REACTIVE",
+          "latency_ms": 971.0
+        },
+        {
+          "item_id": "test_120",
+          "target_word": "PART",
+          "predicted_word": "PART",
+          "raw_reply": "PART",
+          "latency_ms": 891.0
+        },
+        {
+          "item_id": "test_121",
+          "target_word": "SNOW",
+          "predicted_word": "SNOW",
+          "raw_reply": "SNOW",
+          "latency_ms": 879.0
+        },
+        {
+          "item_id": "test_122",
+          "target_word": "THOUSANDS",
+          "predicted_word": "THOUSANDS",
+          "raw_reply": "THOUSANDS",
+          "latency_ms": 945.0
+        },
+        {
+          "item_id": "test_123",
+          "target_word": "TORPEDO",
+          "predicted_word": "TORPEDO",
+          "raw_reply": "TORPEDO",
+          "latency_ms": 998.0
+        },
+        {
+          "item_id": "test_124",
+          "target_word": "LEATHER",
+          "predicted_word": "LEATHER",
+          "raw_reply": "LEATHER",
+          "latency_ms": 995.0
+        },
+        {
+          "item_id": "test_125",
+          "target_word": "SYSTEM",
+          "predicted_word": "SYSTEM",
+          "raw_reply": "SYSTEM",
+          "latency_ms": 994.0
+        },
+        {
+          "item_id": "test_126",
+          "target_word": "DYNASTY",
+          "predicted_word": "DYNASTY",
+          "raw_reply": "DYNASTY",
+          "latency_ms": 1010.0
+        },
+        {
+          "item_id": "test_127",
+          "target_word": "JONAS",
+          "predicted_word": "JOHNAS",
+          "raw_reply": "JOHNAS",
+          "latency_ms": 977.0
+        },
+        {
+          "item_id": "test_128",
+          "target_word": "THERMAL",
+          "predicted_word": "THERMAL",
+          "raw_reply": "THERMAL",
+          "latency_ms": 1044.0
+        },
+        {
+          "item_id": "test_129",
+          "target_word": "TIME",
+          "predicted_word": "TIME",
+          "raw_reply": "TIME",
+          "latency_ms": 901.0
+        },
+        {
+          "item_id": "test_130",
+          "target_word": "WHO",
+          "predicted_word": "WHO",
+          "raw_reply": "WHO",
+          "latency_ms": 963.0
+        },
+        {
+          "item_id": "test_131",
+          "target_word": "SHELVES",
+          "predicted_word": "SHELVES",
+          "raw_reply": "SHELVES",
+          "latency_ms": 1038.0
+        },
+        {
+          "item_id": "test_132",
+          "target_word": "ELECTION",
+          "predicted_word": "ELECTION",
+          "raw_reply": "ELECTION",
+          "latency_ms": 1010.0
+        },
+        {
+          "item_id": "test_133",
+          "target_word": "TRIBES",
+          "predicted_word": "TRIBES",
+          "raw_reply": "TRIBES",
+          "latency_ms": 1009.0
+        },
+        {
+          "item_id": "test_134",
+          "target_word": "TWO",
+          "predicted_word": "TWO",
+          "raw_reply": "TWO",
+          "latency_ms": 993.0
+        },
+        {
+          "item_id": "test_135",
+          "target_word": "THREAT",
+          "predicted_word": "THREAT",
+          "raw_reply": "THREAT",
+          "latency_ms": 1014.0
+        },
+        {
+          "item_id": "test_136",
+          "target_word": "EASY",
+          "predicted_word": "EASY",
+          "raw_reply": "EASY",
+          "latency_ms": 921.0
+        },
+        {
+          "item_id": "test_137",
+          "target_word": "MEASURE",
+          "predicted_word": "MEASURE",
+          "raw_reply": "MEASURE",
+          "latency_ms": 1009.0
+        },
+        {
+          "item_id": "test_138",
+          "target_word": "VACCINATED",
+          "predicted_word": "VACCINATED",
+          "raw_reply": "VACCINATED",
+          "latency_ms": 1071.0
+        },
+        {
+          "item_id": "test_139",
+          "target_word": "RESOLUTION",
+          "predicted_word": "RESOLUTION",
+          "raw_reply": "RESOLUTION",
+          "latency_ms": 1034.0
+        },
+        {
+          "item_id": "test_140",
+          "target_word": "SKIN",
+          "predicted_word": "SKIN",
+          "raw_reply": "SKIN",
+          "latency_ms": 884.0
+        },
+        {
+          "item_id": "test_141",
+          "target_word": "ENERGY",
+          "predicted_word": "ENERGY",
+          "raw_reply": "ENERGY",
+          "latency_ms": 1023.0
+        },
+        {
+          "item_id": "test_142",
+          "target_word": "CONTINENT",
+          "predicted_word": "CONTINENT",
+          "raw_reply": "CONTINENT",
+          "latency_ms": 980.0
+        },
+        {
+          "item_id": "test_143",
+          "target_word": "AVERROES",
+          "predicted_word": "AVERRONES",
+          "raw_reply": "AVERRONES",
+          "latency_ms": 1045.0
+        },
+        {
+          "item_id": "test_144",
+          "target_word": "USES",
+          "predicted_word": "USES",
+          "raw_reply": "USES",
+          "latency_ms": 908.0
+        },
+        {
+          "item_id": "test_145",
+          "target_word": "GOLD",
+          "predicted_word": "GOLD",
+          "raw_reply": "GOLD",
+          "latency_ms": 920.0
+        },
+        {
+          "item_id": "test_146",
+          "target_word": "FISH",
+          "predicted_word": "FISH",
+          "raw_reply": "FISH",
+          "latency_ms": 902.0
+        },
+        {
+          "item_id": "test_147",
+          "target_word": "AIR",
+          "predicted_word": "AIR",
+          "raw_reply": "AIR",
+          "latency_ms": 984.0
+        },
+        {
+          "item_id": "test_148",
+          "target_word": "THING",
+          "predicted_word": "TINNG",
+          "raw_reply": "TINNG",
+          "latency_ms": 990.0
+        },
+        {
+          "item_id": "test_149",
+          "target_word": "CAN",
+          "predicted_word": "CAN",
+          "raw_reply": "CAN",
+          "latency_ms": 942.0
+        },
+        {
+          "item_id": "test_150",
+          "target_word": "CROPS",
+          "predicted_word": "CROPS",
+          "raw_reply": "CROPS",
+          "latency_ms": 993.0
+        },
+        {
+          "item_id": "test_151",
+          "target_word": "PEOPLE",
+          "predicted_word": "PEOPLE",
+          "raw_reply": "PEOPLE",
+          "latency_ms": 1004.0
+        },
+        {
+          "item_id": "test_152",
+          "target_word": "ENAMEL",
+          "predicted_word": "ENAMEL",
+          "raw_reply": "ENAMEL",
+          "latency_ms": 1044.0
+        },
+        {
+          "item_id": "test_153",
+          "target_word": "REVOLUTION",
+          "predicted_word": "REVOLUTION",
+          "raw_reply": "REVOLUTION",
+          "latency_ms": 1023.0
+        },
+        {
+          "item_id": "test_154",
+          "target_word": "MOVING",
+          "predicted_word": "MOVING",
+          "raw_reply": "MOVING",
+          "latency_ms": 1026.0
+        },
+        {
+          "item_id": "test_155",
+          "target_word": "DONE",
+          "predicted_word": "DONE",
+          "raw_reply": "DONE",
+          "latency_ms": 928.0
+        },
+        {
+          "item_id": "test_156",
+          "target_word": "WIDER",
+          "predicted_word": "WIDER",
+          "raw_reply": "WIDER",
+          "latency_ms": 970.0
+        },
+        {
+          "item_id": "test_157",
+          "target_word": "SYMBIOSIS",
+          "predicted_word": "SYMBIOSIS",
+          "raw_reply": "SYMBIOSIS",
+          "latency_ms": 990.0
+        },
+        {
+          "item_id": "test_158",
+          "target_word": "BIRD",
+          "predicted_word": "BIRD",
+          "raw_reply": "BIRD",
+          "latency_ms": 881.0
+        },
+        {
+          "item_id": "test_159",
+          "target_word": "DUST",
+          "predicted_word": "DUST",
+          "raw_reply": "DUST",
+          "latency_ms": 922.0
+        },
+        {
+          "item_id": "test_160",
+          "target_word": "CLAY",
+          "predicted_word": "CLAY",
+          "raw_reply": "CLAY",
+          "latency_ms": 898.0
+        },
+        {
+          "item_id": "test_161",
+          "target_word": "HELD",
+          "predicted_word": "HELD",
+          "raw_reply": "HELD",
+          "latency_ms": 919.0
+        },
+        {
+          "item_id": "test_162",
+          "target_word": "EXPELLED",
+          "predicted_word": "EXPELLED",
+          "raw_reply": "EXPELLED",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_163",
+          "target_word": "EVEN",
+          "predicted_word": "EVEN",
+          "raw_reply": "EVEN",
+          "latency_ms": 869.0
+        },
+        {
+          "item_id": "test_164",
+          "target_word": "PERCENT",
+          "predicted_word": "PERCENT",
+          "raw_reply": "PERCENT",
+          "latency_ms": 966.0
+        },
+        {
+          "item_id": "test_165",
+          "target_word": "RULED",
+          "predicted_word": "RULED",
+          "raw_reply": "RULED",
+          "latency_ms": 946.0
+        },
+        {
+          "item_id": "test_166",
+          "target_word": "TYPE",
+          "predicted_word": "TYPE",
+          "raw_reply": "TYPE",
+          "latency_ms": 869.0
+        },
+        {
+          "item_id": "test_167",
+          "target_word": "LETTER",
+          "predicted_word": "SETTER",
+          "raw_reply": "SETTER",
+          "latency_ms": 1006.0
+        },
+        {
+          "item_id": "test_168",
+          "target_word": "HELPED",
+          "predicted_word": "HGPED",
+          "raw_reply": "H G / P E D",
+          "latency_ms": 1054.0
+        },
+        {
+          "item_id": "test_169",
+          "target_word": "HELPED",
+          "predicted_word": "HEIPEO",
+          "raw_reply": "HEIPEO",
+          "latency_ms": 1026.0
+        },
+        {
+          "item_id": "test_170",
+          "target_word": "TELL",
+          "predicted_word": "TELL",
+          "raw_reply": "TELL",
+          "latency_ms": 903.0
+        },
+        {
+          "item_id": "test_171",
+          "target_word": "ELECTED",
+          "predicted_word": "ELECTED",
+          "raw_reply": "ELECTED",
+          "latency_ms": 994.0
+        },
+        {
+          "item_id": "test_172",
+          "target_word": "LETTER",
+          "predicted_word": "LETTER",
+          "raw_reply": "LETTER",
+          "latency_ms": 995.0
+        },
+        {
+          "item_id": "test_173",
+          "target_word": "THEN",
+          "predicted_word": "THEN",
+          "raw_reply": "THEN",
+          "latency_ms": 874.0
+        },
+        {
+          "item_id": "test_174",
+          "target_word": "TYPE",
+          "predicted_word": "TYPE",
+          "raw_reply": "TYPE",
+          "latency_ms": 853.0
+        },
+        {
+          "item_id": "test_175",
+          "target_word": "WHEEL",
+          "predicted_word": "WHEEL",
+          "raw_reply": "WHEEL",
+          "latency_ms": 954.0
+        },
+        {
+          "item_id": "test_176",
+          "target_word": "LET",
+          "predicted_word": "LET",
+          "raw_reply": "LET",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_177",
+          "target_word": "KEPT",
+          "predicted_word": "KEPT",
+          "raw_reply": "KEPT",
+          "latency_ms": 870.0
+        },
+        {
+          "item_id": "test_178",
+          "target_word": "REFLECT",
+          "predicted_word": "REFLECT",
+          "raw_reply": "REFLECT",
+          "latency_ms": 974.0
+        },
+        {
+          "item_id": "test_179",
+          "target_word": "FREE",
+          "predicted_word": "FREE",
+          "raw_reply": "FREE",
+          "latency_ms": 869.0
+        },
+        {
+          "item_id": "test_180",
+          "target_word": "WENT",
+          "predicted_word": "WENT",
+          "raw_reply": "WENT",
+          "latency_ms": 886.0
+        },
+        {
+          "item_id": "test_181",
+          "target_word": "PUMP",
+          "predicted_word": "PUMP",
+          "raw_reply": "PUMP",
+          "latency_ms": 909.0
+        },
+        {
+          "item_id": "test_182",
+          "target_word": "NEW",
+          "predicted_word": "NEW",
+          "raw_reply": "NEW",
+          "latency_ms": 941.0
+        },
+        {
+          "item_id": "test_183",
+          "target_word": "FREED",
+          "predicted_word": "FREE",
+          "raw_reply": "FREE",
+          "latency_ms": 952.0
+        },
+        {
+          "item_id": "test_184",
+          "target_word": "FEW",
+          "predicted_word": "FEW",
+          "raw_reply": "F EW",
+          "latency_ms": 958.0
+        },
+        {
+          "item_id": "test_185",
+          "target_word": "MUCH",
+          "predicted_word": "WUCH",
+          "raw_reply": "WUCH",
+          "latency_ms": 914.0
+        },
+        {
+          "item_id": "test_186",
+          "target_word": "NEEDED",
+          "predicted_word": "NEEDED",
+          "raw_reply": "NEEDED",
+          "latency_ms": 1000.0
+        },
+        {
+          "item_id": "test_187",
+          "target_word": "DEL",
+          "predicted_word": "DEI",
+          "raw_reply": "DEI",
+          "latency_ms": 971.0
+        },
+        {
+          "item_id": "test_188",
+          "target_word": "DEEP",
+          "predicted_word": "DEEP",
+          "raw_reply": "DEEP",
+          "latency_ms": 923.0
+        },
+        {
+          "item_id": "test_189",
+          "target_word": "REMEDY",
+          "predicted_word": "REMEDY",
+          "raw_reply": "REMEDY",
+          "latency_ms": 1028.0
+        },
+        {
+          "item_id": "test_190",
+          "target_word": "THEN",
+          "predicted_word": "THEN",
+          "raw_reply": "THEN",
+          "latency_ms": 908.0
+        },
+        {
+          "item_id": "test_191",
+          "target_word": "NEW",
+          "predicted_word": "NEW",
+          "raw_reply": "NEW",
+          "latency_ms": 969.0
+        },
+        {
+          "item_id": "test_192",
+          "target_word": "ENTER",
+          "predicted_word": "ENTER",
+          "raw_reply": "ENTER",
+          "latency_ms": 971.0
+        },
+        {
+          "item_id": "test_193",
+          "target_word": "TEXT",
+          "predicted_word": "TEXT",
+          "raw_reply": "TEXT",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_194",
+          "target_word": "LET",
+          "predicted_word": "INDIVIDUAL",
+          "raw_reply": "individual",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_195",
+          "target_word": "TEETH",
+          "predicted_word": "TEETH",
+          "raw_reply": "TEETH",
+          "latency_ms": 977.0
+        },
+        {
+          "item_id": "test_196",
+          "target_word": "NEEDED",
+          "predicted_word": "NEEDED",
+          "raw_reply": "NEEDED",
+          "latency_ms": 1036.0
+        },
+        {
+          "item_id": "test_197",
+          "target_word": "WET",
+          "predicted_word": "WET",
+          "raw_reply": "WET",
+          "latency_ms": 975.0
+        },
+        {
+          "item_id": "test_198",
+          "target_word": "PUNCHED",
+          "predicted_word": "PUNCHED",
+          "raw_reply": "PUNCHED",
+          "latency_ms": 1022.0
+        },
+        {
+          "item_id": "test_199",
+          "target_word": "LED",
+          "predicted_word": "LEAD",
+          "raw_reply": "LEAD",
+          "latency_ms": 975.0
+        },
+        {
+          "item_id": "test_200",
+          "target_word": "NEED",
+          "predicted_word": "NEED",
+          "raw_reply": "NEED",
+          "latency_ms": 921.0
+        },
+        {
+          "item_id": "test_201",
+          "target_word": "HER",
+          "predicted_word": "HERR",
+          "raw_reply": "HERR",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_202",
+          "target_word": "PURE",
+          "predicted_word": "PURE",
+          "raw_reply": "PURE",
+          "latency_ms": 922.0
+        },
+        {
+          "item_id": "test_203",
+          "target_word": "TELL",
+          "predicted_word": "PREDICT",
+          "raw_reply": "PREDICT",
+          "latency_ms": 930.0
+        },
+        {
+          "item_id": "test_204",
+          "target_word": "EXCEPT",
+          "predicted_word": "EXCEPT",
+          "raw_reply": "EXCEPT",
+          "latency_ms": 1032.0
+        },
+        {
+          "item_id": "test_205",
+          "target_word": "NEVER",
+          "predicted_word": "NEVER",
+          "raw_reply": "NEVER",
+          "latency_ms": 1017.0
+        },
+        {
+          "item_id": "test_206",
+          "target_word": "END",
+          "predicted_word": "END",
+          "raw_reply": "END",
+          "latency_ms": 930.0
+        },
+        {
+          "item_id": "test_207",
+          "target_word": "CENTERED",
+          "predicted_word": "CENTERED",
+          "raw_reply": "CENTERED",
+          "latency_ms": 986.0
+        },
+        {
+          "item_id": "test_208",
+          "target_word": "ELECT",
+          "predicted_word": "ELECT",
+          "raw_reply": "ELECT",
+          "latency_ms": 971.0
+        },
+        {
+          "item_id": "test_209",
+          "target_word": "DRY",
+          "predicted_word": "DRY",
+          "raw_reply": "dry",
+          "latency_ms": 963.0
+        },
+        {
+          "item_id": "test_210",
+          "target_word": "HELD",
+          "predicted_word": "BOUND",
+          "raw_reply": "BOUND",
+          "latency_ms": 894.0
+        },
+        {
+          "item_id": "test_211",
+          "target_word": "TURKEY",
+          "predicted_word": "TURKEY",
+          "raw_reply": "TURKEY",
+          "latency_ms": 1051.0
+        },
+        {
+          "item_id": "test_212",
+          "target_word": "ELEMENT",
+          "predicted_word": "ELEMENT",
+          "raw_reply": "ELEMENT",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_213",
+          "target_word": "CELL",
+          "predicted_word": "CELL",
+          "raw_reply": "CELL",
+          "latency_ms": 881.0
+        },
+        {
+          "item_id": "test_214",
+          "target_word": "RECENT",
+          "predicted_word": "RECENT",
+          "raw_reply": "RECENT",
+          "latency_ms": 1009.0
+        },
+        {
+          "item_id": "test_215",
+          "target_word": "MERCURY",
+          "predicted_word": "MERCURY",
+          "raw_reply": "MERCURY",
+          "latency_ms": 1004.0
+        },
+        {
+          "item_id": "test_216",
+          "target_word": "HELP",
+          "predicted_word": "PERMANENTLY",
+          "raw_reply": "PERMANENTLY",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_217",
+          "target_word": "CENTRE",
+          "predicted_word": "CENTRE",
+          "raw_reply": "CENTRE",
+          "latency_ms": 1015.0
+        },
+        {
+          "item_id": "test_218",
+          "target_word": "TEXT",
+          "predicted_word": "TEXT",
+          "raw_reply": "TEXT",
+          "latency_ms": 879.0
+        },
+        {
+          "item_id": "test_219",
+          "target_word": "TEETH",
+          "predicted_word": "TEETH",
+          "raw_reply": "TEETH",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_220",
+          "target_word": "PURE",
+          "predicted_word": "PURE",
+          "raw_reply": "PURE",
+          "latency_ms": 879.0
+        },
+        {
+          "item_id": "test_221",
+          "target_word": "RED",
+          "predicted_word": "RED",
+          "raw_reply": "RED",
+          "latency_ms": 943.0
+        },
+        {
+          "item_id": "test_222",
+          "target_word": "PULLED",
+          "predicted_word": "QUARRED",
+          "raw_reply": "QUARRED",
+          "latency_ms": 1034.0
+        },
+        {
+          "item_id": "test_223",
+          "target_word": "NEED",
+          "predicted_word": "NEED",
+          "raw_reply": "NEED",
+          "latency_ms": 923.0
+        },
+        {
+          "item_id": "test_224",
+          "target_word": "RUN",
+          "predicted_word": "RUN",
+          "raw_reply": "RUN",
+          "latency_ms": 956.0
+        },
+        {
+          "item_id": "test_225",
+          "target_word": "CENTURY",
+          "predicted_word": "CENTURY",
+          "raw_reply": "CENTURY",
+          "latency_ms": 1029.0
+        },
+        {
+          "item_id": "test_226",
+          "target_word": "FEW",
+          "predicted_word": "FREQUENCY",
+          "raw_reply": "FREQUENCY",
+          "latency_ms": 981.0
+        },
+        {
+          "item_id": "test_227",
+          "target_word": "FUNDED",
+          "predicted_word": "FUNDED",
+          "raw_reply": "FUNDED",
+          "latency_ms": 1013.0
+        },
+        {
+          "item_id": "test_228",
+          "target_word": "LED",
+          "predicted_word": "LED",
+          "raw_reply": "led",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_229",
+          "target_word": "DRY",
+          "predicted_word": "DRY",
+          "raw_reply": "DRY",
+          "latency_ms": 949.0
+        },
+        {
+          "item_id": "test_230",
+          "target_word": "TRUE",
+          "predicted_word": "TRUE",
+          "raw_reply": "TRUE",
+          "latency_ms": 908.0
+        },
+        {
+          "item_id": "test_231",
+          "target_word": "EVERYWHERE",
+          "predicted_word": "EVERYWHERE",
+          "raw_reply": "EVERYWHERE",
+          "latency_ms": 1037.0
+        },
+        {
+          "item_id": "test_232",
+          "target_word": "PULP",
+          "predicted_word": "PULP",
+          "raw_reply": "PULP",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_233",
+          "target_word": "RECYCLED",
+          "predicted_word": "RECYCLED",
+          "raw_reply": "RECYCLED",
+          "latency_ms": 1020.0
+        },
+        {
+          "item_id": "test_234",
+          "target_word": "WHY",
+          "predicted_word": "WHY",
+          "raw_reply": "W H Y",
+          "latency_ms": 960.0
+        },
+        {
+          "item_id": "test_235",
+          "target_word": "ELEMENT",
+          "predicted_word": "ELEMENT",
+          "raw_reply": "ELEMENT",
+          "latency_ms": 1007.0
+        },
+        {
+          "item_id": "test_236",
+          "target_word": "CENTURY",
+          "predicted_word": "CENTURY",
+          "raw_reply": "CENTURY",
+          "latency_ms": 1013.0
+        },
+        {
+          "item_id": "test_237",
+          "target_word": "CURRENT",
+          "predicted_word": "CURRENT",
+          "raw_reply": "CURRENT",
+          "latency_ms": 1005.0
+        },
+        {
+          "item_id": "test_238",
+          "target_word": "WHY",
+          "predicted_word": "WHY",
+          "raw_reply": "WHY",
+          "latency_ms": 956.0
+        },
+        {
+          "item_id": "test_239",
+          "target_word": "YET",
+          "predicted_word": "YET",
+          "raw_reply": "YET",
+          "latency_ms": 992.0
+        },
+        {
+          "item_id": "test_240",
+          "target_word": "JENNER",
+          "predicted_word": "JENNER",
+          "raw_reply": "JENNER",
+          "latency_ms": 990.0
+        },
+        {
+          "item_id": "test_241",
+          "target_word": "MEN",
+          "predicted_word": "MEN",
+          "raw_reply": "MEN",
+          "latency_ms": 970.0
+        },
+        {
+          "item_id": "test_242",
+          "target_word": "WENT",
+          "predicted_word": "WENT",
+          "raw_reply": "WENT",
+          "latency_ms": 889.0
+        },
+        {
+          "item_id": "test_243",
+          "target_word": "END",
+          "predicted_word": "END",
+          "raw_reply": "END",
+          "latency_ms": 988.0
+        },
+        {
+          "item_id": "test_244",
+          "target_word": "CULTURE",
+          "predicted_word": "CULTURE",
+          "raw_reply": "CULTURE",
+          "latency_ms": 1017.0
+        },
+        {
+          "item_id": "test_245",
+          "target_word": "MUCH",
+          "predicted_word": "MUCH",
+          "raw_reply": "MUCH",
+          "latency_ms": 891.0
+        },
+        {
+          "item_id": "test_246",
+          "target_word": "THREE",
+          "predicted_word": "THREE",
+          "raw_reply": "THREE",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_247",
+          "target_word": "REFLECTED",
+          "predicted_word": "REFLECTED",
+          "raw_reply": "REFLECTED",
+          "latency_ms": 1006.0
+        },
+        {
+          "item_id": "test_248",
+          "target_word": "NEXT",
+          "predicted_word": "NEXT",
+          "raw_reply": "NEXT",
+          "latency_ms": 891.0
+        },
+        {
+          "item_id": "test_249",
+          "target_word": "CENTRE",
+          "predicted_word": "CENTRE",
+          "raw_reply": "CENTRE",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_250",
+          "target_word": "PUT",
+          "predicted_word": "PUT",
+          "raw_reply": "PUT",
+          "latency_ms": 993.0
+        },
+        {
+          "item_id": "test_251",
+          "target_word": "REDUCED",
+          "predicted_word": "BYZANTINE",
+          "raw_reply": "BYZANTINE",
+          "latency_ms": 1006.0
+        },
+        {
+          "item_id": "test_252",
+          "target_word": "FREQUENTLY",
+          "predicted_word": "FREQUENTLY",
+          "raw_reply": "FREQUENTLY",
+          "latency_ms": 1096.0
+        },
+        {
+          "item_id": "test_253",
+          "target_word": "WEEK",
+          "predicted_word": "WEEK",
+          "raw_reply": "WEEK",
+          "latency_ms": 935.0
+        },
+        {
+          "item_id": "test_254",
+          "target_word": "LEFT",
+          "predicted_word": "LEFT",
+          "raw_reply": "LEFT",
+          "latency_ms": 918.0
+        },
+        {
+          "item_id": "test_255",
+          "target_word": "FED",
+          "predicted_word": "FED",
+          "raw_reply": "FED",
+          "latency_ms": 1014.0
+        },
+        {
+          "item_id": "test_256",
+          "target_word": "THREE",
+          "predicted_word": "THREE",
+          "raw_reply": "THREE",
+          "latency_ms": 1001.0
+        },
+        {
+          "item_id": "test_257",
+          "target_word": "YET",
+          "predicted_word": "YET",
+          "raw_reply": "YET",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_258",
+          "target_word": "WELL",
+          "predicted_word": "WELL",
+          "raw_reply": "WELL",
+          "latency_ms": 940.0
+        },
+        {
+          "item_id": "test_259",
+          "target_word": "CPU",
+          "predicted_word": "CPU",
+          "raw_reply": "CPU",
+          "latency_ms": 945.0
+        },
+        {
+          "item_id": "test_260",
+          "target_word": "JENNER",
+          "predicted_word": "JENNER",
+          "raw_reply": "JENNER",
+          "latency_ms": 1036.0
+        },
+        {
+          "item_id": "test_261",
+          "target_word": "MET",
+          "predicted_word": "MET",
+          "raw_reply": "MET",
+          "latency_ms": 987.0
+        },
+        {
+          "item_id": "test_262",
+          "target_word": "TRUE",
+          "predicted_word": "TRUE",
+          "raw_reply": "TRUE",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_263",
+          "target_word": "MERCURY",
+          "predicted_word": "MERCURY",
+          "raw_reply": "MERCURY",
+          "latency_ms": 1008.0
+        },
+        {
+          "item_id": "test_264",
+          "target_word": "CULTURE",
+          "predicted_word": "CULTURE",
+          "raw_reply": "CULTURE",
+          "latency_ms": 1017.0
+        },
+        {
+          "item_id": "test_265",
+          "target_word": "EVER",
+          "predicted_word": "EVER",
+          "raw_reply": "EVER",
+          "latency_ms": 912.0
+        },
+        {
+          "item_id": "test_266",
+          "target_word": "PUNCHED",
+          "predicted_word": "PUNCHED",
+          "raw_reply": "PUNCHED",
+          "latency_ms": 1014.0
+        },
+        {
+          "item_id": "test_267",
+          "target_word": "EVENT",
+          "predicted_word": "EVENT",
+          "raw_reply": "EVENT",
+          "latency_ms": 971.0
+        },
+        {
+          "item_id": "test_268",
+          "target_word": "MEET",
+          "predicted_word": "MEET",
+          "raw_reply": "MEET",
+          "latency_ms": 897.0
+        },
+        {
+          "item_id": "test_269",
+          "target_word": "WELL",
+          "predicted_word": "WELL",
+          "raw_reply": "WELL",
+          "latency_ms": 890.0
+        },
+        {
+          "item_id": "test_270",
+          "target_word": "NEWLY",
+          "predicted_word": "NEWLY",
+          "raw_reply": "NEWLY",
+          "latency_ms": 935.0
+        },
+        {
+          "item_id": "test_271",
+          "target_word": "KHUFU",
+          "predicted_word": "KHUFU",
+          "raw_reply": "KHUFU",
+          "latency_ms": 955.0
+        },
+        {
+          "item_id": "test_272",
+          "target_word": "KNEW",
+          "predicted_word": "KNEW",
+          "raw_reply": "KNEW",
+          "latency_ms": 883.0
+        },
+        {
+          "item_id": "test_273",
+          "target_word": "FUEL",
+          "predicted_word": "SULFUR",
+          "raw_reply": "SULFUR",
+          "latency_ms": 891.0
+        },
+        {
+          "item_id": "test_274",
+          "target_word": "JURY",
+          "predicted_word": "SURV",
+          "raw_reply": "SURV",
+          "latency_ms": 885.0
+        },
+        {
+          "item_id": "test_275",
+          "target_word": "EVERY",
+          "predicted_word": "EVERY",
+          "raw_reply": "EVERY",
+          "latency_ms": 957.0
+        },
+        {
+          "item_id": "test_276",
+          "target_word": "PER",
+          "predicted_word": "PER",
+          "raw_reply": "PER",
+          "latency_ms": 931.0
+        },
+        {
+          "item_id": "test_277",
+          "target_word": "FREE",
+          "predicted_word": "FREE",
+          "raw_reply": "FREE",
+          "latency_ms": 858.0
+        },
+        {
+          "item_id": "test_278",
+          "target_word": "PUT",
+          "predicted_word": "PUT",
+          "raw_reply": "PUT",
+          "latency_ms": 913.0
+        },
+        {
+          "item_id": "test_279",
+          "target_word": "CELL",
+          "predicted_word": "CELL",
+          "raw_reply": "CELL",
+          "latency_ms": 872.0
+        },
+        {
+          "item_id": "test_280",
+          "target_word": "DEPENDED",
+          "predicted_word": "DEPENDED",
+          "raw_reply": "DEPENDED",
+          "latency_ms": 982.0
+        },
+        {
+          "item_id": "test_281",
+          "target_word": "PREVENT",
+          "predicted_word": "PREVENT",
+          "raw_reply": "PREVENT",
+          "latency_ms": 1019.0
+        },
+        {
+          "item_id": "test_282",
+          "target_word": "WEEK",
+          "predicted_word": "WEEK",
+          "raw_reply": "WEEK",
+          "latency_ms": 920.0
+        },
+        {
+          "item_id": "test_283",
+          "target_word": "DEPEND",
+          "predicted_word": "DEPEND",
+          "raw_reply": "DEPEND",
+          "latency_ms": 968.0
+        },
+        {
+          "item_id": "test_284",
+          "target_word": "FURTHER",
+          "predicted_word": "FURTHER",
+          "raw_reply": "FURTHER",
+          "latency_ms": 1071.0
+        },
+        {
+          "item_id": "test_285",
+          "target_word": "EVERYWHERE",
+          "predicted_word": "EVERYWHERE",
+          "raw_reply": "EVERYWHERE",
+          "latency_ms": 1077.0
+        },
+        {
+          "item_id": "test_286",
+          "target_word": "HELP",
+          "predicted_word": "HELP",
+          "raw_reply": "HELP",
+          "latency_ms": 905.0
+        },
+        {
+          "item_id": "test_287",
+          "target_word": "FULL",
+          "predicted_word": "FULL",
+          "raw_reply": "FULL",
+          "latency_ms": 910.0
+        },
+        {
+          "item_id": "test_288",
+          "target_word": "EVEN",
+          "predicted_word": "EVEN",
+          "raw_reply": "EVEN",
+          "latency_ms": 888.0
+        },
+        {
+          "item_id": "test_289",
+          "target_word": "NEXT",
+          "predicted_word": "NEXUS",
+          "raw_reply": "NEXUS",
+          "latency_ms": 931.0
+        },
+        {
+          "item_id": "test_290",
+          "target_word": "LEFT",
+          "predicted_word": "IEFT",
+          "raw_reply": "I E f T",
+          "latency_ms": 931.0
+        },
+        {
+          "item_id": "test_291",
+          "target_word": "ENTERED",
+          "predicted_word": "ENTERED",
+          "raw_reply": "ENTERED",
+          "latency_ms": 1029.0
+        },
+        {
+          "item_id": "test_292",
+          "target_word": "FLY",
+          "predicted_word": "FLY",
+          "raw_reply": "FLY",
+          "latency_ms": 972.0
+        },
+        {
+          "item_id": "test_293",
+          "target_word": "CHURCH",
+          "predicted_word": "CHRISTIANITY",
+          "raw_reply": "CHRISTIANITY",
+          "latency_ms": 1102.0
+        },
+        {
+          "item_id": "test_294",
+          "target_word": "CENTER",
+          "predicted_word": "CENTER",
+          "raw_reply": "CENTER",
+          "latency_ms": 1026.0
+        },
+        {
+          "item_id": "test_295",
+          "target_word": "PULLED",
+          "predicted_word": "PULLED",
+          "raw_reply": "PULLED",
+          "latency_ms": 1035.0
+        },
+        {
+          "item_id": "test_296",
+          "target_word": "EVERY",
+          "predicted_word": "EVERY",
+          "raw_reply": "EVERY",
+          "latency_ms": 975.0
+        },
+        {
+          "item_id": "test_297",
+          "target_word": "ENDED",
+          "predicted_word": "ENDED",
+          "raw_reply": "ENDED",
+          "latency_ms": 1011.0
+        },
+        {
+          "item_id": "test_298",
+          "target_word": "FURTHER",
+          "predicted_word": "FURTHER",
+          "raw_reply": "FURTHER",
+          "latency_ms": 1032.0
+        },
+        {
+          "item_id": "test_299",
+          "target_word": "MELT",
+          "predicted_word": "MELT",
+          "raw_reply": "MELT",
+          "latency_ms": 935.0
+        },
+        {
+          "item_id": "test_300",
+          "target_word": "RUN",
+          "predicted_word": "RUN",
+          "raw_reply": "RUN",
+          "latency_ms": 953.0
+        }
+      ]
+    }
+  }
+}
