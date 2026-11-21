@@ -88,7 +88,10 @@ python scripts/evaluate_worksheet_pilot.py reference.csv page-01-assisted.csv pa
 ```
 
 Add both exports for every reference page. The report includes suggestion and final error counts by answer
-type, median time per method, and median seconds saved across paired pages. Compare the final error counts
+type, median time per method, and median seconds saved across paired pages. New exports record recognition
+status. Recognition failures count as suggestion errors even when the reference answer is blank. Older
+exports remain readable. An empty suggestion without a status is counted as an unverified suggestion error.
+Both counts are reported separately. Compare the final error counts
 before interpreting a time saving. The built-in demo uses existing benchmark glyphs and serves as a workflow
 check. Real student pages are needed for a field evaluation.
 

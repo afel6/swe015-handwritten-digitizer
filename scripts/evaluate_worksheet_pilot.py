@@ -12,10 +12,11 @@ from pathlib import Path
 from statistics import median
 
 
-def read_csv(path: Path, fields: set[str]) -> Iterable[dict[str, str]]:
+def read_csv(path: Path, fields: set[str], *, optional_fields: Iterable[str] = ()) -> Iterable[dict[str, str]]:
     with path.open(encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
-        if set(reader.fieldnames or []) != fields:
+        columns = set(reader.fieldnames or [])
+        if not fields <= columns <= fields.union(optional_fields):
             raise ValueError(f"{path} needs these columns: {', '.join(sorted(fields))}.")
         for row in reader:
             if None in row or any(value is None for value in row.values()):
@@ -53,20 +54,34 @@ def evaluate(reference_path: Path, exports: Iterable[Path]) -> dict:
 
     methods = {"assisted": {}, "manual": {}}
     times = {"assisted": {}, "manual": {}}
+    recognition_failures = set()
+    unverified_empty_suggestions = set()
     fields = {"page_id", "question", "kind", "method", "suggestion", "transcription", "seconds"}
     for path in exports:
-        for row in read_csv(path, fields):
+        for row in read_csv(path, fields, optional_fields=("suggestion_status",)):
             key, method = answer_key(row), row["method"]
             if key not in reference or method not in methods or key in methods[method]:
                 raise ValueError(f"Unexpected or duplicate session answer for {key} in {path}.")
             kind, target = reference[key]
-            if row["kind"] != kind or (method == "manual" and row["suggestion"]):
-                raise ValueError(f"Unexpected answer kind or suggestion for {key} in {path}.")
+            if row["kind"] != kind:
+                raise ValueError(f"Unexpected answer kind for {key} in {path}.")
+            status = row.get("suggestion_status")
+            suggestion = normalize(row["suggestion"], kind)
+            if method == "manual":
+                if row["suggestion"] or status not in (None, ""):
+                    raise ValueError(f"Unexpected manual suggestion or status for {key} in {path}.")
+            elif status is None:
+                if not suggestion:
+                    unverified_empty_suggestions.add(key)
+            elif status == "failed" and not suggestion:
+                recognition_failures.add(key)
+            elif status != "ok":
+                raise ValueError(f"Invalid suggestion status for {key} in {path}.")
             seconds = float(row["seconds"])
             if not math.isfinite(seconds) or seconds <= 0 or times[method].setdefault(key[0], seconds) != seconds:
                 raise ValueError(f"Inconsistent or invalid elapsed time for {key[0]} in {path}.")
             methods[method][key] = (
-                normalize(row["suggestion"], kind) == target,
+                (status == "ok" or bool(suggestion)) and suggestion == target,
                 normalize(row["transcription"], kind) == target,
             )
     for method, answers in methods.items():
@@ -80,6 +95,8 @@ def evaluate(reference_path: Path, exports: Iterable[Path]) -> dict:
             "answers": total,
             "assisted_suggestion_errors": suggestion_errors,
             "assisted_suggestion_accuracy_pct": 100 * (total - suggestion_errors) / total if total else None,
+            "assisted_recognition_failures": sum(key in recognition_failures for key in keys),
+            "assisted_unverified_empty_suggestions": sum(key in unverified_empty_suggestions for key in keys),
             "assisted_final_errors": sum(not methods["assisted"][key][1] for key in keys),
             "manual_final_errors": sum(not methods["manual"][key][1] for key in keys),
         }

@@ -139,17 +139,20 @@ async function start(loadPage, pageId, mode) {
     for (const [index, question] of questions.entries()) {
       const image = cropAnswer(page, question, index);
       let suggestion = "";
+      let suggestionStatus = "";
       let warning = "";
       if (mode === "assisted") {
         status.textContent = "Reading answer " + (index + 1) + " of " + questions.length + "…";
         try {
           suggestion = await recognizeStrip(image, question);
+          suggestionStatus = "ok";
         } catch (error) {
+          suggestionStatus = "failed";
           warning = "Check this answer manually. " + error.message;
           failures += 1;
         }
       }
-      rows.push({ suggestion, field: renderRow(question, index, image, suggestion, warning) });
+      rows.push({ suggestion, suggestionStatus, field: renderRow(question, index, image, suggestion, warning) });
     }
     run = { pageId, mode, started, rows, seconds: null };
     status.textContent = failures ? failures + " answers need manual entry." : "Worksheet ready to review.";
@@ -197,8 +200,8 @@ byId("worksheet-export").addEventListener("submit", event => {
   if (!run) return;
   run.seconds ??= ((performance.now() - run.started) / 1000).toFixed(3);
   const rows = run.rows.map((row, index) => [run.pageId, index + 1, run.mode,
-    questions[index].digits ? "digits" : "word", row.suggestion, row.field.value, run.seconds].join(","));
-  const header = "page_id,question,method,kind,suggestion,transcription,seconds";
+    questions[index].digits ? "digits" : "word", row.suggestion, row.field.value, run.seconds, row.suggestionStatus].join(","));
+  const header = "page_id,question,method,kind,suggestion,transcription,seconds,suggestion_status";
   const url = URL.createObjectURL(new Blob([[header, ...rows].join("\r\n") + "\r\n"], { type: "text/csv" }));
   download(url, run.pageId + "-" + run.mode + ".csv");
   setTimeout(() => URL.revokeObjectURL(url), 1000);
