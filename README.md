@@ -7,6 +7,41 @@ box with a character CNN, then uses the sentence to correct misreads (0/O, 1/I, 
 interpolated n-gram model or a BERT re-ranker. The answer reader runs on a laptop CPU and uses the
 INT8-quantized pipeline as the default.
 
+## Download and run
+
+[Download v1.0.0 ZIP](https://github.com/afel6/swe015-handwritten-digitizer/archive/refs/tags/v1.0.0.zip)
+· [Public release](https://github.com/afel6/swe015-handwritten-digitizer/releases/tag/v1.0.0)
+
+Extract the ZIP and open a terminal in the extracted folder that contains `app.py`.
+Use Python 3.12 or 3.13 on 64-bit Windows or Linux. Setup needs internet for Python packages, about
+175 MB of project assets, and about 440 MB for the BERT model on first launch. The boxed-answer
+tools run locally on the CPU.
+
+**Windows PowerShell** (use `py -3.12` if you installed Python 3.12)
+
+```powershell
+py -3.13 -m venv .venv
+.venv\Scripts\python.exe -m pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe scripts/download_assets.py
+$env:ONEDNN_MAX_CPU_ISA="AVX2"
+.venv\Scripts\python.exe app.py
+```
+
+**Linux** (check that `python3 --version` reports 3.12 or 3.13)
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install torch==2.9.1 torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cpu
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python scripts/download_assets.py
+.venv/bin/python app.py
+```
+
+Keep the terminal open. When it says Uvicorn is running, open [the app](http://127.0.0.1:8000/).
+Select sample `test_162` and click **Recognize**. The expected suggestion is **EXPELLED**.
+Port 8000 must be free. The optional **Full-page OCR** tab requires the Ollama setup below.
+
 ## Submission materials
 
 - [Presentation PDF](deliverables/SWE015_Presentation.pdf) and [PowerPoint deck](deliverables/SWE015_Presentation.pptx)
