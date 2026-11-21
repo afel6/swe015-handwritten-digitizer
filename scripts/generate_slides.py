@@ -34,6 +34,7 @@ from scripts import architecture, bench_report
 from scripts import slide_content as sc
 
 DEFAULT_REPO = "https://github.com/afel6/swe015-handwritten-digitizer"
+DEFAULT_DEMO = DEFAULT_REPO + "/blob/master/deliverables/SWE015_Demo.mp4"
 GRADCAM_WEIGHTS = Path("weights/char_cnn_fp32.pt")
 
 
@@ -90,7 +91,8 @@ def slide_title(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     ax.text(0.05, 0.72, "SWE015 - Use Case 1: read handwritten cloze answers and correct them with language models", fontsize=18, color=INK)
     for i, (k, v) in enumerate((("Student", meta["name"]), ("Student ID", meta["student_id"]), ("Repository", meta["repo_url"]), ("Demo video", meta["video_url"]))):
         ax.text(0.05, 0.56 - 0.07 * i, f"{k}:", fontsize=16, color=MUTED)
-        ax.text(0.22, 0.56 - 0.07 * i, v, fontsize=16, color=INK)
+        link = v if v.startswith(("https://", "http://")) else None
+        ax.text(0.22, 0.56 - 0.07 * i, v, fontsize=12 if link else 16, color=ACCENT if link else INK, url=link)
     ax.text(0.05, 0.18, sc.hardware_line(res), fontsize=11, color=MUTED)
     return fig
 
@@ -104,8 +106,8 @@ def slide_intro(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
         "The course's boxed answer reader runs on a laptop CPU and uses an INT8 pipeline by default.",
         f"Word accuracy on {res['benchmark_results']['ladder_n']} generated, held-out boxed strips: {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
         f"-> {br['bert_fp32']['word_acc_pct']:.1f} % (BERT) / {br['quantized_app']['word_acc_pct']:.1f} % (INT8 app model).",
-        ("The optional Full-page OCR tab uses local Ollama and Qwen3-VL 8B to transcribe page images. "
-         "The project author tested the tab locally. Whole-page accuracy and review time are unmeasured."),
+        "The worksheet reader crops four fixed answer regions from one page. A reviewer checks the transcriptions and exports one CSV.",
+        "The optional Full-page OCR tab transcribes page images with local Ollama and Qwen3-VL 8B.",
     ])
     return fig
 
@@ -190,8 +192,9 @@ def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 def slide_conclusion(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Conclusion", 9)
     _bullets(ax, [*sc.conclusion_lines(res), *("Failure - " + line for line in sc.failure_lines(res, limit=2)),
-                  "Full-page OCR transcribes images locally through Ollama. The Qwen3-VL reference measured boxed strips.",
-                  "Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon; OCR field extraction and OCR-only start."], top=0.81, size=11, width=140)
+                  "Digits-only mode reads numeric boxes without the word lexicon. The course benchmark uses default word mode.",
+                  "The worksheet pilot compares timed manual and assisted review. Classroom accuracy and time savings remain unmeasured.",
+                  "Full-page OCR uses local Ollama. The Qwen3-VL reference measured boxed strips."], top=0.81, size=11, width=140)
     return fig
 
 
@@ -230,7 +233,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--name", default="TBD")
     parser.add_argument("--student-id", default="TBD")
     parser.add_argument("--repo-url", default=DEFAULT_REPO)
-    parser.add_argument("--video-url", default="TBD")
+    parser.add_argument("--video-url", default=DEFAULT_DEMO)
     parser.add_argument("--out-dir", type=Path, default=OUT_DIR)
     args = parser.parse_args(argv)
     meta = {"name": args.name, "student_id": args.student_id, "repo_url": args.repo_url, "video_url": args.video_url}

@@ -28,7 +28,7 @@ from models.assets import BERT_INT8_FILE
 from models.bert_reranker import BertMLMReranker
 from models.char_models import load_char_cnn_fp32, load_dense_mlp
 from models.classical_nlp import ClassicalNLPCorrector
-from models.errors import UserInputError
+from models.errors import EmptyAnswerError
 from models.gradcam import generate_gradcam_b64
 from models.ladder import raw_word, run_ladder, timed
 from models.quantization import (
@@ -96,7 +96,7 @@ class RecognitionService:
         batch, empty = boxes_to_tensors(box_images)
         keep = [i for i, flag in enumerate(empty) if not flag]
         if not keep:
-            raise UserInputError("All boxes are empty; write at least one character.")
+            raise EmptyAnswerError("All boxes are empty; write at least one character.")
         if digits_only:
             probs8, t8 = timed(lambda: batch_to_probs(batch[keep], self.cnn_int8))
             digits, decode_ms = timed(lambda: read_digits(probs8))

@@ -1,4 +1,4 @@
-"""Recompute every reported benchmark number from results/test_predictions.json (pure Python: no torch, no models).
+"""Recompute benchmark statistics supported by the saved predictions (pure Python: no torch, no models).
 
 For each ladder row it re-derives word accuracy, character accuracy (position-wise matches over the
 target length), mean latency and candidate recall from the per-item records; for each vision model it

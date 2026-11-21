@@ -4,7 +4,7 @@ Prints PASS / FAIL / SKIP per claim and exits 0 only if no check fails. Finishes
 minutes on a CPU with only requirements.txt installed; checks that need the downloaded weights SKIP
 (with the download command) when the weights are absent.
 
-  (a) every reported benchmark number re-derives from results/test_predictions.json (no torch);
+  (a) benchmark statistics re-derive from the stored prediction records (no torch);
   (b) the vision models load and classify the committed sample worksheet boxes;
   (c) the INT8 CNN checkpoint loads under this platform's quantized engine and agrees with FP32;
   (d) the app's input validation returns one-line 400s, without loading any model.
@@ -45,7 +45,7 @@ class CheckResult:
 
 
 def check_recompute() -> CheckResult:
-    """(a) Re-derive every reported number from the committed per-item predictions."""
+    """(a) Re-derive benchmark statistics supported by the committed predictions."""
     from scripts.recompute_metrics import compare
 
     predictions = json.loads((RESULTS_DIR / "test_predictions.json").read_text(encoding="utf-8"))

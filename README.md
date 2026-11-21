@@ -7,6 +7,12 @@ box with a character CNN, then uses the sentence to correct misreads (0/O, 1/I, 
 interpolated n-gram model or a BERT re-ranker. The answer reader runs on a laptop CPU and uses the
 INT8-quantized pipeline as the default.
 
+## Submission materials
+
+- [Presentation PDF](deliverables/SWE015_Presentation.pdf) and [PowerPoint deck](deliverables/SWE015_Presentation.pptx)
+- [Two-minute demo video](deliverables/SWE015_Demo.mp4)
+- [Benchmark tables](results/benchmark_results.md) and [per-item predictions](results/test_predictions.json)
+
 ## Two parts
 
 1. **Answer reader (the course project).** Use it to digitize boxed cloze answers and inspect per-character
@@ -48,7 +54,7 @@ Everything below is a plain Python command; run them from the repository root in
 
 | Claim | Result file | Command that recomputes or checks it |
 |---|---|---|
-| Every Table 1 and Table 2 number (accuracy, character accuracy, latency, candidate recall) | `results/benchmark_results.json`, `results/test_predictions.json` | `python scripts/recompute_metrics.py` |
+| Table 1 accuracy and Table 2 accuracy, mean latency and candidate recall from saved records | `results/benchmark_results.json`, `results/test_predictions.json` | `python scripts/recompute_metrics.py` |
 | The vision models load and read the committed sample worksheet boxes | `weights/*.pt` (download) | `python verify.py` (check b) |
 | The INT8 CNN checkpoint works on this platform's quantized engine and matches FP32 | `weights/char_cnn_int8.pt` (download) | `python verify.py` (check c) |
 | Bad app requests get a one-line HTTP 400 without loading models | `app.py` | `python verify.py` (check d), `python -m pytest -q tests/test_app.py` |
@@ -63,11 +69,13 @@ Everything below is a plain Python command; run them from the repository root in
 ### Whole boxed worksheets
 
 Open [the worksheet reader](http://127.0.0.1:8000/worksheet) and choose **Load demo page** to try all four
-answers at once. To use your own handwriting, download and print the blank template. Scan it or photograph it
-straight-on, then crop to the four page edges. Upload the upright PNG or JPEG and start transcription.
+answers at once. To use your own handwriting, download and print the blank template with the entire outer
+frame visible. Scan it or photograph it straight-on, then crop to the outside edge of that frame. Upload
+the upright PNG or JPEG and start transcription.
 Compare each suggested answer with its crop, edit the transcription, and export all four answers as CSV.
-The template uses digits-only recognition for the two numeric questions. It expects the supplied layout and
-uses proportional crop coordinates. Skewed photos and different layouts need another capture or the OCR tab.
+The template uses digits-only recognition for the two numeric questions. An empty answer produces a blank
+suggestion, and an unsuccessful request is flagged for manual entry. The crop coordinates assume the supplied
+layout. Skewed photos and different layouts need another capture or the OCR tab.
 
 ### Real-worksheet pilot
 
@@ -225,8 +233,14 @@ throttled timings (kept in `results/benchmark_run3_timing_superseded.json`); the
   was cut with the fusion weights and training read the test file for an out-of-vocabulary
   statistic. Both fixes were made on the code and dev side only; reasons and the old numbers are in
   `results/benchmark_run1_superseded.md` and `results/benchmark_run2_superseded.md`.
-- `results/test_predictions.json` holds every per-item prediction; `python scripts/recompute_metrics.py`
-  re-derives all reported numbers from it without torch.
+- `results/test_predictions.json` holds per-item word predictions and per-class vision counts.
+  `python scripts/recompute_metrics.py` checks vision accuracy, word and character accuracy,
+  mean word latency and candidate recall without torch. Model sizes and vision latency remain measurements
+  from the original benchmark run.
+- A [supplemental digits-only check](results/digits_only_regression.json) recovered 20 of 20 numeric
+  answers, compared with 4 of 20 in the original default predictions. It uses the same generated numeric
+  strips with known field types and box counts. Run `python scripts/evaluate_digits.py` with the INT8 CNN
+  weights and EMNIST. The original 300-item benchmark is unchanged.
 
 ## Reproduction
 
@@ -237,7 +251,7 @@ python scripts/train_ngram.py               # n-gram LM, dev fusion tuning -> re
 python scripts/tune_bert_fusion.py          # BERT fusion weights on dev -> results/bert_fusion_params.json
 python scripts/evaluate_all.py              # Tables 1 and 2 (CPU; run alone) -> results/benchmark_results.*
 python scripts/evaluate_all.py --retime     # timing-only re-measure; outputs must match the committed predictions
-python scripts/generate_slides.py --name "Abdalraouf Alkabir" --student-id 2309015482 --video-url "..."
+python scripts/generate_slides.py --name "Abdalraouf Alkabir" --student-id 2309015482
 ```
 
 `python scripts/evaluate_all.py --worksheets data/worksheets_dev_50.json --no-save` runs the benchmark on
@@ -253,8 +267,8 @@ the dev set without writing anything.
 - BERT scores use at most 48 WordPieces on each side of the blank; the benchmark sentences are all shorter, so this does not affect reported results.
 - Full-page OCR returns plain text only (no field extraction yet), and the app still needs the answer reader's
   weights to start, even when only OCR is used.
-- Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon; OCR field extraction
-  and an OCR-only start.
+- Next steps include a pilot with student-completed worksheets, larger vocabulary coverage and evaluating
+  left-to-right masking for multi-piece BERT candidates.
 
 ## Security notes
 
@@ -288,6 +302,8 @@ bert-base-uncased is loaded at the pinned Hugging Face revision `86b5e0934494bd1
 Built by Abdalraouf Alkabir with assistance from Claude (Anthropic) and Codex (OpenAI).
 Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.
 Claude: generated and reviewed code and tests, drafted the README and slides.
-Codex: checked benchmark claims against the repo and revised the README and slides.
-All numbers come from the student's own runs (results/*.json); scripts/recompute_metrics.py re-derives them without the models.
+Codex: implemented the review, digits-only and fixed-template worksheet workflows with tests,
+added the pilot evaluation tool and helped prepare the submission materials and narrated demo.
+The original benchmark uses the student's runs in `results/`. The metric checker re-derives the statistics
+covered by its per-item and per-class records.
 Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).

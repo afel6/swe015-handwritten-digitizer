@@ -142,6 +142,24 @@ def test_blank_boxes_are_marked_empty_and_left_out_of_the_word(client: Any) -> N
     _assert_one_line_400(client.post("/api/recognize", json={"sentence": sample["sentence"], "boxes_base64": [blank, blank]}))
 
 
+@pytest.mark.parametrize("digits_only", [False, True])
+def test_blank_worksheet_answer_is_success_only_when_allowed(client: Any, digits_only: bool) -> None:
+    blank_strip = _png_b64(Image.new("L", (360, 90), 255))
+    body = {
+        "sentence": "" if digits_only else "The answer is [MASK].",
+        "strip_base64": blank_strip,
+        "num_boxes": 4,
+        "digits_only": digits_only,
+    }
+    ordinary = client.post("/api/recognize", json=body)
+    assert _assert_one_line_400(ordinary) == "All boxes are empty; write at least one character."
+    worksheet = client.post("/api/recognize", json={**body, "allow_blank": True})
+    assert worksheet.status_code == 200
+    assert worksheet.json() == {"empty_answer": True}
+    invalid = client.post("/api/recognize", json={**body, "strip_base64": "not base64", "allow_blank": True})
+    _assert_one_line_400(invalid)
+
+
 # ---------------------------------------------------------------- bad input -> one-line 400
 
 

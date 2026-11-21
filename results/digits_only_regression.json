@@ -1,0 +1,151 @@
+{
+  "scope": "Post-fix controlled regression on generated EMNIST test strips. The numeric field type and character-box count are supplied by the worksheet fixture. This supplemental check leaves the original default benchmark unchanged.",
+  "worksheets": "data/worksheets_test_300.json",
+  "default_prediction_source": "results/test_predictions.json",
+  "cnn_checkpoint": "weights/char_cnn_int8.pt",
+  "items": 20,
+  "default_correct": 4,
+  "digits_only_correct": 20,
+  "records": [
+    {
+      "item_id": "test_001",
+      "target_word": "2000",
+      "num_boxes": 4,
+      "default_prediction": "COO",
+      "digits_only_prediction": "2000"
+    },
+    {
+      "item_id": "test_002",
+      "target_word": "1876",
+      "num_boxes": 4,
+      "default_prediction": "LEG",
+      "digits_only_prediction": "1876"
+    },
+    {
+      "item_id": "test_003",
+      "target_word": "510",
+      "num_boxes": 3,
+      "default_prediction": "II",
+      "digits_only_prediction": "510"
+    },
+    {
+      "item_id": "test_004",
+      "target_word": "4000",
+      "num_boxes": 4,
+      "default_prediction": "4000",
+      "digits_only_prediction": "4000"
+    },
+    {
+      "item_id": "test_005",
+      "target_word": "1917",
+      "num_boxes": 4,
+      "default_prediction": "LVI",
+      "digits_only_prediction": "1917"
+    },
+    {
+      "item_id": "test_006",
+      "target_word": "660",
+      "num_boxes": 3,
+      "default_prediction": "XO",
+      "digits_only_prediction": "660"
+    },
+    {
+      "item_id": "test_007",
+      "target_word": "100",
+      "num_boxes": 3,
+      "default_prediction": "LOO",
+      "digits_only_prediction": "100"
+    },
+    {
+      "item_id": "test_008",
+      "target_word": "100",
+      "num_boxes": 3,
+      "default_prediction": "LOO",
+      "digits_only_prediction": "100"
+    },
+    {
+      "item_id": "test_009",
+      "target_word": "1800",
+      "num_boxes": 4,
+      "default_prediction": "IWO",
+      "digits_only_prediction": "1800"
+    },
+    {
+      "item_id": "test_010",
+      "target_word": "1935",
+      "num_boxes": 4,
+      "default_prediction": "ITS",
+      "digits_only_prediction": "1935"
+    },
+    {
+      "item_id": "test_011",
+      "target_word": "1922",
+      "num_boxes": 4,
+      "default_prediction": "1922",
+      "digits_only_prediction": "1922"
+    },
+    {
+      "item_id": "test_012",
+      "target_word": "400",
+      "num_boxes": 3,
+      "default_prediction": "TO",
+      "digits_only_prediction": "400"
+    },
+    {
+      "item_id": "test_013",
+      "target_word": "300",
+      "num_boxes": 3,
+      "default_prediction": "BOOK",
+      "digits_only_prediction": "300"
+    },
+    {
+      "item_id": "test_014",
+      "target_word": "1825",
+      "num_boxes": 4,
+      "default_prediction": "ITS",
+      "digits_only_prediction": "1825"
+    },
+    {
+      "item_id": "test_015",
+      "target_word": "1939",
+      "num_boxes": 4,
+      "default_prediction": "1939",
+      "digits_only_prediction": "1939"
+    },
+    {
+      "item_id": "test_016",
+      "target_word": "751",
+      "num_boxes": 3,
+      "default_prediction": "751",
+      "digits_only_prediction": "751"
+    },
+    {
+      "item_id": "test_017",
+      "target_word": "1402",
+      "num_boxes": 4,
+      "default_prediction": "IWO",
+      "digits_only_prediction": "1402"
+    },
+    {
+      "item_id": "test_018",
+      "target_word": "3150",
+      "num_boxes": 4,
+      "default_prediction": "IAU",
+      "digits_only_prediction": "3150"
+    },
+    {
+      "item_id": "test_019",
+      "target_word": "1914",
+      "num_boxes": 4,
+      "default_prediction": "III",
+      "digits_only_prediction": "1914"
+    },
+    {
+      "item_id": "test_020",
+      "target_word": "1772",
+      "num_boxes": 4,
+      "default_prediction": "LAT",
+      "digits_only_prediction": "1772"
+    }
+  ]
+}

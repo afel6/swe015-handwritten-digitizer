@@ -28,7 +28,7 @@ Everything below is a plain Python command; run them from the repository root in
 
 | Claim | Result file | Command that recomputes or checks it |
 |---|---|---|
-| Every Table 1 and Table 2 number (accuracy, character accuracy, latency, candidate recall) | `results/benchmark_results.json`, `results/test_predictions.json` | `python scripts/recompute_metrics.py` |
+| Table 1 accuracy and Table 2 accuracy, mean latency and candidate recall from saved records | `results/benchmark_results.json`, `results/test_predictions.json` | `python scripts/recompute_metrics.py` |
 | The vision models load and read the committed sample worksheet boxes | `weights/*.pt` (download) | `python verify.py` (check b) |
 | The INT8 CNN checkpoint works on this platform's quantized engine and matches FP32 | `weights/char_cnn_int8.pt` (download) | `python verify.py` (check c) |
 | Bad app requests get a one-line HTTP 400 without loading models | `app.py` | `python verify.py` (check d), `python -m pytest -q tests/test_app.py` |

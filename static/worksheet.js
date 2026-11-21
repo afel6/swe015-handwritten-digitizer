@@ -24,6 +24,10 @@ function makeTemplate() {
   const ctx = page.getContext("2d");
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, page.width, page.height);
+  // The outside of the printed frame is the crop boundary, including on paper with printer margins.
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 6;
+  ctx.strokeRect(3, 3, page.width - 6, page.height - 6);
   ctx.fillStyle = "#111";
   ctx.font = "bold 48px sans-serif";
   ctx.fillText("Boxed answer worksheet", LEFT, 96);
@@ -78,10 +82,11 @@ async function recognizeStrip(image, question) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sentence: question.sentence, strip_base64: image.split(",")[1],
-      num_boxes: question.boxes, digits_only: question.digits }),
+      num_boxes: question.boxes, digits_only: question.digits, allow_blank: true }),
   });
   const data = await response.json();
   if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Recognition failed.");
+  if (data.empty_answer === true) return "";
   const result = data.models.find(model => model.name === data.primary_model);
   if (typeof result?.predicted_word !== "string") throw new Error("Recognition returned no transcription.");
   return result.predicted_word;
@@ -132,7 +137,7 @@ async function start(loadPage, pageId, mode) {
     const page = await loadPage();
     const scale = (page.width / page.height) / (PAGE_WIDTH / PAGE_HEIGHT);
     if (Math.abs(scale - 1) > 0.04 || page.width < 400) {
-      throw new Error("Use an upright image at least 400 pixels wide, cropped to the template’s page edges.");
+      throw new Error("Use an upright image at least 400 pixels wide, cropped to the outside edge of the printed frame.");
     }
     const rows = [];
     let failures = 0;

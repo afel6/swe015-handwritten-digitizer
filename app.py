@@ -46,7 +46,7 @@ from models.assets import (  # noqa: E402
     missing_assets_message,
 )
 from models.cloze import normalize_masked_sentence  # noqa: E402
-from models.errors import UserInputError  # noqa: E402
+from models.errors import EmptyAnswerError, UserInputError  # noqa: E402
 
 HOST, PORT = "127.0.0.1", 8000
 STATIC_DIR, SAMPLES_DIR = ROOT / "static", ROOT / "data" / "sample_worksheets"
@@ -82,6 +82,7 @@ class RecognizeRequest(BaseModel):
     strip_base64: str | None = None
     num_boxes: int | None = None
     digits_only: bool = False
+    allow_blank: bool = False
 
 
 def _load_samples() -> list[dict[str, Any]]:
@@ -276,6 +277,10 @@ def recognize(body: RecognizeRequest, request: Request) -> dict[str, Any]:
             if body.digits_only:
                 return request.app.state.service.recognize(sentence, images, digits_only=True)
             return request.app.state.service.recognize(sentence, images)
+        except EmptyAnswerError as exc:
+            if body.allow_blank:
+                return {"empty_answer": True}
+            raise _bad(str(exc)) from exc
         except UserInputError as exc:
             raise _bad(str(exc)) from exc
 

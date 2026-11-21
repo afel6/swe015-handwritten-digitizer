@@ -35,8 +35,10 @@ def test_pdf_and_pptx_both_have_exactly_ten_slides(deck: tuple[Path, Path]) -> N
 
 
 def test_title_slide_shows_student_details(deck: tuple[Path, Path]) -> None:
-    title = _pdf_text(deck[0])[0]
-    assert all(value in title for value in META.values())
+    with fitz.open(deck[0]) as doc:
+        assert all(value in doc[0].get_text() for value in META.values())
+        links = {link.get("uri") for link in doc[0].get_links()}
+        assert {META["repo_url"], META["video_url"]} <= links
 
 
 def test_slide_numbers_match_the_results_files(deck: tuple[Path, Path]) -> None:

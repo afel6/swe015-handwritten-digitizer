@@ -1,14 +1,18 @@
-# Demo video script (2:00 or less)
+# SWE015 demo video
 
-Setup before recording: `python app.py` is running; the browser shows http://127.0.0.1:8000; the
-README architecture diagram and `results/benchmark_results.md` are open in a second tab.
+[Watch the demo](SWE015_Demo.mp4). It runs for under two minutes. The narrated sections show the
+course project. The final two sections use captions and show the current worksheet workflow.
 
-| Time | Screen | Narration |
+| Time | Screen | What the demo shows |
 |---|---|---|
-| 0:00–0:12 | App page, empty | "This is the Handwritten Answer Digitizer. A student writes the missing word of a sentence into boxes; the app reads each box and uses the sentence to correct the word. Everything runs locally on the CPU." |
-| 0:12–0:35 | Draw tab: sentence "She [MASK] the ball hard.", 3 boxes, draw H, I, T; click Recognize | "I type a cloze sentence and draw the answer, one character per box." |
-| 0:35–0:55 | Result: CNN read **H1T**, corrected **HIT**; point at box 2 badges and Grad-CAM | "The CNN reads the second box as a one, not an I: a classic 1/I confusion. The badges show its top-2 guesses, and Grad-CAM shows the strokes it looked at. The n-gram model and BERT both use the sentence and correct the word to HIT." |
-| 0:55–1:10 | Four-model table, app row highlighted | "Side by side: the raw CNN, the n-gram corrector, full-precision BERT, and the quantized app model: an INT8 CNN plus INT8 BERT, which is the one the app uses." |
-| 1:10–1:22 | Sample selector: pick a numeric sample, Recognize | "Samples come from the 300 held-out worksheets. Numbers are the hard case: when the CNN mixes letters into digits, the correction cannot recover them; the slides show this failure." |
-| 1:22–1:40 | README architecture diagram | "The pipeline: validation, box slicing and 28x28 preprocessing, three character models, the 47-to-36 class fold, a SymSpell candidate pool, then the n-gram or BERT re-ranker with dev-tuned weights and a numeric guard." |
-| 1:40–2:00 | `results/benchmark_results.md` Table 2 | "On the 300 held-out worksheets, correction lifts word accuracy from about 62 to 88 percent, and the INT8 app model stays within a point of full-precision BERT at under half its size. Every number can be recomputed with python verify.py." |
+| 0:00–0:13 | Answer reader result | The model uses a sentence to recover HIT from an ambiguous handwritten character. |
+| 0:13–0:31 | Draw tab | Enter a sentence with a blank. Draw one character per box and run recognition. |
+| 0:31–0:45 | Strip image tab | Upload a cropped answer strip and enter its box count, or load a sample. |
+| 0:45–1:03 | Per-box evidence and model results | Inspect the raw and corrected words, per-character guesses, and Grad-CAM overlays. |
+| 1:03–1:25 | Model pipeline | Slice and normalize the boxes. Score characters with a CNN. Generate candidates with SymSpell and rank them with the n-gram or BERT model. |
+| 1:25–1:42 | Benchmark | The raw FP32 CNN scored 61.67% and the default INT8 pipeline scored 87.67% on 300 generated held-out strips. The INT8 pipeline averaged 49.9 ms/word in the offline CPU benchmark. |
+| 1:42–1:49 | Worksheet upload and demo page | Load the four-question demo or upload an aligned image of the supplied template. |
+| 1:49–2:00 | Review table and CSV export | Inspect each crop and suggestion. The template uses digits-only mode for numeric fields. Correct 1076 to 1876 and export the reviewed answers. Classroom accuracy and time savings remain unmeasured. |
+
+Recompute the saved benchmark statistics with `python scripts/recompute_metrics.py`. Run the local
+app with `python app.py` and open [the worksheet reader](http://127.0.0.1:8000/worksheet).

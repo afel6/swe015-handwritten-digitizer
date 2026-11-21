@@ -130,7 +130,7 @@ def conclusion_lines(res: Mapping[str, Any]) -> list[str]:
         f"Win: the INT8 app model is {b32['latency_mean_ms'] / app['latency_mean_ms']:.1f}x faster than FP32 BERT ({app['latency_mean_ms']:.1f} vs {b32['latency_mean_ms']:.1f} ms) and "
         f"about half the size ({app['size_mb']:.1f} vs {b32['size_mb']:.1f} MiB) at {app['word_acc_pct']:.2f} % word accuracy. "
         f"INT8 adds {app['word_acc_pct'] - ng['word_acc_pct']:.2f} pp over n-gram on this set.",
-        f"Limits: only {rec['int8']:.1f} % of targets reach the candidate pool; digit strings read with letters never enter it; span-PLL favours multi-piece words; {oov:.1f} % test OOV.",
+        f"Limits in the default word pipeline: {rec['int8']:.1f} % candidate recall, {oov:.1f} % test OOV, and a span-PLL preference for multi-piece words.",
     ]
 
 
@@ -149,7 +149,7 @@ def ai_usage_lines(name: str) -> list[str]:
         f"Built by {name} with assistance from Claude (Anthropic) and Codex (OpenAI).",
         "Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.",
         "Claude: generated and reviewed code and tests, drafted the README and slides.",
-        "Codex: checked benchmark claims against the repo and revised the README and slides.",
-        "All numbers come from the student's own runs (results/*.json); scripts/recompute_metrics.py re-derives them without the models.",
+        "Codex implemented review, digits-only recognition and the worksheet pilot tools. It helped prepare tests, documentation and the narrated demo.",
+        "The original benchmark uses the student's runs. The metric checker recomputes statistics from the saved prediction records.",
         "Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).",
     ]
