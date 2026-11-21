@@ -60,6 +60,40 @@ Everything below is a plain Python command; run them from the repository root in
 
 ## What the app does
 
+### Whole boxed worksheets
+
+Open [the worksheet reader](http://127.0.0.1:8000/worksheet) and choose **Load demo page** to try all four
+answers at once. To use your own handwriting, download and print the blank template. Scan it or photograph it
+straight-on, then crop to the four page edges. Upload the upright PNG or JPEG and start transcription.
+Compare each suggested answer with its crop, edit the transcription, and export all four answers as CSV.
+The template uses digits-only recognition for the two numeric questions. It expects the supplied layout and
+uses proportional crop coordinates. Skewed photos and different layouts need another capture or the OCR tab.
+
+### Real-worksheet pilot
+
+With permission, collect completed templates from multiple writers. Keep the pilot pages separate from any
+tuning, assign anonymous page IDs, and prepare a reference by independently reading what each writer entered.
+Create one reference CSV with the header `page_id,question,kind,answer`. Include questions 1–4 for each page,
+including blank answers. Questions 1 and 3 have kind `digits`, and questions 2 and 4 have kind `word`.
+Keep pages and reference answers local.
+
+For each page, collect one export in **Recognize and review** mode and one in **Type answers manually** mode
+using the same aligned image and page ID. Use separate reviewers where possible and rotate the assignments
+so one reviewer or exposure to the same handwriting does not favor a method. The timer starts after the
+image and mode are selected, and stops at CSV export. It includes page loading and answer review. Record
+image capture and alignment time separately if evaluating the entire workflow.
+
+```
+python scripts/evaluate_worksheet_pilot.py reference.csv page-01-assisted.csv page-01-manual.csv
+```
+
+Add both exports for every reference page. The report includes suggestion and final error counts by answer
+type, median time per method, and median seconds saved across paired pages. Compare the final error counts
+before interpreting a time saving. The built-in demo uses existing benchmark glyphs and serves as a workflow
+check. Real student pages are needed for a field evaluation.
+
+### Single-answer reader
+
 - **Input:** a sentence with one blank (`[MASK]` or `___`) and the answer as 1–16 hand-drawn boxes (canvas)
   or an uploaded PNG/JPEG strip. Fifteen held-out sample worksheets load with one click.
   For answers made entirely of digits, select **Digits only (0–9)** before clicking **Recognize**.

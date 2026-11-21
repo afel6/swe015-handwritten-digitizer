@@ -227,6 +227,16 @@ def index() -> FileResponse:
     return FileResponse(STATIC_DIR / "index.html", media_type="text/html")
 
 
+@app.get("/worksheet", include_in_schema=False)
+def worksheet() -> FileResponse:
+    return FileResponse(STATIC_DIR / "worksheet.html", media_type="text/html")
+
+
+@app.get("/static/worksheet.js", include_in_schema=False)
+def worksheet_script() -> FileResponse:
+    return FileResponse(STATIC_DIR / "worksheet.js", media_type="text/javascript")
+
+
 @app.get("/static/app.js", include_in_schema=False)
 def script() -> FileResponse:
     return FileResponse(STATIC_DIR / "app.js", media_type="text/javascript")

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boxed worksheet reader</title>
+  <link rel="stylesheet" href="/static/app.css?v=3">
+  <script src="/static/worksheet.js?v=1" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <p><a href="/">Back to Answer reader and Full-page OCR</a></p>
+    <h1>Boxed worksheet reader</h1>
+    <p class="lede">Read all four answers on one page, check them against the handwriting, and export a CSV.</p>
+  </header>
+  <main>
+    <section class="card" aria-labelledby="worksheet-input-heading">
+      <h2 id="worksheet-input-heading">Choose a worksheet</h2>
+      <p class="hint">Use the template below. Upload an upright scan or photo cropped to the page edges. Keep the paper flat and the camera square to the page.</p>
+      <p><button id="download-template" type="button">Download blank template</button> <button id="load-demo" type="button">Load demo page</button></p>
+      <form id="worksheet-form">
+        <div class="row">
+          <label for="worksheet-id">Page ID</label>
+          <input id="worksheet-id" type="text" required maxlength="40" pattern="[A-Za-z0-9][A-Za-z0-9_\-]*" placeholder="page-01">
+        </div>
+        <div class="row">
+          <label for="worksheet-file">Completed worksheet (PNG or JPEG)</label>
+          <input id="worksheet-file" type="file" accept="image/png,image/jpeg" required>
+        </div>
+        <div class="row">
+          <label for="worksheet-mode">Transcription method</label>
+          <select id="worksheet-mode">
+            <option value="assisted">Recognize and review</option>
+            <option value="manual">Type answers manually</option>
+          </select>
+        </div>
+        <button id="worksheet-start" class="primary" type="submit">Start transcription</button>
+      </form>
+      <p id="worksheet-status" role="status"></p>
+    </section>
+    <section id="worksheet-review" class="card" aria-labelledby="worksheet-review-heading" hidden>
+      <h2 id="worksheet-review-heading">Review all answers</h2>
+      <p class="hint">Match what the student wrote. Leave a blank answer empty.</p>
+      <form id="worksheet-export">
+        <div class="table-wrap">
+          <table class="worksheet-table">
+            <thead><tr><th scope="col">Question</th><th scope="col">Handwriting</th><th scope="col">Reviewed transcription</th></tr></thead>
+            <tbody id="worksheet-rows"></tbody>
+          </table>
+        </div>
+        <button class="primary" type="submit">Finish review and export CSV</button>
+      </form>
+      <p id="worksheet-export-status" role="status"></p>
+    </section>
+  </main>
+</body>
+</html>
