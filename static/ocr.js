@@ -99,25 +99,37 @@ async function pick(file) {
     return;
   }
   byId("ocr-go").disabled = true; // no Transcribe while the new image is still loading
-  ocr.requestId += 1; // a transcription still in flight belongs to the old image: drop its result
+  const id = ++ocr.requestId; // old transcriptions and image preparations belong to the previous image
   byId("ocr-busy").textContent = "";
   ocr.b64 = null;
-  try {
-    ocr.b64 = await downscale(file);
-  } catch (err) {
-    showText("This image could not be opened. Try a PNG or JPEG.", "error");
-    return;
-  }
-  if (ocr.previewUrl) URL.revokeObjectURL(ocr.previewUrl);
-  ocr.previewUrl = URL.createObjectURL(file);
-  const preview = byId("ocr-preview");
-  preview.src = ocr.previewUrl;
-  preview.hidden = false;
-  byId("ocr-go").disabled = false;
   ocr.text = "";
   byId("ocr-copy").disabled = true;
   byId("ocr-meta").textContent = "";
+  if (ocr.previewUrl) URL.revokeObjectURL(ocr.previewUrl);
+  ocr.previewUrl = null;
+  const preview = byId("ocr-preview");
+  preview.removeAttribute("src");
+  preview.hidden = true;
+  showText("Preparing the image…", "placeholder");
+  let b64;
+  try {
+    b64 = await downscale(file);
+  } catch (err) {
+    if (id === ocr.requestId) showText("This image could not be opened. Try a PNG or JPEG.", "error");
+    return;
+  }
+  if (id !== ocr.requestId) return;
+  ocr.b64 = b64;
+  ocr.previewUrl = URL.createObjectURL(file);
+  preview.src = ocr.previewUrl;
+  preview.hidden = false;
+  byId("ocr-go").disabled = false;
   showText("Press Transcribe to read this image.", "placeholder");
+}
+
+function openInFullPageOcr(file) {
+  setTool("ocr", true);
+  return pick(file);
 }
 
 function initInput() {

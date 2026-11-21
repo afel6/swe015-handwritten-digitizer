@@ -9,8 +9,8 @@ INT8-quantized pipeline as the default.
 
 ## Download and run
 
-[Download v1.0.0 ZIP](https://github.com/afel6/swe015-handwritten-digitizer/archive/refs/tags/v1.0.0.zip)
-· [Public release](https://github.com/afel6/swe015-handwritten-digitizer/releases/tag/v1.0.0)
+[Download v1.0.1 ZIP](https://github.com/afel6/swe015-handwritten-digitizer/archive/refs/tags/v1.0.1.zip)
+· [Public release](https://github.com/afel6/swe015-handwritten-digitizer/releases/tag/v1.0.1)
 
 Extract the ZIP and open a terminal in the extracted folder that contains `app.py`.
 Use Python 3.12 or 3.13 on 64-bit Windows or Linux. Setup needs internet for Python packages, about
@@ -41,6 +41,9 @@ python3 -m venv .venv
 Keep the terminal open. When it says Uvicorn is running, open [the app](http://127.0.0.1:8000/).
 Select sample `test_162` and click **Recognize**. The expected suggestion is **EXPELLED**.
 Port 8000 must be free. The optional **Full-page OCR** tab requires the Ollama setup below.
+Use that tab for photos of unboxed text or equations, including cropped photos of just one part of a page.
+If you loaded the photo in **Strip image**, use **Use this image in Full-page OCR** to transfer it directly.
+Review the returned text against the photo before copying mathematical notation.
 
 ## Submission materials
 

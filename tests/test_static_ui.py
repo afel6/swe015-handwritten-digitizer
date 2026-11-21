@@ -13,7 +13,7 @@ def _read(name: str) -> str:
 
 def test_index_has_both_tabs() -> None:
     html = _read("index.html")
-    for needle in ('id="tab-reader"', 'id="tab-ocr"', 'id="panel-reader"', 'id="panel-ocr"', 'role="tablist"', '<script src="/static/ocr.js" defer></script>'):
+    for needle in ('id="tab-reader"', 'id="tab-ocr"', 'id="panel-reader"', 'id="panel-ocr"', 'role="tablist"', '<script src="/static/ocr.js?v='):
         assert needle in html, needle
 
 
@@ -27,6 +27,15 @@ def test_ocr_script_targets_api_and_downscales() -> None:
 
 def test_strip_mode_hint_explains_equal_boxes() -> None:
     assert "one word written in equal boxes" in _read("index.html")
+
+
+def test_strip_upload_can_open_the_original_file_in_ocr() -> None:
+    html = _read("index.html")
+    assert 'id="strip-open-ocr" type="button"' in html
+    assert "Use this image in Full-page OCR" in html
+    assert 'aria-describedby="strip-advice-text"' in html
+    assert "openInFullPageOcr(state.strip.file)" in _read("app.js")
+    assert 'setTool("ocr", true);\n  return pick(file);' in _read("ocr.js")
 
 
 def test_ocr_panel_has_setup_card_and_copy() -> None:

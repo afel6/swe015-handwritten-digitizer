@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Handwritten Answer Digitizer</title>
   <link rel="stylesheet" href="/static/app.css?v=2">
-  <script src="/static/app.js?v=3" defer></script>
-  <script src="/static/ocr.js" defer></script>
+  <script src="/static/app.js?v=4" defer></script>
+  <script src="/static/ocr.js?v=2" defer></script>
 </head>
 <body>
   <header class="masthead">
@@ -64,7 +64,14 @@
             <label for="strip-boxes">Boxes</label>
             <input id="strip-boxes" type="number" min="1" max="16" value="5">
           </div>
-          <p class="hint">A strip is one word written in equal boxes, one character per box, like the samples. For a photo of a whole page, use <strong>Full-page OCR</strong>.</p>
+          <p class="hint">A strip is one word written in equal boxes, one character per box, like the samples. For a page, paragraph, or screenshot, use <strong>Full-page OCR</strong>.</p>
+          <div id="strip-advice" hidden>
+            <p id="strip-advice-text" class="hint" role="status"></p>
+            <label><input id="strip-override" type="checkbox" aria-describedby="strip-advice-text"> Read as boxes anyway</label>
+          </div>
+          <p id="strip-ocr-action" hidden>
+            <button id="strip-open-ocr" type="button">Use this image in Full-page OCR</button>
+          </p>
           <img id="strip-preview" class="strip-preview" alt="Selected strip image" hidden>
         </div>
 

@@ -25,7 +25,9 @@ INSTALL_HINT = f"Install Ollama from https://ollama.com/download, then run: {PUL
 OCR_PROMPT = (
     "Transcribe the text in this image exactly as written. Do not correct, translate or explain. "
     "Keep digits in the script they are written in. Write ? for an unreadable character. "
-    "Reply with an empty message if there is no text."
+    "Reply with an empty message if there is no text. "
+    "Preserve mathematical notation, including Greek letters, operators and line breaks. "
+    "Distinguish Greek theta from Latin O and zero by the written strokes."
 )
 TIMEOUT_S = 300.0
 STATUS_TIMEOUT_S = 3.0

@@ -2,8 +2,9 @@
 
 const BOX_PX = 112;
 const BRUSH_PX = 14;
+const MIN_STRIP_BOX_ASPECT = 0.4;
 const $ = (id) => document.getElementById(id);
-const state = { strokes: [], current: null, stripB64: null, mode: "draw", inputRevision: 0 };
+const state = { strokes: [], current: null, strip: null, mode: "draw", inputRevision: 0 };
 
 function el(tag, text, className) {
   const node = document.createElement(tag);
@@ -143,14 +144,35 @@ function setMode(mode) {
   $("panel-strip").hidden = mode !== "strip";
 }
 
-function showStrip(b64, boxes) {
+function stripBoxCount() {
+  return parseInt($("strip-boxes").value, 10);
+}
+
+function hasNarrowStripBoxes(boxes) {
+  // Only user uploads have an aspect ratio here. Warn about extreme crops without classifying the image.
+  const aspect = state.strip?.aspect;
+  return Number.isFinite(aspect) && Number.isInteger(boxes) && boxes >= 1 && boxes <= 16 && aspect / boxes < MIN_STRIP_BOX_ASPECT;
+}
+
+function updateStripAdvice() {
+  const boxes = stripBoxCount();
+  const narrow = hasNarrowStripBoxes(boxes);
+  $("strip-advice").hidden = !narrow;
+  $("strip-advice-text").textContent = narrow
+    ? `With ${boxes} boxes, each slice would be unusually narrow. Use Full-page OCR for a page or screenshot. For a boxed word, crop to the answer and match the box count.`
+    : "";
+  $("strip-override").checked = false;
+  $("strip-ocr-action").hidden = !state.strip?.file;
+}
+
+function showStrip(strip, boxes) {
   invalidateResult();
-  state.stripB64 = b64;
+  state.strip = strip;
   $("strip-boxes").value = String(boxes);
   const preview = $("strip-preview");
-  preview.src = "data:image/png;base64," + b64;
+  preview.src = strip.url;
   preview.hidden = false;
-  setMode("strip");
+  updateStripAdvice();
 }
 
 async function loadSamples() {
@@ -168,7 +190,9 @@ async function loadSamples() {
       const s = samples[parseInt(select.value, 10)];
       if (!s) return;
       $("sentence").value = s.sentence;
-      showStrip(s.strip_base64, s.num_boxes);
+      $("strip-file").value = "";
+      showStrip({ b64: s.strip_base64, url: "data:image/png;base64," + s.strip_base64 }, s.num_boxes);
+      setMode("strip");
     });
   } catch (err) {
     showError("Could not load the sample worksheets.");
@@ -179,10 +203,46 @@ function initUpload() {
   $("strip-file").addEventListener("change", () => {
     const file = $("strip-file").files[0];
     if (!file) return;
-    if (!["image/png", "image/jpeg"].includes(file.type)) { showError("Please choose a PNG or JPEG image."); return; }
+    clearError();
+    invalidateResult();
+    $("sample-select").value = "";
+    $("strip-preview").hidden = true;
+    state.strip = null;
+    if (!["image/png", "image/jpeg"].includes(file.type)) {
+      updateStripAdvice();
+      showError("Please choose a PNG or JPEG image.");
+      return;
+    }
+
+    const strip = { file };
+    state.strip = strip;
+    updateStripAdvice();
+    const fail = () => {
+      if (state.strip !== strip) return;
+      showError("This image could not be opened. Choose another PNG or JPEG.");
+    };
     const reader = new FileReader();
-    reader.onload = () => showStrip(String(reader.result).split(",")[1], parseInt($("strip-boxes").value, 10) || 5);
+    reader.onerror = fail;
+    reader.onload = async () => {
+      if (state.strip !== strip) return;
+      const image = new Image();
+      image.src = String(reader.result);
+      try {
+        await image.decode();
+      } catch {
+        fail();
+        return;
+      }
+      if (state.strip !== strip) return;
+      strip.url = image.src;
+      strip.b64 = strip.url.split(",")[1];
+      strip.aspect = image.naturalWidth / image.naturalHeight;
+      showStrip(strip, stripBoxCount() || 5);
+    };
     reader.readAsDataURL(file);
+  });
+  $("strip-open-ocr").addEventListener("click", () => {
+    if (state.strip?.file) openInFullPageOcr(state.strip.file);
   });
 }
 
@@ -287,9 +347,14 @@ async function recognize() {
     if (!state.strokes.length) { showError("Draw at least one character first."); return; }
     body.boxes_base64 = exportBoxes();
   } else {
-    if (!state.stripB64) { showError("Choose a sample or upload a strip image first."); return; }
-    body.strip_base64 = state.stripB64;
-    body.num_boxes = parseInt($("strip-boxes").value, 10);
+    if (!state.strip?.b64) { showError("Choose a sample or upload a strip image first."); return; }
+    const boxes = stripBoxCount();
+    if (hasNarrowStripBoxes(boxes) && !$("strip-override").checked) {
+      $("strip-override").focus();
+      return;
+    }
+    body.strip_base64 = state.strip.b64;
+    body.num_boxes = boxes;
   }
   const button = $("recognize");
   button.disabled = true;
@@ -314,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSamples();
   $("sentence").addEventListener("input", invalidateResult);
   $("digits-only").addEventListener("change", invalidateResult);
-  $("strip-boxes").addEventListener("input", invalidateResult);
+  $("strip-boxes").addEventListener("input", () => { invalidateResult(); updateStripAdvice(); });
   $("reviewed-answer").addEventListener("input", updateCopyAnswer);
   $("copy-answer").addEventListener("click", copyAnswer);
   $("tab-draw").addEventListener("click", () => setMode("draw"));
