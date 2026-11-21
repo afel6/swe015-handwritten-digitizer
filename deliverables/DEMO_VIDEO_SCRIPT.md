@@ -1,7 +1,10 @@
-# SWE015 demo video
+# SWE015 repository walkthrough
 
-[Watch the demo](SWE015_Demo.mp4). It runs for under two minutes. The worksheet segment uses captions.
-The final segment shows Full-page OCR through local Ollama.
+The [submission video is on YouTube](https://youtu.be/QUfX1MxBz0o).
+
+The timeline below describes the supplemental [repository walkthrough](SWE015_Demo.mp4).
+It runs for under two minutes. The worksheet segment uses captions, and the final segment shows
+Full-page OCR through local Ollama.
 
 | Time | Screen | What the demo shows |
 |---|---|---|
