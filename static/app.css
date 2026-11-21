@@ -25,6 +25,8 @@ h3 { font-size: .98rem; margin: 18px 0 8px; color: var(--muted); }
 label { font-weight: 600; font-size: .92rem; }
 input[type=text], select, input[type=number] { font: inherit; padding: 8px 10px; border: 1px solid #b9b2a3; border-radius: 8px; background: #fff; color: var(--ink); }
 input[type=number] { width: 5.5em; }
+.answer-review { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 6px 0 16px; }
+.answer-review input { width: 14em; max-width: 100%; }
 button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid #b9b2a3; background: #fff; color: var(--ink); cursor: pointer; }
 button:hover { background: #f3efe6; }
 button.primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; margin-top: 8px; }

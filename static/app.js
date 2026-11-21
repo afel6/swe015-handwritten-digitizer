@@ -3,7 +3,7 @@
 const BOX_PX = 112;
 const BRUSH_PX = 14;
 const $ = (id) => document.getElementById(id);
-const state = { strokes: [], current: null, stripB64: null, mode: "draw" };
+const state = { strokes: [], current: null, stripB64: null, mode: "draw", inputRevision: 0 };
 
 function el(tag, text, className) {
   const node = document.createElement(tag);
@@ -28,6 +28,11 @@ function showError(message) {
 function clearError() {
   $("error-banner").hidden = true;
   $("error-banner").textContent = "";
+}
+
+function invalidateResult() {
+  state.inputRevision += 1;
+  $("results").hidden = true;
 }
 
 /* ---------------- drawing pad ---------------- */
@@ -82,6 +87,7 @@ function padPoint(evt) {
 function initPad() {
   const pad = $("pad");
   pad.addEventListener("pointerdown", (evt) => {
+    invalidateResult();
     pad.setPointerCapture(evt.pointerId);
     state.current = [padPoint(evt)];
     redraw();
@@ -98,9 +104,9 @@ function initPad() {
   };
   pad.addEventListener("pointerup", finish);
   pad.addEventListener("pointercancel", finish);
-  $("undo").addEventListener("click", () => { state.strokes.pop(); redraw(); });
-  $("clear").addEventListener("click", () => { state.strokes = []; redraw(); });
-  $("box-count").addEventListener("change", resizePad);
+  $("undo").addEventListener("click", () => { invalidateResult(); state.strokes.pop(); redraw(); });
+  $("clear").addEventListener("click", () => { invalidateResult(); state.strokes = []; redraw(); });
+  $("box-count").addEventListener("change", () => { invalidateResult(); resizePad(); });
   resizePad();
 }
 
@@ -129,6 +135,7 @@ function exportBoxes() {
 /* ---------------- samples and upload ---------------- */
 
 function setMode(mode) {
+  if (mode !== state.mode) invalidateResult();
   state.mode = mode;
   $("tab-draw").setAttribute("aria-selected", String(mode === "draw"));
   $("tab-strip").setAttribute("aria-selected", String(mode === "strip"));
@@ -137,6 +144,7 @@ function setMode(mode) {
 }
 
 function showStrip(b64, boxes) {
+  invalidateResult();
   state.stripB64 = b64;
   $("strip-boxes").value = String(boxes);
   const preview = $("strip-preview");
@@ -237,15 +245,44 @@ function renderModels(models, primary) {
 function renderResult(data) {
   const primary = data.models.find((m) => m.name === data.primary_model) || data.models[data.models.length - 1];
   $("raw-word").textContent = primary.raw_word;
+  $("final-word-label").textContent = primary.name === "digits_only" ? "Digits-only read" : "Corrected (app model)";
   $("final-word").textContent = primary.predicted_word;
+  $("reviewed-answer").value = primary.predicted_word;
+  updateCopyAnswer();
   renderBoxes(data.boxes);
   renderModels(data.models, data.primary_model);
   $("results").hidden = false;
 }
 
+function updateCopyAnswer() {
+  $("copy-answer").disabled = !$("reviewed-answer").value.trim();
+  $("copy-answer-status").textContent = "";
+}
+
+async function copyAnswer() {
+  const input = $("reviewed-answer");
+  const value = input.value;
+  const revision = state.inputRevision;
+  try {
+    await navigator.clipboard.writeText(value.trim());
+    if (revision === state.inputRevision && input.value === value) {
+      $("copy-answer-status").textContent = "Copied.";
+    }
+  } catch {
+    if (revision === state.inputRevision && input.value === value) {
+      input.focus();
+      input.select();
+      $("copy-answer-status").textContent = "Clipboard unavailable. Copy the selected text manually.";
+    }
+  }
+}
+
 async function recognize() {
   clearError();
+  invalidateResult();
+  const revision = state.inputRevision;
   const body = { sentence: $("sentence").value };
+  if ($("digits-only").checked) body.digits_only = true;
   if (state.mode === "draw") {
     if (!state.strokes.length) { showError("Draw at least one character first."); return; }
     body.boxes_base64 = exportBoxes();
@@ -260,10 +297,11 @@ async function recognize() {
   try {
     const resp = await fetch("/api/recognize", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const data = await resp.json().catch(() => ({}));
+    if (revision !== state.inputRevision) return;
     if (!resp.ok) { showError(typeof data.detail === "string" ? data.detail : "The request could not be processed."); return; }
     renderResult(data);
   } catch (err) {
-    showError("Could not reach the local server. Is python app.py still running?");
+    if (revision === state.inputRevision) showError("Could not reach the local server. Is python app.py still running?");
   } finally {
     button.disabled = false;
     $("busy").textContent = "";
@@ -274,6 +312,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initPad();
   initUpload();
   loadSamples();
+  $("sentence").addEventListener("input", invalidateResult);
+  $("digits-only").addEventListener("change", invalidateResult);
+  $("strip-boxes").addEventListener("input", invalidateResult);
+  $("reviewed-answer").addEventListener("input", updateCopyAnswer);
+  $("copy-answer").addEventListener("click", copyAnswer);
   $("tab-draw").addEventListener("click", () => setMode("draw"));
   $("tab-strip").addEventListener("click", () => setMode("strip"));
   $("recognize").addEventListener("click", recognize);

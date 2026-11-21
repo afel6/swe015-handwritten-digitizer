@@ -81,6 +81,7 @@ class RecognizeRequest(BaseModel):
     boxes_base64: list[str] | None = None
     strip_base64: str | None = None
     num_boxes: int | None = None
+    digits_only: bool = False
 
 
 def _load_samples() -> list[dict[str, Any]]:
@@ -255,13 +256,15 @@ def samples(request: Request) -> list[dict[str, Any]]:
 def recognize(body: RecognizeRequest, request: Request) -> dict[str, Any]:
     """Plain def (threadpool). One request at a time: bounds memory and keeps Grad-CAM hooks per request."""
     try:
-        sentence = normalize_masked_sentence(body.sentence)
+        sentence = "" if body.digits_only else normalize_masked_sentence(body.sentence)
     except UserInputError as exc:
         message = str(exc)
         raise _bad(message[:1].upper() + message[1:]) from exc
     with _RECOGNIZE_LOCK:
         images = _box_images(body)
         try:
+            if body.digits_only:
+                return request.app.state.service.recognize(sentence, images, digits_only=True)
             return request.app.state.service.recognize(sentence, images)
         except UserInputError as exc:
             raise _bad(str(exc)) from exc

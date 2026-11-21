@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Handwritten Answer Digitizer</title>
-  <link rel="stylesheet" href="/static/app.css">
-  <script src="/static/app.js" defer></script>
+  <link rel="stylesheet" href="/static/app.css?v=2">
+  <script src="/static/app.js?v=3" defer></script>
   <script src="/static/ocr.js" defer></script>
 </head>
 <body>
@@ -68,6 +68,7 @@
         </div>
 
         <div class="actions">
+          <label><input id="digits-only" type="checkbox"> Digits only (0–9)</label>
           <button id="recognize" class="primary" type="button">Recognize</button>
           <span id="busy" class="busy" aria-live="polite"></span>
         </div>
@@ -78,13 +79,20 @@
         <div class="verdict">
           <div><span class="k">INT8 CNN read</span><span id="raw-word" class="word raw"></span></div>
           <div aria-hidden="true" class="arrow">→</div>
-          <div><span class="k">Corrected (app model)</span><span id="final-word" class="word final"></span></div>
+          <div><span id="final-word-label" class="k">Corrected (app model)</span><span id="final-word" class="word final"></span></div>
+        </div>
+
+        <label for="reviewed-answer">Review the transcription before copying</label>
+        <div class="answer-review">
+          <input id="reviewed-answer" type="text" autocomplete="off" spellcheck="false">
+          <button id="copy-answer" type="button" disabled>Copy answer</button>
+          <span id="copy-answer-status" role="status"></span>
         </div>
 
         <h3>Per box</h3>
         <div id="boxes" class="boxes"></div>
 
-        <h3>Four models side by side</h3>
+        <h3>Model results</h3>
         <div class="table-wrap">
           <table>
             <thead><tr><th scope="col">Model</th><th scope="col">Precision</th><th scope="col">Word</th><th scope="col">Top candidates</th><th scope="col">Latency (ms)</th></tr></thead>

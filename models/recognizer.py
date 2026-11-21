@@ -30,7 +30,7 @@ from models.char_models import load_char_cnn_fp32, load_dense_mlp
 from models.classical_nlp import ClassicalNLPCorrector
 from models.errors import UserInputError
 from models.gradcam import generate_gradcam_b64
-from models.ladder import run_ladder, timed
+from models.ladder import raw_word, run_ladder, timed
 from models.quantization import (
     load_quantized_bert_dynamic,
     load_quantized_cnn,
@@ -40,6 +40,12 @@ from models.quantization import (
 _ROWS = (("raw_fp32_cnn", "raw_fp32", "FP32 CNN, no correction"), ("classical_ngram", "classical", "FP32 CNN + n-gram (FP32)"),
          ("bert_fp32", "bert_fp32", "FP32 CNN + FP32 BERT"), ("quantized_app", "quantized_app", "INT8 CNN + INT8 BERT"))
 PRIMARY_MODEL = "quantized_app"
+NUMERIC_MODEL = "digits_only"
+
+
+def read_digits(probs: np.ndarray) -> str:
+    """Read the most likely digit in each box, retaining leading zeros."""
+    return raw_word(probs[:, :10])
 
 __all__ = ["PRIMARY_MODEL", "RecognitionService"]
 
@@ -85,17 +91,25 @@ class RecognitionService:
         return {"index": i, "empty": empty, "preview_png_b64": _png_b64(tensor[0].numpy()), "top2": preds["cnn_fp32"]["top2"],
                 "dense_pred": preds["dense"], "cnn_fp32_pred": preds["cnn_fp32"], "cnn_int8_pred": preds["cnn_int8"], "gradcam_png_b64": gradcam}
 
-    def recognize(self, sentence: str, box_images: Sequence[Image.Image]) -> dict[str, Any]:
+    def recognize(self, sentence: str, box_images: Sequence[Image.Image], *, digits_only: bool = False) -> dict[str, Any]:
         """Preprocess boxes, run all character models, then the shared correction ladder on the non-empty boxes."""
         batch, empty = boxes_to_tensors(box_images)
         keep = [i for i, flag in enumerate(empty) if not flag]
         if not keep:
             raise UserInputError("All boxes are empty; write at least one character.")
-        probs32, t32 = timed(lambda: batch_to_probs(batch[keep], self.cnn_fp32))
-        probs8, t8 = timed(lambda: batch_to_probs(batch[keep], self.cnn_int8))
+        if digits_only:
+            probs8, t8 = timed(lambda: batch_to_probs(batch[keep], self.cnn_int8))
+            digits, decode_ms = timed(lambda: read_digits(probs8))
+            rows = [{"name": NUMERIC_MODEL, "precision": "INT8 CNN", "raw_word": raw_word(probs8),
+                     "predicted_word": digits, "top_candidates": [], "latency_ms": t8 + decode_ms}]
+            primary = NUMERIC_MODEL
+        else:
+            probs32, t32 = timed(lambda: batch_to_probs(batch[keep], self.cnn_fp32))
+            probs8, t8 = timed(lambda: batch_to_probs(batch[keep], self.cnn_int8))
+            models = {"ngram": self.ngram, "bert_fp32": self.bert_fp32, "bert_int8": self.bert_int8, "params": self.params}
+            ladder = run_ladder(sentence, probs32, probs8, models, {"fp32": t32, "int8": t8})
+            rows = [{"name": name, "precision": precision, **ladder["rows"][key]} for name, key, precision in _ROWS]
+            primary = PRIMARY_MODEL
         display = {"dense": batch_to_probs(batch, self.dense), "cnn_fp32": batch_to_probs(batch, self.cnn_fp32), "cnn_int8": batch_to_probs(batch, self.cnn_int8)}
-        models = {"ngram": self.ngram, "bert_fp32": self.bert_fp32, "bert_int8": self.bert_int8, "params": self.params}
-        ladder = run_ladder(sentence, probs32, probs8, models, {"fp32": t32, "int8": t8})
-        rows = [{"name": name, "precision": precision, **ladder["rows"][key]} for name, key, precision in _ROWS]
         boxes = [self._box_payload(i, batch[i], empty[i], display) for i in range(len(empty))]
-        return {"request_id": uuid.uuid4().hex, "boxes": boxes, "models": rows, "primary_model": PRIMARY_MODEL}
+        return {"request_id": uuid.uuid4().hex, "boxes": boxes, "models": rows, "primary_model": primary}

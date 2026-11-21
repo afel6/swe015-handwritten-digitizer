@@ -62,6 +62,8 @@ Everything below is a plain Python command; run them from the repository root in
 
 - **Input:** a sentence with one blank (`[MASK]` or `___`) and the answer as 1–16 hand-drawn boxes (canvas)
   or an uploaded PNG/JPEG strip. Fifteen held-out sample worksheets load with one click.
+  For answers made entirely of digits, select **Digits only (0–9)** before clicking **Recognize**.
+  This mode reads one digit per non-empty box, preserves leading zeros, and makes the sentence optional.
 - **Per box:** the 28×28 image the models see, a Grad-CAM heatmap from the FP32 CNN, and top-2 guesses
   from the Dense MLP, the FP32 CNN and the INT8 CNN.
 - **Per word:** four models side by side with their prediction, top candidates and latency: (1) the raw
@@ -206,8 +208,8 @@ the dev set without writing anything.
 
 ## Limitations
 
-- Digit strings read with letters among the digits (`20O0` for 2000) never enter the candidate pool: the
-  lexicon holds words only, and a digit string is a candidate only when every box reads as a digit.
+- In the default word mode, digit strings read with letters among the digits (`20O0` for 2000) can be
+  missed. Use **Digits only** for numeric answers. The published benchmark measures the default mode.
 - Span pseudo-log-likelihood favours multi-piece words, because the other pieces stay visible
   (`REDUCED` -> `REJOICED` in `results/failure_examples.json`).
 - 12.7 % of test targets are not in the lexicon, and only 88–89 % of targets reach the candidate pool.

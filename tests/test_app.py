@@ -113,6 +113,18 @@ def test_recognize_strip_runs_all_four_models(client: Any) -> None:
     _check_response(resp.json(), len(sample["target_word"]))
 
 
+def test_digits_only_reads_strip_without_sentence_context(client: Any) -> None:
+    sample = _sample()
+    response = client.post("/api/recognize", json={
+        "sentence": "", "strip_base64": sample["strip_base64"],
+        "num_boxes": len(sample["target_word"]), "digits_only": True,
+    })
+    assert response.status_code == 200
+    result = response.json()
+    assert result["primary_model"] == "digits_only"
+    assert result["models"][0]["predicted_word"] == sample["target_word"]
+
+
 def test_recognize_boxes_matches_strip_result(client: Any) -> None:
     sample, boxes = _boxes_b64(1)
     via_boxes = client.post("/api/recognize", json={"sentence": sample["sentence"], "boxes_base64": boxes}).json()
