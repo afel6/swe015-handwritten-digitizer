@@ -70,5 +70,8 @@ def test_slide_8_shows_reference_and_slide_2_the_split(deck: tuple[Path, Path]) 
     assert "not trained by us" in flat
     for run in ref["runs"].values():
         assert f"{run['word_acc_pct']:.2f}" in flat
-    assert "Full-page OCR" in " ".join(pages[1].split())
+    overview = " ".join(pages[1].split())
+    assert "Full-page OCR with Ollama" in overview
+    assert "ollama pull qwen3-vl:8b-instruct-q4_K_M" in overview
+    assert "Whole-page accuracy is unmeasured." in overview
     assert "Full-page OCR" in " ".join(pages[8].split())

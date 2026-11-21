@@ -36,6 +36,7 @@ from scripts import slide_content as sc
 DEFAULT_REPO = "https://github.com/afel6/swe015-handwritten-digitizer"
 DEFAULT_DEMO = "https://youtu.be/QUfX1MxBz0o"
 GRADCAM_WEIGHTS = Path("weights/char_cnn_fp32.pt")
+OCR_SCREENSHOT = Path("deliverables/screenshots/ui_full_page_ocr.png")
 
 
 class ModelFileError(RuntimeError):
@@ -98,17 +99,34 @@ def slide_title(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 
 
 def slide_intro(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
-    fig, ax = _slide("Introduction: problem and goal", 2)
+    fig, ax = _slide("Boxed answers and Full-page OCR", 2)
     br = res["benchmark_results"]["ladder"]
+    ax.text(0.05, 0.81, "Boxed answer reader", fontsize=17, fontweight="bold", color=INK, va="top")
     _bullets(ax, [
-        "Problem: worksheets ask students to write one missing word in boxes; a teacher must read every box by hand.",
-        "Goal: recognise each boxed character with a neural network, then use the sentence to fix misreads (0/O, 1/I, 5/S ...).",
-        "The course's boxed answer reader runs on a laptop CPU and uses an INT8 pipeline by default.",
-        f"Word accuracy on {res['benchmark_results']['ladder_n']} generated, held-out boxed strips: {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
-        f"-> {br['bert_fp32']['word_acc_pct']:.1f} % (BERT) / {br['quantized_app']['word_acc_pct']:.1f} % (INT8 app model).",
-        "The worksheet reader crops four fixed answer regions from one page. A reviewer checks the transcriptions and exports one CSV.",
-        "The optional Full-page OCR tab transcribes page images with local Ollama and Qwen3-VL 8B.",
-    ])
+        "A CNN reads each handwritten character. The n-gram model and BERT use the sentence to correct misreads.",
+        f"On {res['benchmark_results']['ladder_n']} generated strips, word accuracy rose from {br['raw_fp32']['word_acc_pct']:.1f}% "
+        f"with the raw CNN to {br['quantized_app']['word_acc_pct']:.1f}% with the INT8 CPU pipeline.",
+        "The worksheet reader crops four answers from one template page for review and CSV export.",
+    ], top=0.745, size=13)
+
+    ax.plot([0.05, 0.95], [0.53, 0.53], color="#d9d2c3", lw=1)
+    ax.text(0.05, 0.49, "Full-page OCR with Ollama", fontsize=17, fontweight="bold", color=INK, va="top")
+    _bullets(ax, [
+        "Upload or paste a scan or photo of a page.",
+        "Select Transcribe. Local Ollama runs the pretrained Qwen3-VL 8B model and returns plain text.",
+        "Review the text and select Copy.",
+    ], top=0.423, size=12, width=62)
+    ax.text(0.05, 0.235, "After installing Ollama, download the model once:", fontsize=11, color=MUTED)
+    ax.text(0.05, 0.193, "ollama pull qwen3-vl:8b-instruct-q4_K_M", family="monospace", fontsize=11, color=INK)
+    ax.text(0.05, 0.115, "The course benchmark measures boxed answers. Whole-page accuracy is unmeasured.",
+            fontsize=10, color=MUTED)
+    with Image.open(OCR_SCREENSHOT) as screenshot:
+        image_ax = fig.add_axes((0.53, 0.19, 0.42, 0.268))
+        image_ax.imshow(screenshot.convert("RGB"))
+        image_ax.set_xlim(25, 1392)
+        image_ax.set_ylim(1525, 1060)
+        image_ax.axis("off")
+    ax.text(0.74, 0.162, "Text returned for a printed sample page", fontsize=10, color=MUTED, ha="center")
     return fig
 
 
@@ -194,7 +212,7 @@ def slide_conclusion(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     _bullets(ax, [*sc.conclusion_lines(res), *("Failure - " + line for line in sc.failure_lines(res, limit=2)),
                   "Digits-only mode reads numeric boxes without the word lexicon. The course benchmark uses default word mode.",
                   "The worksheet pilot compares timed manual and assisted review. Classroom accuracy and time savings remain unmeasured.",
-                  "Full-page OCR uses local Ollama. The Qwen3-VL reference measured boxed strips."], top=0.81, size=11, width=140)
+                  "Full-page OCR returns copyable page text through local Ollama. The Qwen3-VL reference measured boxed strips."], top=0.81, size=11, width=140)
     return fig
 
 
