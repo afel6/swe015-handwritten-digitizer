@@ -10,7 +10,7 @@ INT8-quantized pipeline as the default.
 ## Submission materials
 
 - [Presentation PDF](deliverables/SWE015_Presentation.pdf) and [PowerPoint deck](deliverables/SWE015_Presentation.pptx)
-- [Two-minute demo video](deliverables/SWE015_Demo.mp4)
+- [Two-minute demo video](deliverables/SWE015_Demo.mp4) covering boxed answers, worksheet review, and Full-page OCR through Ollama
 - [Benchmark tables](results/benchmark_results.md) and [per-item predictions](results/test_predictions.json)
 
 ## Two parts
