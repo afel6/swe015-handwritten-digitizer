@@ -1,22 +1,19 @@
-# SWE015 repository walkthrough
+# SWE015 demo video
 
-The [submission video is on YouTube](https://youtu.be/QUfX1MxBz0o).
+[Official YouTube video](https://youtu.be/m2d_cP5pWOk) · [Offline MP4](SWE015_Demo.mp4)
 
-The timeline below describes the supplemental [repository walkthrough](SWE015_Demo.mp4).
-It runs for under two minutes. The worksheet segment uses captions, and the final segment shows
-Full-page OCR through local Ollama.
+The two-minute walkthrough uses female narration and shows the v1.0.1 app.
 
 | Time | Screen | What the demo shows |
 |---|---|---|
-| 0:00–0:12 | Answer reader result | The model uses a sentence to recover HIT from an ambiguous handwritten character. |
-| 0:12–0:24 | Draw tab | Enter a sentence with a blank. Draw one character per box and run recognition. |
-| 0:24–0:32 | Strip image tab | Upload a cropped answer strip and enter its box count, or load a sample. |
-| 0:32–0:49 | Per-box evidence and model results | Inspect the raw and corrected words, per-character guesses, and Grad-CAM overlays. |
-| 0:49–1:10 | Model pipeline | Slice and normalize the boxes. Score characters with a CNN. Generate candidates with SymSpell and rank them with the n-gram or BERT model. |
-| 1:10–1:25 | Benchmark | The raw FP32 CNN scored 61.67% and the default INT8 pipeline scored 87.67% on 300 generated held-out strips. The INT8 pipeline averaged 49.9 ms/word in the offline CPU benchmark. |
-| 1:25–1:32 | Worksheet upload and demo page | Load the four-question demo or upload an aligned image of the supplied template. |
-| 1:32–1:43 | Review table and CSV export | Inspect each crop and suggestion. The template uses digits-only mode for numeric fields. Correct 1076 to 1876 and export the reviewed answers. Classroom accuracy and time savings remain unmeasured. |
-| 1:43–2:00 | Full-page OCR | Upload or paste a page image, run local Qwen3-VL through Ollama, and copy the returned text. |
+| 0:00–0:08 | Recurrence photo | An unboxed math image belongs in Full-page OCR. |
+| 0:08–0:27 | Answer reader | Sample `test_162` yields EXPELLED. The app shows the raw read, character evidence and corrected word. |
+| 0:27–0:43 | Digits only | The numeric example yields 2000. |
+| 0:43–1:05 | Worksheet review | Review four answer crops, correct a suggestion and export a CSV. The pilot supports timed comparison with manual entry. |
+| 1:05–1:18 | Strip-image warning | The app flags unusually narrow slices and transfers the original photo to Full-page OCR. |
+| 1:18–1:32 | Full-page OCR | Local Qwen3-VL through Ollama transcribes the equation, including theta. |
+| 1:32–1:47 | Course benchmark | Exact word accuracy on 300 generated held-out strips rises from 61.67% with the raw CNN to 87.67% with the default INT8 pipeline. |
+| 1:47–2:00 | Public download | Get the release ZIP and follow the Windows or Linux setup instructions. |
 
-Recompute the saved benchmark statistics with `python scripts/recompute_metrics.py`. Run the local
-app with `python app.py` and open [the worksheet reader](http://127.0.0.1:8000/worksheet).
+Recompute the saved benchmark statistics with `python scripts/recompute_metrics.py`. Whole-page
+OCR accuracy and classroom review time remain unmeasured.

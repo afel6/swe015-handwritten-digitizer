@@ -34,7 +34,7 @@ from scripts import architecture, bench_report
 from scripts import slide_content as sc
 
 DEFAULT_REPO = "https://github.com/afel6/swe015-handwritten-digitizer"
-DEFAULT_DEMO = "https://youtu.be/QUfX1MxBz0o"
+DEFAULT_DEMO = "https://youtu.be/m2d_cP5pWOk"
 GRADCAM_WEIGHTS = Path("weights/char_cnn_fp32.pt")
 OCR_SCREENSHOT = Path("deliverables/screenshots/ui_full_page_ocr.png")
 

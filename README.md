@@ -9,8 +9,8 @@ INT8-quantized pipeline as the default.
 
 ## Download and run
 
-[Download v1.0.1 ZIP](https://github.com/afel6/swe015-handwritten-digitizer/archive/refs/tags/v1.0.1.zip)
-· [Public release](https://github.com/afel6/swe015-handwritten-digitizer/releases/tag/v1.0.1)
+[Download the v1.0.1 submission ZIP](https://github.com/afel6/swe015-handwritten-digitizer/releases/download/v1.0.1-submission/SWE015_Submission_2309015482.zip)
+· [Public submission release](https://github.com/afel6/swe015-handwritten-digitizer/releases/tag/v1.0.1-submission)
 
 Extract the ZIP and open a terminal in the extracted folder that contains `app.py`.
 Use Python 3.12 or 3.13 on 64-bit Windows or Linux. Setup needs internet for Python packages, about
@@ -48,8 +48,9 @@ Review the returned text against the photo before copying mathematical notation.
 ## Submission materials
 
 - [Presentation PDF](deliverables/SWE015_Presentation.pdf) and [PowerPoint deck](deliverables/SWE015_Presentation.pptx)
-- [Submission demo video on YouTube](https://youtu.be/QUfX1MxBz0o)
+- [Official submission demo on YouTube](https://youtu.be/m2d_cP5pWOk) and [offline MP4](deliverables/SWE015_Demo.mp4)
 - [Benchmark tables](results/benchmark_results.md) and [per-item predictions](results/test_predictions.json)
+- [Submission checklist and copy-ready links](deliverables/SUBMISSION.md)
 
 ## Two parts
 
