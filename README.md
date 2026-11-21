@@ -302,8 +302,6 @@ bert-base-uncased is loaded at the pinned Hugging Face revision `86b5e0934494bd1
 Built by Abdalraouf Alkabir with assistance from Claude (Anthropic) and Codex (OpenAI).
 Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.
 Claude: generated and reviewed code and tests, drafted the README and slides.
-Codex: implemented the review, digits-only and fixed-template worksheet workflows with tests,
-added the pilot evaluation tool and helped prepare the submission materials and narrated demo.
-The original benchmark uses the student's runs in `results/`. The metric checker re-derives the statistics
-covered by its per-item and per-class records.
+Codex implemented review, digits-only recognition and the worksheet pilot tools. It helped prepare tests, documentation and the narrated demo.
+The original benchmark uses the student's runs. The metric checker recomputes statistics from the saved prediction records.
 Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).
