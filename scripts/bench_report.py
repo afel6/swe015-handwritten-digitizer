@@ -182,9 +182,11 @@ def _power_text(power: Mapping[str, Any] | None) -> str:
 def timing_protocol(result: Mapping[str, Any]) -> str:
     """How every latency in the report was measured (constants shared with scripts/evaluate_all.py)."""
     passes = len(result.get("retime", {}).get("passes", []))
-    median = f"; the median of {passes} timing passes (by app-model latency) is reported" if passes else ""
-    return (f"Timing protocol: Table 1 CPU ms and the standalone BERT ms are the mean of {LATENCY_RUNS} timed runs after {LATENCY_WARMUP} warm-up runs; "
-            f"Table 2 ms/word is the end-to-end mean over the {result['ladder_n']} test worksheets{median}.")
+    median = f" The median of {passes} timing passes by app-model latency is reported." if passes else ""
+    return (f"Table 1 and the standalone BERT timings are the mean of {LATENCY_RUNS} timed runs after {LATENCY_WARMUP} warm-up runs. "
+            f"Table 2 is the offline pipeline mean over the {result['ladder_n']} test worksheets with known box counts. "
+            "Timing includes strip slicing and preprocessing. HTTP, the browser UI, and Grad-CAM are outside the timed pipeline."
+            f"{median}")
 
 
 def refresh_failure_latencies(failures: Sequence[Mapping[str, Any]], rows: Mapping[str, Sequence[Mapping[str, Any]]]) -> list[dict[str, Any]]:
@@ -205,12 +207,12 @@ def render_markdown(result: Mapping[str, Any]) -> str:
     lines = ["# Benchmark results", "", f"CPU timing only: {hw['cpu_model']}, {hw['torch_threads']} torch threads, {hw['logical_cores']} logical cores, {'unknown' if hw['ram_gb'] is None else hw['ram_gb']} GB RAM; GPU present but unused for timing: {hw['gpu']}.",
              f"{hw['os']}, Python {hw['python']}, torch {hw['torch']}, transformers {hw['transformers']}.{_power_text(hw.get('power'))}", timing_protocol(result), "",
              f"## Table 1 - Vision (EMNIST balanced test, N={result['vision_n']})", "",
-             *_table(["Model", "47-class acc %", "36-folded acc %", "Disk MB", "CPU b1 ms", "CPU b8 ms"], vis_rows), "",
+             *_table(["Model", "47-class acc %", "36-folded acc %", "Disk MiB", "CPU b1 ms", "CPU b8 ms"], vis_rows), "",
              f"## Table 2 - Word ladder (N={result['ladder_n']} worksheets from {Path(str(result.get('worksheets', '?'))).name}, boxed strips)", "",
-             *_table(["Pipeline", "Word acc %", "Char acc %", "Size MB", "Mean ms/word"], lad_rows), "",
+             *_table(["Pipeline", "Word acc %", "Char acc %", "Size MiB", "Mean ms/word"], lad_rows), "",
              f"Candidate recall (target in the shared pool): FP32 CNN {result['recall_pct']['fp32']:.2f} %, INT8 CNN {result['recall_pct']['int8']:.2f} % (ceiling for rows 2-4).",
              f"Strip-path char accuracy {result['strip_char_acc_pct']:.2f} % vs raw EMNIST 36-folded {result['vision']['char_cnn_fp32']['acc_36_pct']:.2f} %: {result['strip_gap_note']}",
-             "Sizes sum the weight files each pipeline loads (both BERTs: serialized state_dict of the model loaded for the run; the ~0.2 MB tokenizer vocab is not counted). Row (4) is the app pipeline measured offline: its pool uses the same fixed rule on the INT8 CNN's own read, so it can differ from the FP32-CNN pool of rows 2, 3 and the ablation.",
-             f"Standalone BERT: FP32 {result['bert_sizes']['fp32_mb']:.1f} MB, {result['bert_latency_ms']['fp32']:.1f} ms; INT8 {result['bert_sizes']['int8_mb']:.1f} MB, {result['bert_latency_ms']['int8']:.1f} ms (one masked sentence, batch 1).", "",
+             "Sizes sum the model weights loaded by each pipeline, including each BERT's serialized state_dict. Sizes exclude the tokenizer vocabulary. Row 4 uses the same candidate rule on the INT8 CNN's output. Rows 2, 3 and the ablation share the pool from the FP32 CNN.",
+             f"Standalone BERT (one masked sentence, batch 1). FP32 {result['bert_sizes']['fp32_mb']:.1f} MiB, {result['bert_latency_ms']['fp32']:.1f} ms. INT8 {result['bert_sizes']['int8_mb']:.1f} MiB, {result['bert_latency_ms']['int8']:.1f} ms.", "",
              "## Checks (reported, not enforced)", "", *_table(["Check", "Result", "Value"], [[c["check"], c["result"], c["value"]] for c in result["checks"]]), ""]
     return "\n".join(lines)

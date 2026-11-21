@@ -54,8 +54,8 @@ EDGES: tuple[Edge, ...] = (
     Edge("MLP", "OUT", "top-2", display=True), Edge("CNN32", "OUT", "Grad-CAM, top-2", display=True), Edge("CNN8", "OUT", "top-2", display=True), Edge("R1", "OUT"), Edge("NG", "OUT"), Edge("B32", "OUT"), Edge("B8", "OUT"),
 )
 
-FOOTNOTE = ("Everything runs on the CPU on 127.0.0.1. Models load once at startup from weights/*.pt, weights/ngram_lm.pkl, "
-            "weights/bert_int8_dynamic.pt and the Hugging Face cache (bert-base-uncased).")
+FOOTNOTE = ("The boxed answer reader runs on CPU. FastAPI listens on 127.0.0.1.\n"
+            "Optional Full-page OCR   |   Browser → /api/ocr → local Ollama (Qwen3-VL 8B Q4_K_M, GPU supported) → text in browser")
 
 
 def mermaid(nodes: Sequence[Node] = NODES, edges: Sequence[Edge] = EDGES) -> str:

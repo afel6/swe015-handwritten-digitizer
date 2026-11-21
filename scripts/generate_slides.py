@@ -30,7 +30,7 @@ from pptx import Presentation
 from pptx.util import Emu
 
 from data._io_errors import describe_cli_os_error
-from scripts import architecture
+from scripts import architecture, bench_report
 from scripts import slide_content as sc
 
 DEFAULT_REPO = "https://github.com/afel6/swe015-handwritten-digitizer"
@@ -101,11 +101,11 @@ def slide_intro(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     _bullets(ax, [
         "Problem: worksheets ask students to write one missing word in boxes; a teacher must read every box by hand.",
         "Goal: recognise each boxed character with a neural network, then use the sentence to fix misreads (0/O, 1/I, 5/S ...).",
-        "Constraint: one local app on a laptop CPU, quantized for speed and size, with every claim measured on held-out data.",
-        f"Result on {res['benchmark_results']['ladder_n']} held-out worksheets: word accuracy {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
+        "The course's boxed answer reader runs on a laptop CPU and uses an INT8 pipeline by default.",
+        f"Word accuracy on {res['benchmark_results']['ladder_n']} generated, held-out boxed strips: {br['raw_fp32']['word_acc_pct']:.1f} % (CNN alone) -> {br['classical']['word_acc_pct']:.1f} % (n-gram) "
         f"-> {br['bert_fp32']['word_acc_pct']:.1f} % (BERT) / {br['quantized_app']['word_acc_pct']:.1f} % (INT8 app model).",
-        ("Two parts: the answer reader shows the fundamentals with our own models; a second tab, Full-page OCR, solves the real-world task "
-         "(any handwritten or printed page) with a local vision-language model, so documents never leave the laptop."),
+        ("The optional Full-page OCR tab uses local Ollama and Qwen3-VL 8B to transcribe page images. "
+         "The project author tested the tab locally. Whole-page accuracy and review time are unmeasured."),
     ])
     return fig
 
@@ -128,7 +128,7 @@ def slide_data(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 
 
 def slide_architecture(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
-    fig, ax = _slide("R6 architecture (data flow as implemented)", 4)
+    fig, ax = _slide("R6 architecture of the boxed answer reader", 4)
     architecture.draw(ax)
     return fig
 
@@ -158,7 +158,9 @@ def _gradcam_examples(count: int = 3) -> list[Any]:
 
 def slide_area_a(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Area A: Dense vs CNN, regularisation, Grad-CAM", 6)
-    _table(fig, (0.04, 0.48, 0.92, 0.33), ["Model", "47-class %", "36-folded %", "MB", "b1 ms", "b8 ms"], sc.vision_rows(res))
+    _table(fig, (0.04, 0.48, 0.92, 0.33), ["Model", "47-class %", "36-folded %", "MiB", "b1 ms", "b8 ms"], sc.vision_rows(res))
+    ax.text(0.05, 0.63, f"CPU latency averages {bench_report.LATENCY_RUNS} timed runs after {bench_report.LATENCY_WARMUP} warm-up runs.",
+            fontsize=10, color=MUTED)
     _bullets(ax, [*sc.vision_fit_lines(res), "Grad-CAM (FP32 CNN) shows which strokes drive each prediction:"], top=0.44, size=13)
     for i, img in enumerate(_gradcam_examples()):
         img_ax = fig.add_axes((0.30 + i * 0.14, 0.04, 0.12, 0.22))
@@ -175,9 +177,12 @@ def slide_areas_bc(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 
 def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Area D: quantization and R4 results", 8)
-    _table(fig, (0.04, 0.47, 0.92, 0.37), [f"Pipeline (N={res['benchmark_results']['ladder_n']})", "Word %", "Char %", "MB", "ms/word"], sc.ladder_rows(res), highlight=4, first_col=0.36)
-    y = _bullets(ax, ["Static INT8 CNN (observers on train data) and dynamic INT8 BERT; sizes are serialized state_dicts; CPU, 4 threads, perf_counter.", *sc.checks_lines(res)], top=0.45, size=11)
-    note = sc.hardware_line(res) + ". " + sc.methodology_note(res) + (" " + sc.reference_line(res) + "." if sc.reference_line(res) else "")
+    _table(fig, (0.04, 0.47, 0.92, 0.37), [f"Pipeline (N={res['benchmark_results']['ladder_n']})", "Word %", "Char %", "MiB", "Mean ms/word"], sc.ladder_rows(res), highlight=4, first_col=0.36)
+    y = _bullets(ax, ["Static INT8 CNN calibrated on the validation split. BERT uses dynamic INT8.", *sc.checks_lines(res)], top=0.45, size=11)
+    note = sc.hardware_line(res) + ". " + sc.methodology_note(res)
+    reference = sc.reference_line(res)
+    if reference:
+        note += " " + reference + "."
     ax.text(0.05, y - 0.01, "\n".join(textwrap.wrap(note, 150)), fontsize=9.5, color=MUTED, va="top")
     return fig
 
@@ -185,7 +190,7 @@ def slide_area_d(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
 def slide_conclusion(res: Mapping[str, Any], meta: Mapping[str, str]) -> Any:
     fig, ax = _slide("Conclusion", 9)
     _bullets(ax, [*sc.conclusion_lines(res), *("Failure - " + line for line in sc.failure_lines(res, limit=2)),
-                  *([sc.ocr_win_line(res)] if sc.ocr_win_line(res) else []),
+                  "Full-page OCR transcribes images locally through Ollama. The Qwen3-VL reference measured boxed strips.",
                   "Next steps: digit-mapped numeric candidates, PLL-word-l2r scoring, a larger lexicon; OCR field extraction and OCR-only start."], top=0.81, size=11, width=140)
     return fig
 

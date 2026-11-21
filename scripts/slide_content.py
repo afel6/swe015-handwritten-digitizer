@@ -22,20 +22,6 @@ def load_results(root: Path = RESULTS) -> dict[str, Any]:
     return out
 
 
-QWEN_MODEL_MB = 6191.0  # qwen3-vl:8b-instruct-q4_K_M, 6190971795 bytes per `ollama list`
-
-
-def ocr_win_line(res: Mapping[str, Any]) -> str:
-    """The real-world tab as a win, with the reference compared against our app model from the results files."""
-    ref = res.get("vlm_reference")
-    if not ref:
-        return ""
-    app, sent = res["benchmark_results"]["ladder"]["quantized_app"], ref["runs"]["strip_sentence"]
-    return (f"Real-world win: the Full-page OCR tab reads whole handwritten or printed pages on the laptop. On our task the outside "
-            f"Qwen3-VL reference scores {sent['word_acc_pct'] - app['word_acc_pct']:+.2f} pp vs our INT8 app model, but needs a GPU, "
-            f"{QWEN_MODEL_MB / app['size_mb']:.0f}x the size and {sent['latency_mean_ms'] / app['latency_mean_ms']:.0f}x the time per word.")
-
-
 def reference_line(res: Mapping[str, Any]) -> str:
     """The Qwen3-VL reference in one line, read from results/vlm_reference.json; empty when it is absent."""
     ref = res.get("vlm_reference")
@@ -43,7 +29,7 @@ def reference_line(res: Mapping[str, Any]) -> str:
         return ""
     strip, sent = ref["runs"]["strip_only"], ref["runs"]["strip_sentence"]
     ms = (strip["latency_mean_ms"] + sent["latency_mean_ms"]) / 2
-    return (f"Reference, not trained by us: Qwen3-VL 8B (6.2 GB, {ref['gpu']}), zero-shot on the same {ref['n']} strips: "
+    return (f"Reference, not trained by us: Qwen3-VL 8B (6.2 GB, {ref['gpu']}), zero-shot on the same {ref['n']} boxed strips: "
             f"{strip['word_acc_pct']:.2f} % word acc from the strip alone, {sent['word_acc_pct']:.2f} % with the sentence, about {ms:.0f} ms/word on the GPU")
 
 
@@ -140,9 +126,10 @@ def conclusion_lines(res: Mapping[str, Any]) -> list[str]:
     return [
         f"Win: context correction lifts word accuracy from {raw['word_acc_pct']:.2f} % (CNN alone) to {ng['word_acc_pct']:.2f} % (n-gram) and {b32['word_acc_pct']:.2f} % (BERT FP32).",
         f"Loss: FP32 BERT costs {b32['latency_mean_ms'] / ng['latency_mean_ms']:.1f}x the n-gram latency ({b32['latency_mean_ms']:.1f} vs {ng['latency_mean_ms']:.1f} ms/word) and "
-        f"{b32['size_mb'] / ng['size_mb']:.1f}x the size ({b32['size_mb']:.1f} vs {ng['size_mb']:.1f} MB) for {b32['word_acc_pct'] - ng['word_acc_pct']:+.2f} pp word accuracy.",
+        f"{b32['size_mb'] / ng['size_mb']:.1f}x the size ({b32['size_mb']:.1f} vs {ng['size_mb']:.1f} MiB) for {b32['word_acc_pct'] - ng['word_acc_pct']:+.2f} pp word accuracy on these strips.",
         f"Win: the INT8 app model is {b32['latency_mean_ms'] / app['latency_mean_ms']:.1f}x faster than FP32 BERT ({app['latency_mean_ms']:.1f} vs {b32['latency_mean_ms']:.1f} ms) and "
-        f"{b32['size_mb'] / app['size_mb']:.1f}x smaller ({app['size_mb']:.1f} vs {b32['size_mb']:.1f} MB) for {app['word_acc_pct'] - b32['word_acc_pct']:+.2f} pp.",
+        f"about half the size ({app['size_mb']:.1f} vs {b32['size_mb']:.1f} MiB) at {app['word_acc_pct']:.2f} % word accuracy. "
+        f"INT8 adds {app['word_acc_pct'] - ng['word_acc_pct']:.2f} pp over n-gram on this set.",
         f"Limits: only {rec['int8']:.1f} % of targets reach the candidate pool; digit strings read with letters never enter it; span-PLL favours multi-piece words; {oov:.1f} % test OOV.",
     ]
 
@@ -151,17 +138,18 @@ def methodology_note(res: Mapping[str, Any]) -> str:
     """Tuning/test protocol sentence with every count read from the results."""
     runs = 1 + sum(1 for key in ("benchmark_run1_superseded", "benchmark_run2_superseded") if key in res)
     passes = len(res["benchmark_results"].get("retime", {}).get("passes", []))
-    retimes = sum(1 for name in ("benchmark_run3_timing_superseded.json", "benchmark_retime1_superseded.json") if (RESULTS / name).is_file())
-    retime = f"; latencies re-timed {retimes} times on AC power (last: median of {passes} passes), outputs verified identical each time" if passes else ""
-    return f"Tuned on dev only; the test set was evaluated {runs} times and run {runs} is reported (earlier runs superseded; reasons in results/){retime}."
+    retime = f" Timing uses the median of {passes} passes by app latency." if passes else ""
+    return (f"Tuned on dev only. Test run {runs} reported (see results/ for earlier runs). "
+            f"Generated strips use known box counts. Latency covers the offline pipeline.{retime}")
 
 
 def ai_usage_lines(name: str) -> list[str]:
     """R8 statement."""
     return [
-        f"Built by {name} with Claude (Anthropic) as the AI coding assistant.",
+        f"Built by {name} with assistance from Claude (Anthropic) and Codex (OpenAI).",
         "Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.",
         "Claude: generated and reviewed code and tests, drafted the README and slides.",
+        "Codex: checked benchmark claims against the repo and revised the README and slides.",
         "All numbers come from the student's own runs (results/*.json); scripts/recompute_metrics.py re-derives them without the models.",
         "Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).",
     ]

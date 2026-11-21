@@ -4,18 +4,20 @@ Author: Abdalraouf Alkabir (2309015482)
 
 SWE015 Use Case 1. A student writes the missing word of a cloze sentence into boxes. The app reads every
 box with a character CNN, then uses the sentence to correct misreads (0/O, 1/I, 5/S, ...) with an
-interpolated n-gram model or a BERT re-ranker. It runs as one local web app on a laptop CPU, with an
-INT8-quantized model as the default.
+interpolated n-gram model or a BERT re-ranker. The answer reader runs on a laptop CPU and uses the
+INT8-quantized pipeline as the default.
 
 ## Two parts
 
-1. **Answer reader (the course project).** Everything above: our own trained CNNs, the n-gram model, BERT and
-   quantization, measured on held-out worksheets. All graded numbers come from this part.
-2. **Full-page OCR (the real-world tool).** A second tab in the same app reads whole handwritten or printed
-   pages (English and Arabic) with Qwen3-VL 8B, a vision-language model **not trained by us**, running locally
-   through Ollama, so documents never leave the laptop. It is optional: without Ollama the tab shows setup
-   steps and the answer reader works as before. Setup: install Ollama from ollama.com/download, then
-   `ollama pull qwen3-vl:8b-instruct-q4_K_M` (about 6 GB; a GPU is strongly recommended).
+1. **Answer reader (the course project).** Use it to digitize boxed cloze answers and inspect per-character
+   guesses, Grad-CAM overlays, and corrections from the n-gram and BERT models. The course benchmark
+   uses generated boxed worksheets made from held-out EMNIST glyphs.
+2. **Full-page OCR (optional).** Upload a page image to get plain text from English or Arabic handwriting
+   or print. The tab sends the image through the local app to Ollama and Qwen3-VL 8B (a pretrained model
+   not trained by us). The project author tested the tab locally. Whole-page accuracy and manual review
+   time are unmeasured. Install [Ollama](https://ollama.com/download) and run
+   `ollama pull qwen3-vl:8b-instruct-q4_K_M` (about 6 GB). A GPU is recommended. The tab shows setup
+   steps if Ollama is unavailable.
 
 <!-- grader section: keep identical to AGENTS.md -->
 ## For graders
@@ -116,7 +118,9 @@ flowchart LR
   style B8 stroke-width:3px
 ```
 
-Everything runs on the CPU on 127.0.0.1. Models load once at startup from weights/*.pt, weights/ngram_lm.pkl, weights/bert_int8_dynamic.pt and the Hugging Face cache (bert-base-uncased).
+The boxed answer reader runs on the CPU. The app listens on `127.0.0.1` and loads its answer-reader
+models once at startup. The optional Full-page OCR tab sends an image to FastAPI at `/api/ocr`, which
+asks local Ollama to transcribe it with Qwen3-VL 8B and returns the text to the tab. Ollama can use a GPU.
 The app and the benchmark call the same functions (`data/word_pipeline.py` for strip -> box images -> probabilities in the
 benchmark and box images -> probabilities in the app,
 `models/ladder.py` for the correction rows); the diagram and slide 4 are generated from `scripts/architecture.py`.
@@ -125,19 +129,23 @@ benchmark and box images -> probabilities in the app,
 
 CPU timing only: AMD Ryzen AI 9 HX 370 w/ Radeon 890M, 4 torch threads, 24 logical cores, 31.1 GB RAM; GPU present but unused for timing: NVIDIA GeForce RTX 5070 Ti Laptop GPU.
 Windows-11-10.0.26300-SP0, Python 3.13.15, torch 2.9.1+cu128, transformers 5.23.0. Timing on AC power, power scheme Turbo, power mode Best performance.
-Timing protocol: Table 1 CPU ms and the standalone BERT ms are the mean of 100 timed runs after 10 warm-up runs; Table 2 ms/word is the end-to-end mean over the 300 test worksheets; the median of 3 timing passes (by app-model latency) is reported.
+Table 1 and the standalone BERT timings average 100 timed runs after 10 warm-up runs. Table 2 averages
+offline model pipeline time per strip, including box slicing and preprocessing. HTTP, the browser UI,
+and Grad-CAM are outside that timing. The reported pass is the median of 3 by app-model latency.
 
 ### Table 1 - Vision (EMNIST balanced test, N=18800)
 
-| Model | 47-class acc % | 36-folded acc % | Disk MB | CPU b1 ms | CPU b8 ms |
+| Model | 47-class acc % | 36-folded acc % | Disk MiB | CPU b1 ms | CPU b8 ms |
 |---|---|---|---|---|---|
 | dense_mlp_fp32 | 86.41 | 88.34 | 2.08 | 0.050 | 0.065 |
 | char_cnn_fp32 | 89.47 | 91.32 | 6.53 | 0.283 | 0.805 |
 | char_cnn_int8 | 89.43 | 91.29 | 1.65 | 0.254 | 0.361 |
 
-### Table 2 - Word ladder (N=300 held-out worksheets, boxed strips)
+### Table 2 - Word ladder (300 generated held-out boxed strips)
 
-| Pipeline | Word acc % | Char acc % | Size MB | Mean ms/word |
+The benchmark supplies the true number of boxes for each strip.
+
+| Pipeline | Word acc % | Char acc % | Size MiB | Mean ms/word |
 |---|---|---|---|---|
 | (1) Trained NN, no correction: FP32 CNN | 61.67 | 90.14 | 6.5 | 4.9 |
 | (1b) parity: INT8 CNN, no correction | 60.67 | 89.95 | 1.7 | 3.7 |
@@ -146,24 +154,22 @@ Timing protocol: Table 1 CPU ms and the standalone BERT ms are the mean of 100 t
 | (4) Quantized Transformer [App]: INT8 CNN pool + INT8 BERT | 87.67 | 91.43 | 216.2 | 49.9 |
 | (ablation) FP32 CNN + same pool + INT8 BERT | 87.33 | 91.37 | 221.1 | 54.6 |
 
-Candidate recall (target in the shared pool): FP32 CNN 88.67 %, INT8 CNN 89.00 %; this is the ceiling for
-rows 2–4. Strip-path character accuracy 90.14 % vs raw EMNIST 91.32 % (gap +1.18 pp). All five checks pass
-(`results/benchmark_results.md`). Test OOV rate (target not in the lexicon): 12.7 %
-(`results/corpus_sources.json`).
+Candidate recall is 88.67% for the FP32 pool and 89.00% for the INT8 pool. Rows 2–3 and the ablation
+share the FP32 CNN and candidate pool, which holds the visual inputs to correction fixed. Row 4 builds
+a separate pool from the INT8 CNN's output using the same rule. Strip-path character accuracy is 90.14%
+versus 91.32% on raw EMNIST. All five reported checks pass (`results/benchmark_results.md`).
+The test out-of-vocabulary rate is 12.7% (`results/corpus_sources.json`).
 
-Noise: with N=300 test worksheets one item is 0.33 pp of word accuracy, so rows 3, 4 and the ablation (88.00 /
-87.67 / 87.33 %) differ by one or two items and are within noise of each other; the gaps to rows 1 and 2 are
-not. Row 2 is the classical correction baseline: SymSpell + n-gram fusion run on the same trained CNN's output,
-because a classical method with no trained reader cannot turn pixels into letters, and sharing the CNN and the
-candidate pool isolates the correction technique as the only thing that changes between rows 2, 3 and 4.
+The n-gram baseline got 259 of 300 words correct at 10.7 ms/word. The INT8 app got 263 at 49.9 ms/word,
+correcting six words the n-gram missed and missing two it got right. FP32 BERT got 264 correct at
+165.0 ms/word, with six wins and one loss against n-gram. On this set, one item is 0.33 pp of word accuracy.
+The exact two-sided paired tests give p = 0.289 for the INT8 app and p = 0.125 for FP32
+BERT, calculated from `results/test_predictions.json`.
 
-Reference, not trained by us (`results/vlm_reference.json`, recomputed by `scripts/recompute_metrics.py`):
-Qwen3-VL 8B (6.2 GB, Q4_K_M) read the same 300 strips zero-shot on the laptop GPU (NVIDIA GeForce RTX 5070 Ti Laptop GPU), with no
-tuning. From the strip alone it scores 80.67 % word / 92.91 % char accuracy
-(compare row 1); given the sentence too, 89.33 % / 94.46 % (compare rows 3 and 4),
-at about 966 ms/word on the GPU. This timing is not comparable
-with the CPU column above. It has no pass/fail check and is not part of the ladder: it shows what a model ~29x the
-size of our app model reaches on the same task.
+For an external reference, Qwen3-VL 8B (6.2 GB, Q4_K_M) read the same 300 boxed strips zero-shot on an
+NVIDIA GeForce RTX 5070 Ti Laptop GPU. It got 80.67% word and 92.91% character accuracy from the strip
+alone, and 89.33% word and 94.46% character accuracy with the sentence. It averaged about 966 ms/word
+on the GPU. The Table 2 timings above use the CPU. See `results/vlm_reference.json` for the strip results.
 
 Latencies above were re-timed twice on AC power in Windows "Best performance" mode (three timing passes each,
 median reported; every prediction verified identical to the accuracy run). The first re-timing replaced run 3's
@@ -240,8 +246,9 @@ bert-base-uncased is loaded at the pinned Hugging Face revision `86b5e0934494bd1
 
 ## AI usage
 
-Built by Abdalraouf Alkabir with Claude (Anthropic) as the AI coding assistant.
+Built by Abdalraouf Alkabir with assistance from Claude (Anthropic) and Codex (OpenAI).
 Student: chose the use case, made the design and evaluation decisions, ran all training and benchmarks on own laptops, reviewed the results.
 Claude: generated and reviewed code and tests, drafted the README and slides.
+Codex: checked benchmark claims against the repo and revised the README and slides.
 All numbers come from the student's own runs (results/*.json); scripts/recompute_metrics.py re-derives them without the models.
 Pretrained model: bert-base-uncased (Devlin et al., 2019). Data: EMNIST (Cohen et al., 2017), Project Gutenberg, Wikipedia (CC BY-SA).
